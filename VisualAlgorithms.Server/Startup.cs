@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using VisualAlgorithms.Entities;
+using VisualAlgorithms.Database;
 
 namespace VisualAlgorithms.Server
 {
@@ -19,7 +19,7 @@ namespace VisualAlgorithms.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddApplicationContext(Configuration);
+            services.ConfigureDatabase(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

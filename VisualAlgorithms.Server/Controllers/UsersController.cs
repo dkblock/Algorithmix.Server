@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using VisualAlgorithms.Database;
 using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Server.Controllers
@@ -20,8 +21,7 @@ namespace VisualAlgorithms.Server.Controllers
         public IEnumerable<ApplicationUserEntity> Get()
         {
             var users = _db.ApplicationUsers.ToList();
-            return new List<ApplicationUserEntity>();
-
+            return users;
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using VisualAlgorithms.Entities;
 
-namespace VisualAlgorithms.Entities
+namespace VisualAlgorithms.Database
 {
     public class ApplicationContext : IdentityDbContext<ApplicationUserEntity>
     {
@@ -12,5 +13,6 @@ namespace VisualAlgorithms.Entities
         }
 
         public DbSet<ApplicationUserEntity> ApplicationUsers { get; set; }
+        public DbSet<GroupEntity> Groups { get; set; }
     }
 }

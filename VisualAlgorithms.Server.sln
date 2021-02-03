@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Server", "VisualAlgorithms.Server\VisualAlgorithms.Server.csproj", "{92F7677F-23C7-46CE-994A-22909BA6840A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Entities", "VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj", "{B25E1384-9F92-4855-9EA9-C641A529A2B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Entities", "VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj", "{B25E1384-9F92-4855-9EA9-C641A529A2B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Mappers", "VisualAlgorithms.Mappers\VisualAlgorithms.Mappers.csproj", "{8A3640FF-BCCD-46BA-8A0C-42A674B627CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Mappers", "VisualAlgorithms.Mappers\VisualAlgorithms.Mappers.csproj", "{8A3640FF-BCCD-46BA-8A0C-42A674B627CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Services", "VisualAlgorithms.Services\VisualAlgorithms.Services.csproj", "{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Services", "VisualAlgorithms.Services\VisualAlgorithms.Services.csproj", "{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Database", "VisualAlgorithms.Database\VisualAlgorithms.Database.csproj", "{708A60E6-8749-445B-A752-D19F6397FFB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{708A60E6-8749-445B-A752-D19F6397FFB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708A60E6-8749-445B-A752-D19F6397FFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708A60E6-8749-445B-A752-D19F6397FFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708A60E6-8749-445B-A752-D19F6397FFB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+using VisualAlgorithms.Entities;
 
-namespace VisualAlgorithms.Entities
+namespace VisualAlgorithms.Database
 {
     public static class IServiceCollectionExtension
     {
-        public static IServiceCollection AddApplicationContext(this IServiceCollection services, IConfiguration configuration)
+        public static async Task ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -23,7 +25,17 @@ namespace VisualAlgorithms.Entities
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-            return services;
+            await InitializeData(services);
+        }
+
+        private static async Task InitializeData(IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+            var context = serviceProvider.GetRequiredService<ApplicationContext>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUserEntity>>();
+
+            await DataInitializer.Initialize(context, roleManager, userManager);
         }
     }
 }
