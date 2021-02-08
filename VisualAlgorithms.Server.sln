@@ -11,7 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Mappers", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Services", "VisualAlgorithms.Services\VisualAlgorithms.Services.csproj", "{E97DA1ED-303D-4FDE-B2FF-74C63C2BFBF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Database", "VisualAlgorithms.Database\VisualAlgorithms.Database.csproj", "{708A60E6-8749-445B-A752-D19F6397FFB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Database", "VisualAlgorithms.Database\VisualAlgorithms.Database.csproj", "{708A60E6-8749-445B-A752-D19F6397FFB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Repository", "VisualAlgorithms.Repository\VisualAlgorithms.Repository.csproj", "{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Domain", "VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj", "{04B76D46-DEFE-465A-A5E3-54564C267925}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Models", "VisualAlgorithms.Models\VisualAlgorithms.Models.csproj", "{B6FEF78B-68FC-47B9-AD46-7F88672B4435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Common", "VisualAlgorithms.Common\VisualAlgorithms.Common.csproj", "{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +47,22 @@ Global
 		{708A60E6-8749-445B-A752-D19F6397FFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708A60E6-8749-445B-A752-D19F6397FFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708A60E6-8749-445B-A752-D19F6397FFB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B76D46-DEFE-465A-A5E3-54564C267925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B76D46-DEFE-465A-A5E3-54564C267925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B76D46-DEFE-465A-A5E3-54564C267925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B76D46-DEFE-465A-A5E3-54564C267925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FEF78B-68FC-47B9-AD46-7F88672B4435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FEF78B-68FC-47B9-AD46-7F88672B4435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FEF78B-68FC-47B9-AD46-7F88672B4435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FEF78B-68FC-47B9-AD46-7F88672B4435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,5 +14,8 @@ namespace VisualAlgorithms.Database
 
         public DbSet<ApplicationUserEntity> ApplicationUsers { get; set; }
         public DbSet<GroupEntity> Groups { get; set; }
+        public DbSet<TestEntity> Tests { get; set; }
+        public DbSet<TestAnswerEntity> TestAnswers { get; set; }
+        public DbSet<TestQuestionEntity> TestQuestions { get; set; }
     }
 }

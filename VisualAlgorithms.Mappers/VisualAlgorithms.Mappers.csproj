@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Models\VisualAlgorithms.Models.csproj" />
+  </ItemGroup>
 
 </Project>

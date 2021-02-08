@@ -11,6 +11,9 @@
   <ItemGroup>
     <ProjectReference Include="..\VisualAlgorithms.Database\VisualAlgorithms.Database.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Mappers\VisualAlgorithms.Mappers.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Repository\VisualAlgorithms.Repository.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Services\VisualAlgorithms.Services.csproj" />
   </ItemGroup>
 
 
