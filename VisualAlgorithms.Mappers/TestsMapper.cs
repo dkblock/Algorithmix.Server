@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
 using VisualAlgorithms.Models;
@@ -27,6 +28,11 @@ namespace VisualAlgorithms.Mappers
                 AlgorithmId = testModel.AlgorithmId,
                 TestQuestions = new List<TestQuestion>()
             };
+        }
+
+        public IEnumerable<Test> ToDomainCollection(IEnumerable<TestEntity> testEntities)
+        {
+            return testEntities.Select(entity => ToDomain(entity));
         }
 
         public TestEntity ToEntity(Test test)

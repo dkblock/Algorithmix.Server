@@ -1,4 +1,6 @@
-﻿using VisualAlgorithms.Domain;
+﻿using System.Collections.Generic;
+using System.Linq;
+using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Mappers
@@ -15,6 +17,11 @@ namespace VisualAlgorithms.Mappers
             };
         }
 
+        public IEnumerable<TestAnswer> ToDomainCollection(IEnumerable<TestAnswerEntity> answerEntities)
+        {
+            return answerEntities.Select(entity => ToDomain(entity));
+        }
+
         public TestAnswerEntity ToEntity(TestAnswer answer)
         {
             return new TestAnswerEntity
@@ -23,6 +30,6 @@ namespace VisualAlgorithms.Mappers
                 Value = answer.Value,
                 TestQuestionId = answer.TestQuestionId
             };
-        }
+        }      
     }
 }

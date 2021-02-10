@@ -7,6 +7,6 @@ namespace VisualAlgorithms.Domain
         public int Id { get; set; }
         public string Name { get; set; }
         public int AlgorithmId { get; set; }
-        public List<TestQuestion> TestQuestions { get; set; }
+        public IEnumerable<TestQuestion> TestQuestions { get; set; }
     }
 }

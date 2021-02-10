@@ -9,6 +9,6 @@ namespace VisualAlgorithms.Domain
         public string Image { get; set; }
         public int CorrectAnswerId { get; set; }
         public int TestId { get; set; }
-        public List<TestAnswer> TestAnswers { get; set; }
+        public IEnumerable<TestAnswer> TestAnswers { get; set; }
     }
 }

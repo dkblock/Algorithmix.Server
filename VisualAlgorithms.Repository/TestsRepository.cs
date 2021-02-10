@@ -40,5 +40,19 @@ namespace VisualAlgorithms.Repository
         {
             return await _context.Tests.FindAsync(id);
         }
+
+        public async Task RemoveTest(int id)
+        {
+            var test = await GetTestById(id);
+            _context.Tests.Remove(test);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTest(TestEntity test)
+        {
+            var testToUpdate = await GetTestById(test.Id);
+            _context.Entry(testToUpdate).CurrentValues.SetValues(test);
+            await _context.SaveChangesAsync();
+        }
     }
 }

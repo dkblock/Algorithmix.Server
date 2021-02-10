@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VisualAlgorithms.Common\VisualAlgorithms.Common.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Mappers\VisualAlgorithms.Mappers.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Repository\VisualAlgorithms.Repository.csproj" />
   </ItemGroup>
 
 </Project>
