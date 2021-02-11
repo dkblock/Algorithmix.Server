@@ -6,9 +6,10 @@ namespace VisualAlgorithms.Services
     {
         public static void AddCommonServices(this IServiceCollection services)
         {
-            services.AddSingleton<TestsService, TestsService>();
-            services.AddSingleton<TestAnswersService, TestAnswersService>();
-            services.AddSingleton<TestQuestionsService, TestQuestionsService>();
+            services.AddScoped<AlgorithmsService, AlgorithmsService>();
+            services.AddScoped<TestsService, TestsService>();
+            services.AddScoped<TestAnswersService, TestAnswersService>();
+            services.AddScoped<TestQuestionsService, TestQuestionsService>();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace VisualAlgorithms.Entities
+﻿namespace VisualAlgorithms.Domain
 {
-    public class AlgorithmTimeComplexityEntity
+    public class AlgorithmTimeComplexity
     {
         public int Id { get; set; }
         public string SortingBestTime { get; set; }

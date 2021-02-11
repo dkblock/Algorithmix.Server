@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using VisualAlgorithms.Models;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Controllers
@@ -21,6 +19,7 @@ namespace VisualAlgorithms.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests()
         {
+            var tests = await _testsService.GetAllTests();
             return Ok();
         }
     }

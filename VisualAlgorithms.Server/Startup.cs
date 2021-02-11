@@ -20,14 +20,15 @@ namespace VisualAlgorithms.Server
 
         public IConfiguration Configuration { get; }
 
-        public async Task ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthorization();
             services.AddControllers();
 
             services.AddCommonServices();
             services.AddMappers();
             services.AddRepositories();
-            await services.ConfigureDatabase(Configuration);
+            services.ConfigureDatabase(Configuration).Wait();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

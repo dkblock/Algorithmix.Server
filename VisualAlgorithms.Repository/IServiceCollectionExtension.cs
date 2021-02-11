@@ -6,9 +6,11 @@ namespace VisualAlgorithms.Repository
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddSingleton<TestsRepository, TestsRepository>();
-            services.AddSingleton<TestAnswersRepository, TestAnswersRepository>();
-            services.AddSingleton<TestQuestionsRepository, TestQuestionsRepository>();
+            services.AddScoped<AlgorithmsRepository, AlgorithmsRepository>();
+            services.AddScoped<AlgorithmTimeComplexitiesRepository, AlgorithmTimeComplexitiesRepository>();
+            services.AddScoped<TestsRepository, TestsRepository>();
+            services.AddScoped<TestAnswersRepository, TestAnswersRepository>();
+            services.AddScoped<TestQuestionsRepository, TestQuestionsRepository>();
         }
     }
 }

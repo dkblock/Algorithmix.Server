@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common;
 using VisualAlgorithms.Domain;
@@ -39,6 +40,12 @@ namespace VisualAlgorithms.Services
             await tests.ForEachAsync(async t => t.TestQuestions = await _questionsService.GetAllTestQuestions(t.Id));
 
             return tests;
+        }
+
+        public async Task<IEnumerable<Test>> GetAllAlgorithmTests(int algorithmId)
+        {
+            var tests = await GetAllTests();
+            return tests.Where(t => t.AlgorithmId == algorithmId);
         }
 
         public async Task RemoveTest(int id)
