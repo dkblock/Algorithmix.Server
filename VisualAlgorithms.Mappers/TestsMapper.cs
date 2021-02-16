@@ -8,14 +8,14 @@ namespace VisualAlgorithms.Mappers
 {
     public class TestsMapper
     {
-        public Test ToDomain(TestEntity testEntity)
+        public Test ToDomain(TestEntity testEntity, IEnumerable<TestQuestion> testQuestions)
         {
             return new Test
             {
                 Id = testEntity.Id,
                 Name = testEntity.Name,
                 AlgorithmId = testEntity.AlgorithmId,
-                TestQuestions = new List<TestQuestion>()
+                TestQuestions = testQuestions ?? new List<TestQuestion>()
             };
         }
 
@@ -30,9 +30,13 @@ namespace VisualAlgorithms.Mappers
             };
         }
 
-        public IEnumerable<Test> ToDomainCollection(IEnumerable<TestEntity> testEntities)
+        public IEnumerable<Test> ToDomainCollection(IEnumerable<TestEntity> testEntities, IEnumerable<TestQuestion> testQuestions)
         {
-            return testEntities.Select(entity => ToDomain(entity));
+            foreach (var entity in testEntities)
+            {
+                var currentTestQuestions = testQuestions.Where(q => q.TestId == entity.Id);
+                yield return ToDomain(entity, currentTestQuestions);
+            }
         }
 
         public TestEntity ToEntity(Test test)

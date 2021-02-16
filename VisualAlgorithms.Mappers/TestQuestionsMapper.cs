@@ -7,7 +7,7 @@ namespace VisualAlgorithms.Mappers
 {
     public class TestQuestionsMapper
     {
-        public TestQuestion ToDomain(TestQuestionEntity questionEntity)
+        public TestQuestion ToDomain(TestQuestionEntity questionEntity, IEnumerable<TestAnswer> questionAnswers)
         {
             return new TestQuestion
             {
@@ -16,13 +16,17 @@ namespace VisualAlgorithms.Mappers
                 Image = questionEntity.Image,
                 CorrectAnswerId = questionEntity.CorrectAnswerId,
                 TestId = questionEntity.TestId,
-                TestAnswers = new List<TestAnswer>()
+                TestAnswers = questionAnswers ?? new List<TestAnswer>()
             };
         }
 
-        public IEnumerable<TestQuestion> ToDomainCollection(IEnumerable<TestQuestionEntity> questionEntities)
+        public IEnumerable<TestQuestion> ToDomainCollection(IEnumerable<TestQuestionEntity> questionEntities, IEnumerable<TestAnswer> questionAnswers)
         {
-            return questionEntities.Select(entity => ToDomain(entity));
+            foreach (var entity in questionEntities)
+            {
+                var currentQuestionAnswers = questionAnswers.Where(a => a.TestQuestionId == entity.Id);
+                yield return ToDomain(entity, currentQuestionAnswers);
+            }
         }
 
         public TestQuestionEntity ToEntity(TestQuestion question)

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common;
 using VisualAlgorithms.Domain;
+using VisualAlgorithms.Entities;
 using VisualAlgorithms.Mappers;
 using VisualAlgorithms.Repository;
 
@@ -30,22 +31,35 @@ namespace VisualAlgorithms.Services
         public async Task<Test> GetTest(int id)
         {
             var testEntity = await _testsRepository.GetTestById(id);
-            return _testsMapper.ToDomain(testEntity);
+            var testQuestions = await _questionsService.GetTestQuestions(id);
+
+            return _testsMapper.ToDomain(testEntity, testQuestions);
         }
 
-        public async Task<IEnumerable<Test>> GetAllTests()
+        public async Task<IEnumerable<Test>> GetTests()
         {
             var testEntities = await _testsRepository.GetAllTests();
-            var tests = _testsMapper.ToDomainCollection(testEntities);
-            await tests.ForEachAsync(async t => t.TestQuestions = await _questionsService.GetAllTestQuestions(t.Id));
-
-            return tests;
+            return await GetTests(testEntities);
         }
 
-        public async Task<IEnumerable<Test>> GetAllAlgorithmTests(int algorithmId)
+        public async Task<IEnumerable<Test>> GetTests(int algorithmId)
         {
-            var tests = await GetAllTests();
-            return tests.Where(t => t.AlgorithmId == algorithmId);
+            var testEntities = await _testsRepository.GetTests(t => t.AlgorithmId == algorithmId);
+            return await GetTests(testEntities);
+        }
+
+        public async Task<IEnumerable<Test>> GetTests(IEnumerable<int> algorithmIds)
+        {
+            var testEntities = await _testsRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
+            return await GetTests(testEntities);
+        }
+
+        private async Task<IEnumerable<Test>> GetTests(IEnumerable<TestEntity> testEntities)
+        {
+            var testIds = testEntities.Select(t => t.Id);
+            var testQuestions = await _questionsService.GetTestQuestions(testIds);
+
+            return _testsMapper.ToDomainCollection(testEntities, testQuestions);
         }
 
         public async Task RemoveTest(int id)

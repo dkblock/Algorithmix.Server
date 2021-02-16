@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Domain;
 using VisualAlgorithms.Mappers;
@@ -29,9 +30,15 @@ namespace VisualAlgorithms.Services
             return _answersMapper.ToDomain(answerEntity);
         }
 
-        public async Task<IEnumerable<TestAnswer>> GetAllTestQuestionAnswers(int questionId)
+        public async Task<IEnumerable<TestAnswer>> GetTestAnswers(int questionId)
         {
             var answerEntities = await _answersRepository.GetTestAnswers(a => a.TestQuestionId == questionId);
+            return _answersMapper.ToDomainCollection(answerEntities);
+        }
+
+        public async Task<IEnumerable<TestAnswer>> GetTestAnswers(IEnumerable<int> questionIds)
+        {
+            var answerEntities = await _answersRepository.GetTestAnswers(a => questionIds.Contains(a.TestQuestionId));
             return _answersMapper.ToDomainCollection(answerEntities);
         }
 

@@ -19,7 +19,7 @@ namespace VisualAlgorithms.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests()
         {
-            var tests = await _testsService.GetAllTests();
+            var tests = await _testsService.GetTests();
             return Ok();
         }
     }

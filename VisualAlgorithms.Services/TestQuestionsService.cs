@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common;
 using VisualAlgorithms.Domain;
+using VisualAlgorithms.Entities;
 using VisualAlgorithms.Mappers;
 using VisualAlgorithms.Repository;
 
@@ -29,19 +31,29 @@ namespace VisualAlgorithms.Services
         public async Task<TestQuestion> GetTestQuestion(int id)
         {
             var questionEntity = await _questionsRepository.GetTestQuestionById(id);
-            var question = _questionsMapper.ToDomain(questionEntity);
-            question.TestAnswers = await _answersService.GetAllTestQuestionAnswers(id);
+            var questionAnswers = await _answersService.GetTestAnswers(id);
 
-            return question;
+            return _questionsMapper.ToDomain(questionEntity, questionAnswers);
         }
 
-        public async Task<IEnumerable<TestQuestion>> GetAllTestQuestions(int testId)
+        public async Task<IEnumerable<TestQuestion>> GetTestQuestions(int testId)
         {
             var questionEntities = await _questionsRepository.GetTestQuestions(q => q.TestId == testId);
-            var questions = _questionsMapper.ToDomainCollection(questionEntities);
-            await questions.ForEachAsync(async q => q.TestAnswers = await _answersService.GetAllTestQuestionAnswers(q.Id));
+            return await GetTestQuestions(questionEntities);
+        }
 
-            return questions;
+        public async Task<IEnumerable<TestQuestion>> GetTestQuestions(IEnumerable<int> testIds)
+        {
+            var questionEntities = await _questionsRepository.GetTestQuestions(q => testIds.Contains(q.TestId));
+            return await GetTestQuestions(questionEntities);
+        }
+
+        private async Task<IEnumerable<TestQuestion>> GetTestQuestions(IEnumerable<TestQuestionEntity> questionEntities)
+        {
+            var questionIds = questionEntities.Select(q => q.Id);
+            var questionAnswers = await _answersService.GetTestAnswers(questionIds);
+
+            return _questionsMapper.ToDomainCollection(questionEntities, questionAnswers);
         }
 
         public async Task RemoveTestQuestion(int id)

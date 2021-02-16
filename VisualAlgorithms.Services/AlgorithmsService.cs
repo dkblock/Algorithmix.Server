@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common;
 using VisualAlgorithms.Domain;
@@ -32,15 +33,10 @@ namespace VisualAlgorithms.Services
         public async Task<IEnumerable<Algorithm>> GetAllAlgorithms()
         {
             var algorithmEntities = await _algorithmsRepository.GetAllAlgorithms();
-            var algorithms = _algorithmsMapper.ToDomainCollection(algorithmEntities);
-            await algorithms.ForEachAsync(async a =>
-            {
-                var algorithmTimeComplexityEntity = await _algorithmTimeComplexitiesRepository.GetAlgorithmTimeComplexityById(a.AlgorithmTimeComplexityId);
-                a.AlgorithmTimeComplexity = _algorithmTimeComplexitiesMapper.ToDomain(algorithmTimeComplexityEntity);
-                a.Tests = await _testsService.GetAllAlgorithmTests(a.Id);
-            });
+            var algorithmIds = algorithmEntities.Select(a => a.Id);
+            var tests = await _testsService.GetTests(algorithmIds);
 
-            return algorithms;
+            return _algorithmsMapper.ToDomainCollection(algorithmEntities, tests);
         }
     }
 }
