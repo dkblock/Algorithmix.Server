@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Controllers
 {
     [ApiController]
-    [Route("algorithms")]
+    [Route("api/algorithms")]
     public class AlgorithmsController : Controller
     {
         private readonly AlgorithmsService _algorithmsService;

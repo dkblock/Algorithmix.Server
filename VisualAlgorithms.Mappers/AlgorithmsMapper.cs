@@ -9,6 +9,9 @@ namespace VisualAlgorithms.Mappers
     {
         public Algorithm ToDomain(AlgorithmEntity algorithmEntity, IEnumerable<Test> tests)
         {
+            if (algorithmEntity == null)
+                return null;
+
             return new Algorithm
             {
                 Id = algorithmEntity.Id,

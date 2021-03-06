@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VisualAlgorithms.Common.Constants;
 using VisualAlgorithms.Database;
-using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Server.Controllers
 {
     [ApiController]
-    [Route("users")]
+    [Route("api/users")]
+    [Authorize(Roles = Roles.Executive)]
     public class UsersController : Controller
     {
         private readonly ApplicationContext _db;
@@ -18,10 +18,9 @@ namespace VisualAlgorithms.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ApplicationUserEntity> Get()
+        public IActionResult Get()
         {
-            var users = _db.ApplicationUsers.ToList();
-            return users;
+            return Ok("test");
         }
     }
 }

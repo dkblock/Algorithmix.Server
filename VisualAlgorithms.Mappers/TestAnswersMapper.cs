@@ -9,6 +9,9 @@ namespace VisualAlgorithms.Mappers
     {
         public TestAnswer ToDomain(TestAnswerEntity answerEntity)
         {
+            if (answerEntity == null)
+                return null;
+
             return new TestAnswer
             {
                 Id = answerEntity.Id,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VisualAlgorithms.Common.Constants;
 using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Database
@@ -19,7 +20,12 @@ namespace VisualAlgorithms.Database
 
         private static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)
         {
-            var applicationRoles = new List<string> { "administrator", "moderator", "user" };
+            var applicationRoles = new List<string> 
+            { 
+                Roles.Administrator,
+                Roles.Moderator,
+                Roles.User
+            };
 
             foreach (var role in applicationRoles)
             {
@@ -39,7 +45,7 @@ namespace VisualAlgorithms.Database
                 var result = await userManager.CreateAsync(administrator, administratorPassword);
 
                 if (result.Succeeded)
-                    await userManager.AddToRoleAsync(administrator, "admin");
+                    await userManager.AddToRoleAsync(administrator, Roles.Administrator);
             }
         }
 

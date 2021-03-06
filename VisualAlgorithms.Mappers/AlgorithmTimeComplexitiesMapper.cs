@@ -7,6 +7,9 @@ namespace VisualAlgorithms.Mappers
     {
         public AlgorithmTimeComplexity ToDomain(AlgorithmTimeComplexityEntity timeComplexityEntity)
         {
+            if (timeComplexityEntity == null)
+                return null;
+
             return new AlgorithmTimeComplexity
             {
                 Id = timeComplexityEntity.Id,

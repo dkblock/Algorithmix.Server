@@ -30,6 +30,14 @@ namespace VisualAlgorithms.Services
             _testsService = testsService;
         }
 
+        public async Task<Algorithm> GetAlgorithm(int algorithmId)
+        {
+            var algorithmEntity = await _algorithmsRepository.GetAlgorithmById(algorithmId);
+            var tests = await _testsService.GetTests(algorithmId);
+
+            return _algorithmsMapper.ToDomain(algorithmEntity, tests);
+        }
+
         public async Task<IEnumerable<Algorithm>> GetAllAlgorithms()
         {
             var algorithmEntities = await _algorithmsRepository.GetAllAlgorithms();

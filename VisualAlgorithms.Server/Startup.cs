@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using VisualAlgorithms.Database;
+using VisualAlgorithms.Identity;
 using VisualAlgorithms.Mappers;
 using VisualAlgorithms.Repository;
+using VisualAlgorithms.Server.Validation;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server
@@ -22,12 +23,14 @@ namespace VisualAlgorithms.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthorization();
             services.AddControllers();
+            services.AddCors();
 
             services.AddCommonServices();
+            services.AddIdentityServices();
             services.AddMappers();
             services.AddRepositories();
+            services.AddValidators();
             services.ConfigureDatabase(Configuration).Wait();
         }
 
@@ -38,10 +41,19 @@ namespace VisualAlgorithms.Server
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:8080");
+                builder.AllowCredentials();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

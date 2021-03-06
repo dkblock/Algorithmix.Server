@@ -13,13 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Services",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Database", "VisualAlgorithms.Database\VisualAlgorithms.Database.csproj", "{708A60E6-8749-445B-A752-D19F6397FFB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Repository", "VisualAlgorithms.Repository\VisualAlgorithms.Repository.csproj", "{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Repository", "VisualAlgorithms.Repository\VisualAlgorithms.Repository.csproj", "{786EE91C-0F66-4B5D-BCE8-FE1B480EC27F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Domain", "VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj", "{04B76D46-DEFE-465A-A5E3-54564C267925}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Domain", "VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj", "{04B76D46-DEFE-465A-A5E3-54564C267925}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Models", "VisualAlgorithms.Models\VisualAlgorithms.Models.csproj", "{B6FEF78B-68FC-47B9-AD46-7F88672B4435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Models", "VisualAlgorithms.Models\VisualAlgorithms.Models.csproj", "{B6FEF78B-68FC-47B9-AD46-7F88672B4435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Common", "VisualAlgorithms.Common\VisualAlgorithms.Common.csproj", "{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Common", "VisualAlgorithms.Common\VisualAlgorithms.Common.csproj", "{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualAlgorithms.Identity", "VisualAlgorithms.Identity\VisualAlgorithms.Identity.csproj", "{9720C0DB-C5D8-4797-9B10-CBDC602A1096}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E3ED22-B058-4E2E-A765-87B2DB4CBAA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9720C0DB-C5D8-4797-9B10-CBDC602A1096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9720C0DB-C5D8-4797-9B10-CBDC602A1096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9720C0DB-C5D8-4797-9B10-CBDC602A1096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9720C0DB-C5D8-4797-9B10-CBDC602A1096}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
