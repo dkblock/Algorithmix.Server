@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VisualAlgorithms.Common;
+using VisualAlgorithms.Common.Extensions;
 using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
 using VisualAlgorithms.Mappers;

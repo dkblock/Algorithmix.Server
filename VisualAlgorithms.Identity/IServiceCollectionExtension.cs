@@ -19,6 +19,17 @@ namespace VisualAlgorithms.Identity
             var identitySettings = identitySettingsSection.Get<IdentitySettings>();
             var secret = Encoding.ASCII.GetBytes(identitySettings.Secret);
 
+            services.AddIdentity<ApplicationUserEntity, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+            .AddEntityFrameworkStores<ApplicationContext>()
+            .AddDefaultTokenProviders();
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -37,17 +48,7 @@ namespace VisualAlgorithms.Identity
                 };
             });
 
-            services.AddIdentity<ApplicationUserEntity, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = false;
-            })
-                .AddEntityFrameworkStores<ApplicationContext>();
-
-            services.AddScoped<AuthService, AuthService>();
+            services.AddScoped<AuthenticationService, AuthenticationService>();
         }
     }
 }

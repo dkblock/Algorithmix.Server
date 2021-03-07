@@ -6,6 +6,7 @@ namespace VisualAlgorithms.Server.Validation
     {
         public static void AddValidators(this IServiceCollection services)
         {
+            services.AddScoped<AccountValidator, AccountValidator>();
             services.AddScoped<TestsValidator, TestsValidator>();
             services.AddScoped<TestAnswersValidator, TestAnswersValidator>();
             services.AddScoped<TestQuestionsValidator, TestQuestionsValidator>();

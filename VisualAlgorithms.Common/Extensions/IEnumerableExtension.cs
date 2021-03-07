@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace VisualAlgorithms.Common
+namespace VisualAlgorithms.Common.Extensions
 {
     public static class IEnumerableExtension
     {

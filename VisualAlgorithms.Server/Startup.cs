@@ -27,7 +27,7 @@ namespace VisualAlgorithms.Server
             services.AddCors();
 
             services.AddCommonServices();
-            services.AddIdentityServices();
+            services.AddIdentityServices(Configuration);
             services.AddMappers();
             services.AddRepositories();
             services.AddValidators();

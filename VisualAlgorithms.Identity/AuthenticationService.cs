@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,19 +8,18 @@ using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Identity
 {
-    public class AuthService
+    public class AuthenticationService
     {
-        private readonly IdentitySettings _identitySettings;
         private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly byte[] _secret;
 
-        public AuthService(IOptions<IdentitySettings> identitySettings)
+        public AuthenticationService(IOptions<IdentitySettings> identitySettings)
         {
             _tokenHandler = new JwtSecurityTokenHandler();
             _secret = Encoding.ASCII.GetBytes(identitySettings.Value.Secret);
         }
 
-        public SecurityToken Authenticate(ApplicationUserEntity user, IdentityRole role)
+        public string Authenticate(ApplicationUserEntity user, string role)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -29,13 +27,14 @@ namespace VisualAlgorithms.Identity
                 {
                     new Claim(ClaimTypes.PrimarySid, user.Id),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, role.Name)
+                    new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.Now.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            return _tokenHandler.CreateToken(tokenDescriptor);
+            var token = _tokenHandler.CreateToken(tokenDescriptor);
+            return _tokenHandler.WriteToken(token);
         }
     }
 }

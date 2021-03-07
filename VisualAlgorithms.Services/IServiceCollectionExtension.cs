@@ -11,6 +11,7 @@ namespace VisualAlgorithms.Services
             services.AddScoped<TestsService, TestsService>();
             services.AddScoped<TestAnswersService, TestAnswersService>();
             services.AddScoped<TestQuestionsService, TestQuestionsService>();
+            services.AddScoped<UsersService, UsersService>();
         }
     }
 }

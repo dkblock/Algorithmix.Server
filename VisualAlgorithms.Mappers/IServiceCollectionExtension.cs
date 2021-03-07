@@ -8,6 +8,7 @@ namespace VisualAlgorithms.Mappers
         {
             services.AddScoped<AlgorithmsMapper, AlgorithmsMapper>();
             services.AddScoped<AlgorithmTimeComplexitiesMapper, AlgorithmTimeComplexitiesMapper>();
+            services.AddScoped<ApplicationUsersMapper, ApplicationUsersMapper>();
             services.AddScoped<TestsMapper, TestsMapper>();
             services.AddScoped<TestAnswersMapper, TestAnswersMapper>();
             services.AddScoped<TestQuestionsMapper, TestQuestionsMapper>();
