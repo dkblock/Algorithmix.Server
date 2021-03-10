@@ -1,4 +1,4 @@
-﻿namespace VisualAlgorithms.Models
+﻿namespace VisualAlgorithms.Models.Tests
 {
     public class TestModel
     {

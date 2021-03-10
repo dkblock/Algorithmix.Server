@@ -8,6 +8,7 @@ namespace VisualAlgorithms.Services
         {
             services.AddScoped<AccountService, AccountService>();
             services.AddScoped<AlgorithmsService, AlgorithmsService>();
+            services.AddScoped<GroupsService, GroupsService>();
             services.AddScoped<TestsService, TestsService>();
             services.AddScoped<TestAnswersService, TestAnswersService>();
             services.AddScoped<TestQuestionsService, TestQuestionsService>();

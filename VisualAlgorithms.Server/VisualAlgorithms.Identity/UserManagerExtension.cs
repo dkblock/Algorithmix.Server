@@ -15,7 +15,7 @@ namespace VisualAlgorithms.Identity
                 return Roles.Administrator;
 
             if (roles.Contains(Roles.Moderator))
-                return Roles.Administrator;
+                return Roles.Moderator;
 
             return Roles.User;
         }

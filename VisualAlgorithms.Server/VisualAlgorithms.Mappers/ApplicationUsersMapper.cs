@@ -6,7 +6,7 @@ namespace VisualAlgorithms.Mappers
 {
     public class ApplicationUsersMapper
     {
-        public ApplicationUser ToDomain(ApplicationUserEntity userEntity)
+        public ApplicationUser ToDomain(ApplicationUserEntity userEntity, string role)
         {
             if (userEntity == null)
                 return null;
@@ -17,7 +17,8 @@ namespace VisualAlgorithms.Mappers
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
                 LastName = userEntity.LastName,
-                GroupId = userEntity.GroupId
+                GroupId = userEntity.GroupId,
+                Role = role
             };
         }
 
@@ -33,6 +34,15 @@ namespace VisualAlgorithms.Mappers
                 FirstName = registerModel.FirstName,
                 LastName = registerModel.LastName,
                 GroupId = registerModel.GroupId
+            };
+        }
+
+        public AuthModel ToModel(ApplicationUserEntity userEntity, string role, string accessToken)
+        {
+            return new AuthModel
+            {
+                CurrentUser = ToDomain(userEntity, role),
+                AccessToken = accessToken
             };
         }
     }

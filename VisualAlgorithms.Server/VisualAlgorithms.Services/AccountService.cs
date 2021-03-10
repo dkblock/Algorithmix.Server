@@ -24,26 +24,30 @@ namespace VisualAlgorithms.Services
             _userManager = userManager;
         }
 
-        public async Task<string> Register(RegisterModel registerModel)
+        public async Task<AuthModel> Register(RegisterModel registerModel)
         {
             var userEntity = _usersMapper.ToEntity(registerModel);
             var result = await _userManager.CreateAsync(userEntity, registerModel.Password);
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(userEntity, Roles.User);
-                return _authService.Authenticate(userEntity, Roles.User);
+                var userRole = Roles.User;
+                await _userManager.AddToRoleAsync(userEntity, userRole);
+                var accessToken = _authService.Authenticate(userEntity, userRole);
+
+                return _usersMapper.ToModel(userEntity, userRole, accessToken);
             }
 
             return null;
         }
 
-        public async Task<string> Login(LoginModel loginModel)
+        public async Task<AuthModel> Login(LoginModel loginModel)
         {
             var userEntity = await _userManager.FindByEmailAsync(loginModel.Email);
             var userRole = await _userManager.GetRoleAsync(userEntity);
+            var accessToken = _authService.Authenticate(userEntity, userRole);
 
-            return _authService.Authenticate(userEntity, userRole);
+            return _usersMapper.ToModel(userEntity, userRole, accessToken);
         }
     }
 }

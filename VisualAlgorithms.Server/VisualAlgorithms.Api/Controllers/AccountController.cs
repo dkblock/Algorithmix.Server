@@ -31,12 +31,12 @@ namespace VisualAlgorithms.Server.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var token = await _accountService.Login(loginModel);
+            var authModel = await _accountService.Login(loginModel);
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(authModel.AccessToken))
                 return StatusCode(500);
 
-            return Ok(token);
+            return Ok(authModel);
         }
 
         [HttpPost]
@@ -49,12 +49,12 @@ namespace VisualAlgorithms.Server.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var token = await _accountService.Register(registerModel);
+            var authModel = await _accountService.Register(registerModel);
 
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(authModel.AccessToken))
                 return StatusCode(500);
 
-            return Ok(token);
+            return Ok(authModel);
         }
     }
 }

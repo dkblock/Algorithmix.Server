@@ -2,7 +2,7 @@
 using System.Linq;
 using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
-using VisualAlgorithms.Models;
+using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VisualAlgorithms.Database\VisualAlgorithms.Database.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Identity\VisualAlgorithms.Identity.csproj" />
