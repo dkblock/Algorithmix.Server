@@ -28,7 +28,7 @@ namespace VisualAlgorithms.Repository
             return await _context.Algorithms.Where(predicate).ToListAsync();
         }
 
-        public async Task<AlgorithmEntity> GetAlgorithmById(int id)
+        public async Task<AlgorithmEntity> GetAlgorithmById(string id)
         {
             return await _context.Algorithms.FindAsync(id);
         }

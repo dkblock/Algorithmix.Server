@@ -15,7 +15,6 @@ namespace VisualAlgorithms.Mappers
             return new Algorithm
             {
                 Id = algorithmEntity.Id,
-                Tag = algorithmEntity.Tag,
                 Name = algorithmEntity.Name,
                 ImageUrl = algorithmEntity.ImageUrl,
                 AlgorithmTimeComplexityId = algorithmEntity.AlgorithmTimeComplexityId,
@@ -38,7 +37,6 @@ namespace VisualAlgorithms.Mappers
             return new AlgorithmEntity
             {
                 Id = algorithm.Id,
-                Tag = algorithm.Tag,
                 Name = algorithm.Name,
                 ImageUrl = algorithm.ImageUrl,
                 AlgorithmTimeComplexityId = algorithm.AlgorithmTimeComplexityId

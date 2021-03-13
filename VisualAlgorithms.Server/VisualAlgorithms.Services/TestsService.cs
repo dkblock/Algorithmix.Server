@@ -42,13 +42,13 @@ namespace VisualAlgorithms.Services
             return await GetTests(testEntities);
         }
 
-        public async Task<IEnumerable<Test>> GetTests(int algorithmId)
+        public async Task<IEnumerable<Test>> GetTests(string algorithmId)
         {
             var testEntities = await _testsRepository.GetTests(t => t.AlgorithmId == algorithmId);
             return await GetTests(testEntities);
         }
 
-        public async Task<IEnumerable<Test>> GetTests(IEnumerable<int> algorithmIds)
+        public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
         {
             var testEntities = await _testsRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
             return await GetTests(testEntities);

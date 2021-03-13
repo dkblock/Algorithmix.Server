@@ -30,7 +30,7 @@ namespace VisualAlgorithms.Services
             _testsService = testsService;
         }
 
-        public async Task<Algorithm> GetAlgorithm(int algorithmId)
+        public async Task<Algorithm> GetAlgorithm(string algorithmId)
         {
             var algorithmEntity = await _algorithmsRepository.GetAlgorithmById(algorithmId);
             var tests = await _testsService.GetTests(algorithmId);
@@ -44,7 +44,8 @@ namespace VisualAlgorithms.Services
             var algorithmIds = algorithmEntities.Select(a => a.Id);
             var tests = await _testsService.GetTests(algorithmIds);
 
-            return _algorithmsMapper.ToDomainCollection(algorithmEntities, tests);
+            return _algorithmsMapper.ToDomainCollection(algorithmEntities, tests)
+                .OrderBy(a => a.AlgorithmTimeComplexityId);
         }
     }
 }

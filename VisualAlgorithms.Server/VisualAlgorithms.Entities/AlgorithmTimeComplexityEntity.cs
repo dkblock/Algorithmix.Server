@@ -12,6 +12,6 @@
         public string InsertionWorstTime { get; set; }
         public string DeletionAverageTime { get; set; }
         public string DeletionWorstTime { get; set; }
-        public int AlgorithmId { get; set; }
+        public string AlgorithmId { get; set; }
     }
 }
