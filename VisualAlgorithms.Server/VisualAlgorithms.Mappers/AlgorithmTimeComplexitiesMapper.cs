@@ -1,4 +1,6 @@
-﻿using VisualAlgorithms.Domain;
+﻿using System.Collections.Generic;
+using System.Linq;
+using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Mappers
@@ -24,6 +26,11 @@ namespace VisualAlgorithms.Mappers
                 SortingBestTime = timeComplexityEntity.SortingBestTime,
                 SortingWorstTime = timeComplexityEntity.SortingWorstTime
             };
+        }
+
+        public IEnumerable<AlgorithmTimeComplexity> ToDomainCollection(IEnumerable<AlgorithmTimeComplexityEntity> timeComplexityEntities)
+        {
+            return timeComplexityEntities.Select(entity => ToDomain(entity));
         }
 
         public AlgorithmTimeComplexityEntity ToEntity(AlgorithmTimeComplexity timeComplexity)

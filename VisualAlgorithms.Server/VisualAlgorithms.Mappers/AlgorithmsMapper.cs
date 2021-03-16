@@ -7,7 +7,7 @@ namespace VisualAlgorithms.Mappers
 {
     public class AlgorithmsMapper
     {
-        public Algorithm ToDomain(AlgorithmEntity algorithmEntity, IEnumerable<Test> tests)
+        public Algorithm ToDomain(AlgorithmEntity algorithmEntity, AlgorithmTimeComplexity timeComplexity, IEnumerable<Test> tests)
         {
             if (algorithmEntity == null)
                 return null;
@@ -18,17 +18,21 @@ namespace VisualAlgorithms.Mappers
                 Name = algorithmEntity.Name,
                 ImageUrl = algorithmEntity.ImageUrl,
                 AlgorithmTimeComplexityId = algorithmEntity.AlgorithmTimeComplexityId,
-                AlgorithmTimeComplexity = new AlgorithmTimeComplexity(),
+                AlgorithmTimeComplexity = timeComplexity ?? new AlgorithmTimeComplexity(),
                 Tests = tests ?? new List<Test>()
             };
         }
 
-        public IEnumerable<Algorithm> ToDomainCollection(IEnumerable<AlgorithmEntity> algorithmEntities, IEnumerable<Test> tests)
+        public IEnumerable<Algorithm> ToDomainCollection(
+            IEnumerable<AlgorithmEntity> algorithmEntities,
+            IEnumerable<AlgorithmTimeComplexity> timeComplexities,
+            IEnumerable<Test> tests)
         {
             foreach (var entity in algorithmEntities)
             {
+                var currentAlgorithmTimeComplexity = timeComplexities.SingleOrDefault(tc => tc.Id == entity.AlgorithmTimeComplexityId);
                 var currentAlgorithmTests = tests.Where(t => t.AlgorithmId == entity.Id);
-                yield return ToDomain(entity, currentAlgorithmTests);
+                yield return ToDomain(entity, currentAlgorithmTimeComplexity, currentAlgorithmTests);
             }
         }
 

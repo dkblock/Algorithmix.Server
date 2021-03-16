@@ -33,18 +33,22 @@ namespace VisualAlgorithms.Services
         public async Task<Algorithm> GetAlgorithm(string algorithmId)
         {
             var algorithmEntity = await _algorithmsRepository.GetAlgorithmById(algorithmId);
+            var timeComplexityEntity = await _algorithmTimeComplexitiesRepository.GetAlgorithmTimeComplexityById(algorithmEntity.AlgorithmTimeComplexityId);
+            var timeComplexity = _algorithmTimeComplexitiesMapper.ToDomain(timeComplexityEntity);
             var tests = await _testsService.GetTests(algorithmId);
 
-            return _algorithmsMapper.ToDomain(algorithmEntity, tests);
+            return _algorithmsMapper.ToDomain(algorithmEntity, timeComplexity, tests);
         }
 
         public async Task<IEnumerable<Algorithm>> GetAllAlgorithms()
         {
             var algorithmEntities = await _algorithmsRepository.GetAllAlgorithms();
+            var timeComplexityEntities = await _algorithmTimeComplexitiesRepository.GetAllAlgorithmTimeComplexities();
+            var timeComplexities = _algorithmTimeComplexitiesMapper.ToDomainCollection(timeComplexityEntities);
             var algorithmIds = algorithmEntities.Select(a => a.Id);
             var tests = await _testsService.GetTests(algorithmIds);
 
-            return _algorithmsMapper.ToDomainCollection(algorithmEntities, tests)
+            return _algorithmsMapper.ToDomainCollection(algorithmEntities, timeComplexities, tests)
                 .OrderBy(a => a.AlgorithmTimeComplexityId);
         }
     }
