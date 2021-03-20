@@ -32,7 +32,7 @@ namespace VisualAlgorithms.Mappers
             foreach (var entity in algorithmEntities)
             {
                 var currentAlgorithmTimeComplexity = timeComplexities.SingleOrDefault(tc => tc.Id == entity.TimeComplexityId);
-                var currentAlgorithmTests = tests.Where(t => t.AlgorithmId == entity.Id);
+                var currentAlgorithmTests = tests.Where(t => t.Algorithm.Id == entity.Id);
                 yield return ToDomain(entity, currentAlgorithmTimeComplexity, currentAlgorithmTests);
             }
         }

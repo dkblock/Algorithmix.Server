@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VisualAlgorithms.Api.Managers;
+using VisualAlgorithms.Api.Validation;
 using VisualAlgorithms.Database;
 using VisualAlgorithms.Identity;
 using VisualAlgorithms.Mappers;
 using VisualAlgorithms.Repository;
-using VisualAlgorithms.Server.Validation;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server
@@ -28,6 +29,7 @@ namespace VisualAlgorithms.Server
 
             services.AddCommonServices();
             services.AddIdentityServices(Configuration);
+            services.AddManagers();
             services.AddMappers();
             services.AddRepositories();
             services.AddValidators();

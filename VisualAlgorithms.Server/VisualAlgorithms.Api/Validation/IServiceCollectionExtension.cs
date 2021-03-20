@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace VisualAlgorithms.Server.Validation
+namespace VisualAlgorithms.Api.Validation
 {
     public static class IServiceCollectionExtension
     {

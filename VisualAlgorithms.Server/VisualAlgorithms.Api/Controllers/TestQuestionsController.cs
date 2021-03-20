@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
+using VisualAlgorithms.Api.Managers;
+using VisualAlgorithms.Api.Validation;
 using VisualAlgorithms.Common.Constants;
 using VisualAlgorithms.Models.Tests;
-using VisualAlgorithms.Server.Validation;
-using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Api.Controllers
 {
@@ -14,18 +14,15 @@ namespace VisualAlgorithms.Api.Controllers
     [Authorize]
     public class TestQuestionsController : Controller
     {
-        private readonly TestQuestionsService _questionsService;
+        private readonly TestQuestionsManager _questionsManager;
+        private readonly TestsManager _testsManager;
         private readonly TestQuestionsValidator _questionsValidator;
-        private readonly TestsService _testsService;
 
-        public TestQuestionsController(
-            TestQuestionsService questionsService, 
-            TestQuestionsValidator questionsValidator,
-            TestsService testsService)
+        public TestQuestionsController(TestQuestionsManager questionsManager, TestsManager testsManager, TestQuestionsValidator questionsValidator)
         {
-            _questionsService = questionsService;
+            _questionsManager = questionsManager;
             _questionsValidator = questionsValidator;
-            _testsService = testsService;
+            _testsManager = testsManager;
         }
 
         [HttpPost]
@@ -38,7 +35,7 @@ namespace VisualAlgorithms.Api.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdQuestion = await _questionsService.CreateTestQuestion(questionPayload);
+            var createdQuestion = await _questionsManager.CreateTestQuestion(questionPayload);
             return CreatedAtAction(nameof(GetTestQuestion), new { id = createdQuestion.Id }, createdQuestion);
         }
 
@@ -47,10 +44,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestQuestion(int testId, int questionId)
         {
-            if (!await _questionsService.Exists(questionId, testId))
+            if (!await _questionsManager.Exists(questionId, testId))
                 return NotFound();
 
-            var question = await _questionsService.GetTestQuestion(questionId);
+            var question = await _questionsManager.GetTestQuestion(questionId);
             return Ok(question);
         }
 
@@ -59,10 +56,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestQuestions(int testId)
         {
-            if (!await _testsService.Exists(testId))
+            if (!await _testsManager.Exists(testId))
                 return NotFound();
 
-            var questions = await _questionsService.GetTestQuestions(testId);
+            var questions = await _questionsManager.GetTestQuestions(testId);
             return Ok(questions);
         }
 
@@ -71,10 +68,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> DeleteTestQuestion(int testId, int questionId)
         {
-            if (!await _questionsService.Exists(questionId, testId))
+            if (!await _questionsManager.Exists(questionId, testId))
                 return NotFound();
 
-            await _questionsService.DeleteTestQuestion(questionId);
+            await _questionsManager.DeleteTestQuestion(questionId);
             return StatusCode((int)HttpStatusCode.NoContent);
         }
 
@@ -83,7 +80,7 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTestQuestion(int testId, int questionId, [FromBody] TestQuestionPayload questionPayload)
         {
-            if (!await _questionsService.Exists(questionId, testId))
+            if (!await _questionsManager.Exists(questionId, testId))
                 return NotFound();
 
             var validationResult = await _questionsValidator.Validate(questionPayload);
@@ -91,7 +88,7 @@ namespace VisualAlgorithms.Api.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var updatedQuestion = await _questionsService.UpdateTestQuestion(questionId, questionPayload);
+            var updatedQuestion = await _questionsManager.UpdateTestQuestion(questionId, questionPayload);
             return Ok(updatedQuestion);
         }
     }

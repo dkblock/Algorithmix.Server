@@ -6,7 +6,7 @@ using VisualAlgorithms.Common.Validation;
 using VisualAlgorithms.Models.Account;
 using VisualAlgorithms.Services;
 
-namespace VisualAlgorithms.Server.Validation
+namespace VisualAlgorithms.Api.Validation
 {
     public class AccountValidator
     {

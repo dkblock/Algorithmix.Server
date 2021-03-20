@@ -26,7 +26,7 @@ namespace VisualAlgorithms.Mappers
             {
                 Id = answerEntity.Id,
                 Value = answerEntity.Value,
-                QuestionId = answerEntity.QuestionId
+                Question = new TestQuestion { Id = answerEntity.QuestionId }
             };
         }
 

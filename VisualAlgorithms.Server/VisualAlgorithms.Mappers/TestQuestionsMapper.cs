@@ -19,7 +19,7 @@ namespace VisualAlgorithms.Mappers
             };
         }
 
-        public TestQuestion ToModel(TestQuestionEntity questionEntity, IEnumerable<TestAnswer> questionAnswers = null)
+        public TestQuestion ToModel(TestQuestionEntity questionEntity)
         {
             if (questionEntity == null)
                 return null;
@@ -30,18 +30,14 @@ namespace VisualAlgorithms.Mappers
                 Value = questionEntity.Value,
                 Image = questionEntity.Image,
                 CorrectAnswerId = questionEntity.CorrectAnswerId,
-                TestId = questionEntity.TestId,
-                Answers = questionAnswers ?? new List<TestAnswer>()
+                Test = new Test { Id = questionEntity.TestId },
+                Answers = new List<TestAnswer>()
             };
         }
 
-        public IEnumerable<TestQuestion> ToModelsCollection(IEnumerable<TestQuestionEntity> questionEntities, IEnumerable<TestAnswer> questionAnswers)
+        public IEnumerable<TestQuestion> ToModelsCollection(IEnumerable<TestQuestionEntity> questionEntities)
         {
-            foreach (var entity in questionEntities)
-            {
-                var currentQuestionAnswers = questionAnswers.Where(a => a.QuestionId == entity.Id);
-                yield return ToModel(entity, currentQuestionAnswers);
-            }
+            return questionEntities.Select(entity => ToModel(entity));
         }
     }
 }

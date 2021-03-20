@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
+using VisualAlgorithms.Api.Managers;
+using VisualAlgorithms.Api.Validation;
 using VisualAlgorithms.Common.Constants;
-using VisualAlgorithms.Mappers;
 using VisualAlgorithms.Models.Tests;
-using VisualAlgorithms.Server.Validation;
-using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Controllers
 {
@@ -14,14 +13,12 @@ namespace VisualAlgorithms.Server.Controllers
     [Route("api/tests")]
     public class TestsController : Controller
     {
-        private readonly TestsMapper _testsMapper;
-        private readonly TestsService _testsService;
+        private readonly TestsManager _testsManager;
         private readonly TestsValidator _testsValidator;
 
-        public TestsController(TestsMapper testsMapper, TestsService testsService, TestsValidator testsValidator)
+        public TestsController(TestsManager testsManager, TestsValidator testsValidator)
         {
-            _testsMapper = testsMapper;
-            _testsService = testsService;
+            _testsManager = testsManager;
             _testsValidator = testsValidator;
         }
 
@@ -35,7 +32,7 @@ namespace VisualAlgorithms.Server.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdTest = await _testsService.CreateTest(testPayload);
+            var createdTest = await _testsManager.CreateTest(testPayload);
             return CreatedAtAction(nameof(GetTest), new { id = createdTest.Id }, createdTest);
         }
 
@@ -44,10 +41,10 @@ namespace VisualAlgorithms.Server.Controllers
         [Authorize]
         public async Task<IActionResult> GetTest(int testId)
         {
-            if (!await _testsService.Exists(testId))
+            if (!await _testsManager.Exists(testId))
                 return NotFound();
 
-            var test = await _testsService.GetTest(testId);
+            var test = await _testsManager.GetTest(testId);
             return Ok(test);
         }
 
@@ -55,7 +52,7 @@ namespace VisualAlgorithms.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests()
         {
-            var tests = await _testsService.GetTests();
+            var tests = await _testsManager.GetTests();
             return Ok(tests);
         }
 
@@ -64,10 +61,10 @@ namespace VisualAlgorithms.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> DeleteTest(int testId)
         {
-            if (!await _testsService.Exists(testId))
+            if (!await _testsManager.Exists(testId))
                 return NotFound();
 
-            await _testsService.DeleteTest(testId);
+            await _testsManager.DeleteTest(testId);
             return StatusCode((int)HttpStatusCode.NoContent);
         }
 
@@ -76,7 +73,7 @@ namespace VisualAlgorithms.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTest(int testId, TestPayload testPayload)
         {
-            if (!await _testsService.Exists(testId))
+            if (!await _testsManager.Exists(testId))
                 return NotFound();
 
             var validationResult = await _testsValidator.Validate(testPayload);
@@ -84,7 +81,7 @@ namespace VisualAlgorithms.Server.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var updatedTest = await _testsService.UpdateTest(testId, testPayload);
+            var updatedTest = await _testsManager.UpdateTest(testId, testPayload);
             return Ok(updatedTest);
         }
     }

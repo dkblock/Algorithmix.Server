@@ -5,7 +5,7 @@ using VisualAlgorithms.Common.Validation;
 using VisualAlgorithms.Models.Tests;
 using VisualAlgorithms.Services;
 
-namespace VisualAlgorithms.Server.Validation
+namespace VisualAlgorithms.Api.Validation
 {
     public class TestQuestionsValidator
     {

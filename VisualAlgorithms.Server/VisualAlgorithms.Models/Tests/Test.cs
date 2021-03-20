@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using VisualAlgorithms.Models.Algorithms;
 
 namespace VisualAlgorithms.Models.Tests
 {
@@ -6,7 +7,7 @@ namespace VisualAlgorithms.Models.Tests
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string AlgorithmId { get; set; }
+        public Algorithm Algorithm { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }
     }
 }

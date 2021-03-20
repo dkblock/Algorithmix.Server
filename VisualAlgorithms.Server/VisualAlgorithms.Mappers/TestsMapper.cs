@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VisualAlgorithms.Entities;
+using VisualAlgorithms.Models.Algorithms;
 using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
@@ -17,7 +18,7 @@ namespace VisualAlgorithms.Mappers
             };
         }
 
-        public Test ToModel(TestEntity testEntity, IEnumerable<TestQuestion> testQuestions = null)
+        public Test ToModel(TestEntity testEntity)
         {
             if (testEntity == null)
                 return null;
@@ -26,18 +27,14 @@ namespace VisualAlgorithms.Mappers
             {
                 Id = testEntity.Id,
                 Name = testEntity.Name,
-                AlgorithmId = testEntity.AlgorithmId,
-                Questions = testQuestions ?? new List<TestQuestion>()
+                Algorithm = new Algorithm() { Id = testEntity.AlgorithmId },
+                Questions = new List<TestQuestion>()
             };
         }
 
-        public IEnumerable<Test> ToModelsCollection(IEnumerable<TestEntity> testEntities, IEnumerable<TestQuestion> testQuestions)
+        public IEnumerable<Test> ToModelsCollection(IEnumerable<TestEntity> testEntities)
         {
-            foreach (var entity in testEntities)
-            {
-                var currentTestQuestions = testQuestions.Where(q => q.TestId == entity.Id);
-                yield return ToModel(entity, currentTestQuestions);
-            }
+            return testEntities.Select(entity => ToModel(entity));
         }
     }
 }

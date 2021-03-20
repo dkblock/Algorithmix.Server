@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using VisualAlgorithms.Api.Validation;
 using VisualAlgorithms.Models.Account;
-using VisualAlgorithms.Server.Validation;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Controllers
