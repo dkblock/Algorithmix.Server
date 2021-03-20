@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
+using VisualAlgorithms.Models.Algorithms;
+using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {
@@ -17,8 +18,8 @@ namespace VisualAlgorithms.Mappers
                 Id = algorithmEntity.Id,
                 Name = algorithmEntity.Name,
                 ImageUrl = algorithmEntity.ImageUrl,
-                AlgorithmTimeComplexityId = algorithmEntity.AlgorithmTimeComplexityId,
-                AlgorithmTimeComplexity = timeComplexity ?? new AlgorithmTimeComplexity(),
+                TimeComplexityId = algorithmEntity.TimeComplexityId,
+                TimeComplexity = timeComplexity ?? new AlgorithmTimeComplexity(),
                 Tests = tests ?? new List<Test>()
             };
         }
@@ -30,7 +31,7 @@ namespace VisualAlgorithms.Mappers
         {
             foreach (var entity in algorithmEntities)
             {
-                var currentAlgorithmTimeComplexity = timeComplexities.SingleOrDefault(tc => tc.Id == entity.AlgorithmTimeComplexityId);
+                var currentAlgorithmTimeComplexity = timeComplexities.SingleOrDefault(tc => tc.Id == entity.TimeComplexityId);
                 var currentAlgorithmTests = tests.Where(t => t.AlgorithmId == entity.Id);
                 yield return ToDomain(entity, currentAlgorithmTimeComplexity, currentAlgorithmTests);
             }
@@ -43,7 +44,7 @@ namespace VisualAlgorithms.Mappers
                 Id = algorithm.Id,
                 Name = algorithm.Name,
                 ImageUrl = algorithm.ImageUrl,
-                AlgorithmTimeComplexityId = algorithm.AlgorithmTimeComplexityId
+                TimeComplexityId = algorithm.TimeComplexityId
             };
         }
     }

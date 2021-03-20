@@ -1,4 +1,4 @@
-﻿namespace VisualAlgorithms.Domain
+﻿namespace VisualAlgorithms.Models.Algorithms
 {
     public class AlgorithmTimeComplexity
     {

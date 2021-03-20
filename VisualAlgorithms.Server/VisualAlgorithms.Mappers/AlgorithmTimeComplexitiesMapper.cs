@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
+using VisualAlgorithms.Models.Algorithms;
 
 namespace VisualAlgorithms.Mappers
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VisualAlgorithms.Domain
+namespace VisualAlgorithms.Models.Tests
 {
     public class TestQuestion
     {
@@ -9,6 +9,6 @@ namespace VisualAlgorithms.Domain
         public string Image { get; set; }
         public int CorrectAnswerId { get; set; }
         public int TestId { get; set; }
-        public IEnumerable<TestAnswer> TestAnswers { get; set; }
+        public IEnumerable<TestAnswer> Answers { get; set; }
     }
 }

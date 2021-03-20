@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using VisualAlgorithms.Models.Tests;
 
-namespace VisualAlgorithms.Domain
+namespace VisualAlgorithms.Models.Algorithms
 {
     public class Algorithm
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
-        public int AlgorithmTimeComplexityId { get; set; }
-        public AlgorithmTimeComplexity AlgorithmTimeComplexity { get; set; }
+        public int TimeComplexityId { get; set; }
+        public AlgorithmTimeComplexity TimeComplexity { get; set; }
         public IEnumerable<Test> Tests { get; set; }
     }
 }

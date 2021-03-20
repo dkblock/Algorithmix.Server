@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common.Validation;
-using VisualAlgorithms.Domain;
+using VisualAlgorithms.Models.Tests;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Validation
@@ -16,7 +16,7 @@ namespace VisualAlgorithms.Server.Validation
             _questionsService = questionsService;
         }
 
-        public async Task<ValidationResult> Validate(TestAnswer answer)
+        public async Task<ValidationResult> Validate(TestAnswerPayload answer)
         {
             var validationErrors = new List<ValidationError>();
 
@@ -27,12 +27,12 @@ namespace VisualAlgorithms.Server.Validation
                     Message = "Введите ответ"
                 });
 
-            var question = await _questionsService.GetTestQuestion(answer.Id);
+            var question = await _questionsService.GetTestQuestion(answer.QuestionId);
 
             if (question == null)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(answer.TestQuestionId),
+                    Field = nameof(answer.QuestionId),
                     Message = "Вопроса с данным ID не существует"
                 });
 

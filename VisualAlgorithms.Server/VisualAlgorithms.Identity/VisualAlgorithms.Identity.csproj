@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VisualAlgorithms.Database\VisualAlgorithms.Database.csproj" />
-    <ProjectReference Include="..\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj" />
+    <ProjectReference Include="..\VisualAlgorithms.Models\VisualAlgorithms.Models.csproj" />
   </ItemGroup>
 
 </Project>

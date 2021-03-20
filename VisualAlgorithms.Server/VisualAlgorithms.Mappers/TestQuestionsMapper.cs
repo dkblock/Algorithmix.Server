@@ -1,13 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
+using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {
     public class TestQuestionsMapper
     {
-        public TestQuestion ToDomain(TestQuestionEntity questionEntity, IEnumerable<TestAnswer> questionAnswers)
+        public TestQuestionEntity ToEntity(TestQuestionPayload questionPayload, int? id = null)
+        {
+            return new TestQuestionEntity
+            {
+                Id = id ?? 0,
+                Value = questionPayload.Value,
+                Image = questionPayload.Image,
+                CorrectAnswerId = questionPayload.CorrectAnswerId,
+                TestId = questionPayload.TestId
+            };
+        }
+
+        public TestQuestion ToModel(TestQuestionEntity questionEntity, IEnumerable<TestAnswer> questionAnswers = null)
         {
             if (questionEntity == null)
                 return null;
@@ -19,29 +31,17 @@ namespace VisualAlgorithms.Mappers
                 Image = questionEntity.Image,
                 CorrectAnswerId = questionEntity.CorrectAnswerId,
                 TestId = questionEntity.TestId,
-                TestAnswers = questionAnswers ?? new List<TestAnswer>()
+                Answers = questionAnswers ?? new List<TestAnswer>()
             };
         }
 
-        public IEnumerable<TestQuestion> ToDomainCollection(IEnumerable<TestQuestionEntity> questionEntities, IEnumerable<TestAnswer> questionAnswers)
+        public IEnumerable<TestQuestion> ToModelsCollection(IEnumerable<TestQuestionEntity> questionEntities, IEnumerable<TestAnswer> questionAnswers)
         {
             foreach (var entity in questionEntities)
             {
-                var currentQuestionAnswers = questionAnswers.Where(a => a.TestQuestionId == entity.Id);
-                yield return ToDomain(entity, currentQuestionAnswers);
+                var currentQuestionAnswers = questionAnswers.Where(a => a.QuestionId == entity.Id);
+                yield return ToModel(entity, currentQuestionAnswers);
             }
-        }
-
-        public TestQuestionEntity ToEntity(TestQuestion question)
-        {
-            return new TestQuestionEntity
-            {
-                Id = question.Id,
-                Value = question.Value,
-                Image = question.Image,
-                CorrectAnswerId = question.CorrectAnswerId,
-                TestId = question.TestId
-            };
         }
     }
 }

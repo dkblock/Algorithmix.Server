@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj" />
     <ProjectReference Include="..\VisualAlgorithms.Models\VisualAlgorithms.Models.csproj" />
   </ItemGroup>

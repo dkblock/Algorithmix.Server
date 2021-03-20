@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common.Extensions;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
 using VisualAlgorithms.Mappers;
+using VisualAlgorithms.Models.Tests;
 using VisualAlgorithms.Repository;
 
 namespace VisualAlgorithms.Services
@@ -22,10 +22,17 @@ namespace VisualAlgorithms.Services
             _questionsService = questionsService;
         }
 
-        public async Task<int> AddTest(Test test)
+        public async Task<Test> CreateTest(TestPayload testPayload)
         {
-            var testEntity = _testsMapper.ToEntity(test);
-            return await _testsRepository.AddTest(testEntity);
+            var testEntity = _testsMapper.ToEntity(testPayload);
+            var createdTest = await _testsRepository.CreateTest(testEntity);
+
+            return _testsMapper.ToModel(createdTest);
+        }
+
+        public async Task<bool> Exists(int id)
+        {
+            return await _testsRepository.GetTestById(id) != null;
         }
 
         public async Task<Test> GetTest(int id)
@@ -33,7 +40,7 @@ namespace VisualAlgorithms.Services
             var testEntity = await _testsRepository.GetTestById(id);
             var testQuestions = await _questionsService.GetTestQuestions(id);
 
-            return _testsMapper.ToDomain(testEntity, testQuestions);
+            return _testsMapper.ToModel(testEntity, testQuestions);
         }
 
         public async Task<IEnumerable<Test>> GetTests()
@@ -59,20 +66,23 @@ namespace VisualAlgorithms.Services
             var testIds = testEntities.Select(t => t.Id);
             var testQuestions = await _questionsService.GetTestQuestions(testIds);
 
-            return _testsMapper.ToDomainCollection(testEntities, testQuestions);
+            return _testsMapper.ToModelsCollection(testEntities, testQuestions);
         }
 
-        public async Task RemoveTest(int id)
+        public async Task DeleteTest(int id)
         {
             var test = await GetTest(id);
-            await test.TestQuestions.ForEachAsync(async q => await _questionsService.RemoveTestQuestion(q.Id));
-            await _testsRepository.RemoveTest(id);
+            await test.Questions.ForEachAsync(async q => await _questionsService.DeleteTestQuestion(q.Id));
+            await _testsRepository.DeleteTest(id);
         }
 
-        public async Task UpdateTest(Test test)
+        public async Task<Test> UpdateTest(int id, TestPayload testPayload)
         {
-            var testEntity = _testsMapper.ToEntity(test);
-            await _testsRepository.UpdateTest(testEntity);
+            var testEntity = _testsMapper.ToEntity(testPayload, id);
+            var updatedTest = await _testsRepository.UpdateTest(testEntity);
+            var testQuestions = await _questionsService.GetTestQuestions(id);
+
+            return _testsMapper.ToModel(updatedTest, testQuestions);
         }
     }
 }

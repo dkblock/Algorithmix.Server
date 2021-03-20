@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Common", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Database", "VisualAlgorithms.Server\VisualAlgorithms.Database\VisualAlgorithms.Database.csproj", "{81F9F789-E691-4990-AECE-DCCDAE0ABA7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Domain", "VisualAlgorithms.Server\VisualAlgorithms.Domain\VisualAlgorithms.Domain.csproj", "{E3B2A9EB-1CA8-4702-9563-97C6DE8FF15C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Entities", "VisualAlgorithms.Server\VisualAlgorithms.Entities\VisualAlgorithms.Entities.csproj", "{3F286F16-B405-4995-B292-81CF0F98F56F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualAlgorithms.Identity", "VisualAlgorithms.Server\VisualAlgorithms.Identity\VisualAlgorithms.Identity.csproj", "{1676FDB5-75EB-4F04-B676-48F8DFE9B54C}"
@@ -37,10 +35,6 @@ Global
 		{81F9F789-E691-4990-AECE-DCCDAE0ABA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81F9F789-E691-4990-AECE-DCCDAE0ABA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81F9F789-E691-4990-AECE-DCCDAE0ABA7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3B2A9EB-1CA8-4702-9563-97C6DE8FF15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3B2A9EB-1CA8-4702-9563-97C6DE8FF15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3B2A9EB-1CA8-4702-9563-97C6DE8FF15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3B2A9EB-1CA8-4702-9563-97C6DE8FF15C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F286F16-B405-4995-B292-81CF0F98F56F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F286F16-B405-4995-B292-81CF0F98F56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F286F16-B405-4995-B292-81CF0F98F56F}.Release|Any CPU.ActiveCfg = Release|Any CPU

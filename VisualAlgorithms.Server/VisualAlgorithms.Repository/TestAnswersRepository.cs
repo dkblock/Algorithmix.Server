@@ -18,12 +18,12 @@ namespace VisualAlgorithms.Repository
             _context = context;
         }
 
-        public async Task<int> AddTestAnswer(TestAnswerEntity answer)
+        public async Task<TestAnswerEntity> CreateTestAnswer(TestAnswerEntity answer)
         {
             var result = await _context.TestAnswers.AddAsync(answer);
             await _context.SaveChangesAsync();
 
-            return result.Entity.Id;
+            return result.Entity;
         }
 
         public async Task<IEnumerable<TestAnswerEntity>> GetAllTestAnswers()
@@ -41,18 +41,20 @@ namespace VisualAlgorithms.Repository
             return await _context.TestAnswers.FindAsync(id);
         }
 
-        public async Task RemoveTestAnswer(int id)
+        public async Task DeleteTestAnswer(int id)
         {
             var answer = await GetTestAnswerById(id);
             _context.TestAnswers.Remove(answer);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTestAnswer(TestAnswerEntity answer)
+        public async Task<TestAnswerEntity> UpdateTestAnswer(TestAnswerEntity answer)
         {
             var answerToUpdate = await GetTestAnswerById(answer.Id);
             _context.Entry(answerToUpdate).CurrentValues.SetValues(answer);
             await _context.SaveChangesAsync();
+
+            return await GetTestAnswerById(answer.Id);
         }
     }
 }

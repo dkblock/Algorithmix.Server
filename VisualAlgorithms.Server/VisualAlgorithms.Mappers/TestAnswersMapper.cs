@@ -1,13 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Entities;
+using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {
     public class TestAnswersMapper
     {
-        public TestAnswer ToDomain(TestAnswerEntity answerEntity)
+        public TestAnswerEntity ToEntity(TestAnswerPayload answerPayload, int? id = null)
+        {
+            return new TestAnswerEntity
+            {
+                Id = id ?? 0,
+                Value = answerPayload.Value,
+                QuestionId = answerPayload.QuestionId
+            };
+        }
+
+        public TestAnswer ToModel(TestAnswerEntity answerEntity)
         {
             if (answerEntity == null)
                 return null;
@@ -16,23 +26,13 @@ namespace VisualAlgorithms.Mappers
             {
                 Id = answerEntity.Id,
                 Value = answerEntity.Value,
-                TestQuestionId = answerEntity.TestQuestionId
+                QuestionId = answerEntity.QuestionId
             };
         }
 
-        public IEnumerable<TestAnswer> ToDomainCollection(IEnumerable<TestAnswerEntity> answerEntities)
+        public IEnumerable<TestAnswer> ToModelsCollection(IEnumerable<TestAnswerEntity> answerEntities)
         {
-            return answerEntities.Select(entity => ToDomain(entity));
-        }
-
-        public TestAnswerEntity ToEntity(TestAnswer answer)
-        {
-            return new TestAnswerEntity
-            {
-                Id = answer.Id,
-                Value = answer.Value,
-                TestQuestionId = answer.TestQuestionId
-            };
-        }      
+            return answerEntities.Select(entity => ToModel(entity));
+        }             
     }
 }

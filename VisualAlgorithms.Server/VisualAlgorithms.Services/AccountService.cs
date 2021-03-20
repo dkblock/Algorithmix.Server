@@ -24,6 +24,25 @@ namespace VisualAlgorithms.Services
             _userManager = userManager;
         }
 
+        public async Task<AuthModel> Authenticate(string authorization)
+        {
+            var accessToken = authorization.Replace("Bearer ", "");
+            var authModel = _authService.CheckAuth(accessToken);
+            var userEntity = await _userManager.FindByIdAsync(authModel.CurrentUser.Id);
+
+            return _usersMapper.ToModel(userEntity, authModel.CurrentUser.Role, authModel.AccessToken);
+        }
+
+        public async Task<AuthModel> Login(LoginModel loginModel)
+        {
+            var userEntity = await _userManager.FindByEmailAsync(loginModel.Email);
+            var userRole = await _userManager.GetRoleAsync(userEntity);
+            var user = _usersMapper.ToDomain(userEntity, userRole);
+            var accessToken = _authService.Authenticate(user);
+
+            return _usersMapper.ToModel(userEntity, userRole, accessToken);
+        }
+
         public async Task<AuthModel> Register(RegisterModel registerModel)
         {
             var userEntity = _usersMapper.ToEntity(registerModel);
@@ -33,21 +52,13 @@ namespace VisualAlgorithms.Services
             {
                 var userRole = Roles.User;
                 await _userManager.AddToRoleAsync(userEntity, userRole);
-                var accessToken = _authService.Authenticate(userEntity, userRole);
+                var user = _usersMapper.ToDomain(userEntity, userRole);
+                var accessToken = _authService.Authenticate(user);
 
                 return _usersMapper.ToModel(userEntity, userRole, accessToken);
             }
 
             return null;
-        }
-
-        public async Task<AuthModel> Login(LoginModel loginModel)
-        {
-            var userEntity = await _userManager.FindByEmailAsync(loginModel.Email);
-            var userRole = await _userManager.GetRoleAsync(userEntity);
-            var accessToken = _authService.Authenticate(userEntity, userRole);
-
-            return _usersMapper.ToModel(userEntity, userRole, accessToken);
-        }
+        }        
     }
 }

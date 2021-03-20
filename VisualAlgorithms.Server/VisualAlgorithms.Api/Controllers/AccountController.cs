@@ -21,6 +21,15 @@ namespace VisualAlgorithms.Server.Controllers
             _accountValidator = accountValidator;
         }
 
+        [HttpGet]
+        [Route("auth")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Authenticate([FromHeader] string authorization)
+        {
+            var authModel = await _accountService.Authenticate(authorization);
+            return Ok(authModel);
+        }
+
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]

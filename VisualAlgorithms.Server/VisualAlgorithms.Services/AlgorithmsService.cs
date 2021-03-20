@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common;
-using VisualAlgorithms.Domain;
 using VisualAlgorithms.Mappers;
+using VisualAlgorithms.Models.Algorithms;
 using VisualAlgorithms.Repository;
 
 namespace VisualAlgorithms.Services
@@ -33,7 +33,7 @@ namespace VisualAlgorithms.Services
         public async Task<Algorithm> GetAlgorithm(string algorithmId)
         {
             var algorithmEntity = await _algorithmsRepository.GetAlgorithmById(algorithmId);
-            var timeComplexityEntity = await _algorithmTimeComplexitiesRepository.GetAlgorithmTimeComplexityById(algorithmEntity.AlgorithmTimeComplexityId);
+            var timeComplexityEntity = await _algorithmTimeComplexitiesRepository.GetAlgorithmTimeComplexityById(algorithmEntity.TimeComplexityId);
             var timeComplexity = _algorithmTimeComplexitiesMapper.ToDomain(timeComplexityEntity);
             var tests = await _testsService.GetTests(algorithmId);
 
@@ -49,7 +49,7 @@ namespace VisualAlgorithms.Services
             var tests = await _testsService.GetTests(algorithmIds);
 
             return _algorithmsMapper.ToDomainCollection(algorithmEntities, timeComplexities, tests)
-                .OrderBy(a => a.AlgorithmTimeComplexityId);
+                .OrderBy(a => a.TimeComplexityId);
         }
     }
 }

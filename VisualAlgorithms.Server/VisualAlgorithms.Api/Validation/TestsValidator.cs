@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using VisualAlgorithms.Common.Validation;
-using VisualAlgorithms.Domain;
+using VisualAlgorithms.Models.Tests;
 using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Server.Validation
@@ -16,7 +16,7 @@ namespace VisualAlgorithms.Server.Validation
             _algorithmsService = algorithmsService;
         }
 
-        public async Task<ValidationResult> Validate(Test test)
+        public async Task<ValidationResult> Validate(TestPayload test)
         {
             var validationErrors = new List<ValidationError>();
 
