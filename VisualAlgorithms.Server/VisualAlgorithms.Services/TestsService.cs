@@ -7,65 +7,65 @@ using VisualAlgorithms.Repository;
 
 namespace VisualAlgorithms.Services
 {
-    public class TestsService
+    public class TestService
     {
-        private readonly TestsMapper _testsMapper;
-        private readonly TestsRepository _testsRepository;
+        private readonly TestMapper _testMapper;
+        private readonly TestRepository _testRepository;
 
-        public TestsService(TestsMapper testsMapper, TestsRepository testsRepository)
+        public TestService(TestMapper testMapper, TestRepository testRepository)
         {
-            _testsMapper = testsMapper;
-            _testsRepository = testsRepository;
+            _testMapper = testMapper;
+            _testRepository = testRepository;
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)
         {
-            var testEntity = _testsMapper.ToEntity(testPayload);
-            var createdTest = await _testsRepository.CreateTest(testEntity);
+            var testEntity = _testMapper.ToEntity(testPayload);
+            var createdTest = await _testRepository.CreateTest(testEntity);
 
-            return _testsMapper.ToModel(createdTest);
+            return _testMapper.ToModel(createdTest);
         }
 
         public async Task<bool> Exists(int id)
         {
-            return await _testsRepository.GetTestById(id) != null;
+            return await _testRepository.GetTestById(id) != null;
         }
 
         public async Task<Test> GetTest(int id)
         {
-            var testEntity = await _testsRepository.GetTestById(id);
-            return _testsMapper.ToModel(testEntity);
+            var testEntity = await _testRepository.GetTestById(id);
+            return _testMapper.ToModel(testEntity);
         }
 
         public async Task<IEnumerable<Test>> GetTests()
         {
-            var testEntities = await _testsRepository.GetAllTests();
-            return _testsMapper.ToModelsCollection(testEntities);
+            var testEntities = await _testRepository.GetAllTests();
+            return _testMapper.ToModelsCollection(testEntities);
         }
 
         public async Task<IEnumerable<Test>> GetTests(string algorithmId)
         {
-            var testEntities = await _testsRepository.GetTests(t => t.AlgorithmId == algorithmId);
-            return _testsMapper.ToModelsCollection(testEntities);
+            var testEntities = await _testRepository.GetTests(t => t.AlgorithmId == algorithmId);
+            return _testMapper.ToModelsCollection(testEntities);
         }
 
         public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
         {
-            var testEntities = await _testsRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
-            return _testsMapper.ToModelsCollection(testEntities);
+            var testEntities = await _testRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
+            return _testMapper.ToModelsCollection(testEntities);
         }
 
         public async Task DeleteTest(int id)
         {
-            await _testsRepository.DeleteTest(id);
+            await _testRepository.DeleteTest(id);
         }
 
         public async Task<Test> UpdateTest(int id, TestPayload testPayload)
         {
-            var testEntity = _testsMapper.ToEntity(testPayload, id);
-            var updatedTest = await _testsRepository.UpdateTest(testEntity);
+            var testEntity = _testMapper.ToEntity(testPayload, id);
+            var updatedTest = await _testRepository.UpdateTest(testEntity);
 
-            return _testsMapper.ToModel(updatedTest);
+            return _testMapper.ToModel(updatedTest);
         }
     }
 }

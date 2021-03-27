@@ -8,47 +8,47 @@ using VisualAlgorithms.Repository;
 
 namespace VisualAlgorithms.Services
 {
-    public class AlgorithmsService
+    public class AlgorithmService
     {
-        private readonly AlgorithmsMapper _algorithmsMapper;
-        private readonly AlgorithmTimeComplexitiesMapper _algorithmTimeComplexitiesMapper;
-        private readonly AlgorithmsRepository _algorithmsRepository;
-        private readonly AlgorithmTimeComplexitiesRepository _algorithmTimeComplexitiesRepository;
-        private readonly TestsService _testsService;
+        private readonly AlgorithmMapper _algorithmMapper;
+        private readonly AlgorithmTimeComplexityMapper _algorithmTimeComplexityMapper;
+        private readonly AlgorithmRepository _algorithmRepository;
+        private readonly AlgorithmTimeComplexityRepository _algorithmTimeComplexityRepository;
+        private readonly TestService _testService;
 
-        public AlgorithmsService(
-            AlgorithmsMapper algorithmsMapper,
-            AlgorithmTimeComplexitiesMapper algorithmTimeComplexitiesMapper,
-            AlgorithmsRepository algorithmsRepository,
-            AlgorithmTimeComplexitiesRepository algorithmTimeComplexitiesRepository,
-            TestsService testsService)
+        public AlgorithmService(
+            AlgorithmMapper algorithmMapper,
+            AlgorithmTimeComplexityMapper algorithmTimeComplexityMapper,
+            AlgorithmRepository algorithmRepository,
+            AlgorithmTimeComplexityRepository algorithmTimeComplexityRepository,
+            TestService testService)
         {
-            _algorithmsMapper = algorithmsMapper;
-            _algorithmTimeComplexitiesMapper = algorithmTimeComplexitiesMapper;
-            _algorithmsRepository = algorithmsRepository;
-            _algorithmTimeComplexitiesRepository = algorithmTimeComplexitiesRepository;
-            _testsService = testsService;
+            _algorithmMapper = algorithmMapper;
+            _algorithmTimeComplexityMapper = algorithmTimeComplexityMapper;
+            _algorithmRepository = algorithmRepository;
+            _algorithmTimeComplexityRepository = algorithmTimeComplexityRepository;
+            _testService = testService;
         }
 
         public async Task<Algorithm> GetAlgorithm(string algorithmId)
         {
-            var algorithmEntity = await _algorithmsRepository.GetAlgorithmById(algorithmId);
-            var timeComplexityEntity = await _algorithmTimeComplexitiesRepository.GetAlgorithmTimeComplexityById(algorithmEntity.TimeComplexityId);
-            var timeComplexity = _algorithmTimeComplexitiesMapper.ToDomain(timeComplexityEntity);
-            var tests = await _testsService.GetTests(algorithmId);
+            var algorithmEntity = await _algorithmRepository.GetAlgorithmById(algorithmId);
+            var timeComplexityEntity = await _algorithmTimeComplexityRepository.GetAlgorithmTimeComplexityById(algorithmEntity.TimeComplexityId);
+            var timeComplexity = _algorithmTimeComplexityMapper.ToDomain(timeComplexityEntity);
+            var tests = await _testService.GetTests(algorithmId);
 
-            return _algorithmsMapper.ToDomain(algorithmEntity, timeComplexity, tests);
+            return _algorithmMapper.ToDomain(algorithmEntity, timeComplexity, tests);
         }
 
         public async Task<IEnumerable<Algorithm>> GetAllAlgorithms()
         {
-            var algorithmEntities = await _algorithmsRepository.GetAllAlgorithms();
-            var timeComplexityEntities = await _algorithmTimeComplexitiesRepository.GetAllAlgorithmTimeComplexities();
-            var timeComplexities = _algorithmTimeComplexitiesMapper.ToDomainCollection(timeComplexityEntities);
+            var algorithmEntities = await _algorithmRepository.GetAllAlgorithms();
+            var timeComplexityEntities = await _algorithmTimeComplexityRepository.GetAllAlgorithmTimeComplexities();
+            var timeComplexities = _algorithmTimeComplexityMapper.ToDomainCollection(timeComplexityEntities);
             var algorithmIds = algorithmEntities.Select(a => a.Id);
-            var tests = await _testsService.GetTests(algorithmIds);
+            var tests = await _testService.GetTests(algorithmIds);
 
-            return _algorithmsMapper.ToDomainCollection(algorithmEntities, timeComplexities, tests)
+            return _algorithmMapper.ToDomainCollection(algorithmEntities, timeComplexities, tests)
                 .OrderBy(a => a.TimeComplexityId);
         }
     }

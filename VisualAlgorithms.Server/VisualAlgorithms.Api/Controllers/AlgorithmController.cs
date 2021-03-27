@@ -8,20 +8,20 @@ namespace VisualAlgorithms.Server.Controllers
     [ApiController]
     [Route("api/algorithms")]
     [Authorize]
-    public class AlgorithmsController : Controller
+    public class AlgorithmController : Controller
     {
-        private readonly AlgorithmsService _algorithmsService;
+        private readonly AlgorithmService _algorithmService;
 
-        public AlgorithmsController(AlgorithmsService algorithmsService)
+        public AlgorithmController(AlgorithmService algorithmService)
         {
-            _algorithmsService = algorithmsService;
+            _algorithmService = algorithmService;
         }
 
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllAlgorithms()
         {
-            var algorithms = await _algorithmsService.GetAllAlgorithms();
+            var algorithms = await _algorithmService.GetAllAlgorithms();
             return Ok(algorithms);
         }
     }

@@ -6,60 +6,60 @@ using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Api.Managers
 {
-    public class TestAnswersManager
+    public class TestAnswerManager
     {
-        private readonly TestAnswersService _answersService;
-        private readonly TestQuestionsService _questionsService;
+        private readonly TestAnswerService _answerService;
+        private readonly TestQuestionService _questionService;
 
-        public TestAnswersManager(TestAnswersService answersService, TestQuestionsService questionsService)
+        public TestAnswerManager(TestAnswerService answerService, TestQuestionService questionService)
         {
-            _answersService = answersService;
-            _questionsService = questionsService;
+            _answerService = answerService;
+            _questionService = questionService;
         }
 
         public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload)
         {
-            var createdAnswer = await _answersService.CreateTestAnswer(answerPayload);
+            var createdAnswer = await _answerService.CreateTestAnswer(answerPayload);
             return await PrepareAnswer(createdAnswer);
         }
 
         public async Task<bool> Exists(int answerId, int questionId)
         {
-            return await _answersService.Exists(answerId, questionId);
+            return await _answerService.Exists(answerId, questionId);
         }
 
         public async Task<TestAnswer> GetTestAnswer(int id)
         {
-            var answer = await _answersService.GetTestAnswer(id);
+            var answer = await _answerService.GetTestAnswer(id);
             return await PrepareAnswer(answer);
         }
 
         public async Task<IEnumerable<TestAnswer>> GetTestAnswers(int questionId)
         {
-            var answers = await _answersService.GetTestAnswers(questionId);
+            var answers = await _answerService.GetTestAnswers(questionId);
             return await PrepareAnswers(answers);
         }
 
         public async Task<IEnumerable<TestAnswer>> GetTestAnswers(IEnumerable<int> questionIds)
         {
-            var answers = await _answersService.GetTestAnswers(questionIds);
+            var answers = await _answerService.GetTestAnswers(questionIds);
             return await PrepareAnswers(answers);
         }
 
         public async Task DeleteTestAnswer(int id)
         {
-            await _answersService.DeleteTestAnswer(id);
+            await _answerService.DeleteTestAnswer(id);
         }
 
         public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload)
         {
-            var updatedAnswer = await _answersService.UpdateTestAnswer(id, answerPayload);
+            var updatedAnswer = await _answerService.UpdateTestAnswer(id, answerPayload);
             return await PrepareAnswer(updatedAnswer);
         }
 
         private async Task<TestAnswer> PrepareAnswer(TestAnswer answer)
         {
-            answer.Question = await _questionsService.GetTestQuestion(answer.Question.Id);
+            answer.Question = await _questionService.GetTestQuestion(answer.Question.Id);
             return answer;
         }
 

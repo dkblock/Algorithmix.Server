@@ -10,19 +10,19 @@ namespace VisualAlgorithms.Server.Controllers
     [ApiController]
     [Route("api/users")]
     [Authorize(Roles = Roles.User)]
-    public class UsersController : Controller
+    public class UserController : Controller
     {
-        private readonly UsersService _usersService;
+        private readonly UserService _userService;
 
-        public UsersController(UsersService usersService)
+        public UserController(UserService userService)
         {
-            _usersService = usersService;
+            _userService = userService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var user = await _usersService.GetUser(User);
+            var user = await _userService.GetUser(User);
             return Ok("test");
         }
     }

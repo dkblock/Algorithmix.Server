@@ -4,9 +4,9 @@ namespace VisualAlgorithms.Api.Controllers
 {
     [ApiController]
     [Route("api/groups")]
-    public class GroupsController : Controller
+    public class GroupController : Controller
     {
-        public GroupsController()
+        public GroupController()
         {
 
         }

@@ -7,13 +7,13 @@ using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Api.Validation
 {
-    public class TestAnswersValidator
+    public class TestAnswerValidator
     {
-        private readonly TestQuestionsService _questionsService;
+        private readonly TestQuestionService _questionService;
 
-        public TestAnswersValidator(TestQuestionsService questionsService)
+        public TestAnswerValidator(TestQuestionService questionService)
         {
-            _questionsService = questionsService;
+            _questionService = questionService;
         }
 
         public async Task<ValidationResult> Validate(TestAnswerPayload answer)
@@ -27,7 +27,7 @@ namespace VisualAlgorithms.Api.Validation
                     Message = "Введите ответ"
                 });
 
-            var question = await _questionsService.GetTestQuestion(answer.QuestionId);
+            var question = await _questionService.GetTestQuestion(answer.QuestionId);
 
             if (question == null)
                 validationErrors.Add(new ValidationError

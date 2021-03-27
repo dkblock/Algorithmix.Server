@@ -5,7 +5,7 @@ using VisualAlgorithms.Models.Algorithms;
 
 namespace VisualAlgorithms.Mappers
 {
-    public class AlgorithmTimeComplexitiesMapper
+    public class AlgorithmTimeComplexityMapper
     {
         public AlgorithmTimeComplexity ToDomain(AlgorithmTimeComplexityEntity timeComplexityEntity)
         {

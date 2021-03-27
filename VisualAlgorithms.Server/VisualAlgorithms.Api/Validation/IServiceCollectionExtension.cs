@@ -7,9 +7,9 @@ namespace VisualAlgorithms.Api.Validation
         public static void AddValidators(this IServiceCollection services)
         {
             services.AddScoped<AccountValidator, AccountValidator>();
-            services.AddScoped<TestsValidator, TestsValidator>();
-            services.AddScoped<TestAnswersValidator, TestAnswersValidator>();
-            services.AddScoped<TestQuestionsValidator, TestQuestionsValidator>();
+            services.AddScoped<TestValidator, TestValidator>();
+            services.AddScoped<TestAnswerValidator, TestAnswerValidator>();
+            services.AddScoped<TestQuestionValidator, TestQuestionValidator>();
         }
     }
 }

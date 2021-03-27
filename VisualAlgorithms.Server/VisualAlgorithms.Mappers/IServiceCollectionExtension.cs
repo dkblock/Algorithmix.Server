@@ -6,12 +6,12 @@ namespace VisualAlgorithms.Mappers
     {
         public static void AddMappers(this IServiceCollection services)
         {
-            services.AddScoped<AlgorithmsMapper, AlgorithmsMapper>();
-            services.AddScoped<AlgorithmTimeComplexitiesMapper, AlgorithmTimeComplexitiesMapper>();
-            services.AddScoped<ApplicationUsersMapper, ApplicationUsersMapper>();
-            services.AddScoped<TestsMapper, TestsMapper>();
-            services.AddScoped<TestAnswersMapper, TestAnswersMapper>();
-            services.AddScoped<TestQuestionsMapper, TestQuestionsMapper>();
+            services.AddScoped<AlgorithmMapper, AlgorithmMapper>();
+            services.AddScoped<AlgorithmTimeComplexityMapper, AlgorithmTimeComplexityMapper>();
+            services.AddScoped<ApplicationUserMapper, ApplicationUserMapper>();
+            services.AddScoped<TestMapper, TestMapper>();
+            services.AddScoped<TestAnswerMapper, TestAnswerMapper>();
+            services.AddScoped<TestQuestionMapper, TestQuestionMapper>();
         }
     }
 }

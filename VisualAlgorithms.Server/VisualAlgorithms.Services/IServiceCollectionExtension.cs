@@ -7,12 +7,12 @@ namespace VisualAlgorithms.Services
         public static void AddCommonServices(this IServiceCollection services)
         {
             services.AddScoped<AccountService, AccountService>();
-            services.AddScoped<AlgorithmsService, AlgorithmsService>();
+            services.AddScoped<AlgorithmService, AlgorithmService>();
             services.AddScoped<GroupsService, GroupsService>();
-            services.AddScoped<TestsService, TestsService>();
-            services.AddScoped<TestAnswersService, TestAnswersService>();
-            services.AddScoped<TestQuestionsService, TestQuestionsService>();
-            services.AddScoped<UsersService, UsersService>();
+            services.AddScoped<TestService, TestService>();
+            services.AddScoped<TestAnswerService, TestAnswerService>();
+            services.AddScoped<TestQuestionService, TestQuestionService>();
+            services.AddScoped<UserService, UserService>();
         }
     }
 }

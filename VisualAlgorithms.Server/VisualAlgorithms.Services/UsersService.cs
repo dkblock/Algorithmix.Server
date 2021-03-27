@@ -8,14 +8,14 @@ using VisualAlgorithms.Mappers;
 
 namespace VisualAlgorithms.Services
 {
-    public class UsersService
+    public class UserService
     {
-        private readonly ApplicationUsersMapper _usersMapper;
+        private readonly ApplicationUserMapper _userMapper;
         private readonly UserManager<ApplicationUserEntity> _userManager;        
 
-        public UsersService(ApplicationUsersMapper usersMapper, UserManager<ApplicationUserEntity> userManager)
+        public UserService(ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
         {
-            _usersMapper = usersMapper;
+            _userMapper = userMapper;
             _userManager = userManager;
         }
 
@@ -24,7 +24,7 @@ namespace VisualAlgorithms.Services
             var userEntity = await _userManager.FindByEmailAsync(email);
             var userRole = await _userManager.GetRoleAsync(userEntity);
 
-            return _usersMapper.ToDomain(userEntity, userRole);
+            return _userMapper.ToDomain(userEntity, userRole);
         }
 
         public async Task<bool> IsPasswordValid(string email, string password)

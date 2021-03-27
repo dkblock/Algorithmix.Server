@@ -7,13 +7,13 @@ using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Api.Validation
 {
-    public class TestsValidator
+    public class TestValidator
     {
-        private readonly AlgorithmsService _algorithmsService;
+        private readonly AlgorithmService _algorithmService;
 
-        public TestsValidator(AlgorithmsService algorithmsService)
+        public TestValidator(AlgorithmService algorithmService)
         {
-            _algorithmsService = algorithmsService;
+            _algorithmService = algorithmService;
         }
 
         public async Task<ValidationResult> Validate(TestPayload test)
@@ -34,7 +34,7 @@ namespace VisualAlgorithms.Api.Validation
                     Message = "Название теста должно содержать не более 50 символов"
                 });
 
-            var algorithm = await _algorithmsService.GetAlgorithm(test.AlgorithmId);
+            var algorithm = await _algorithmService.GetAlgorithm(test.AlgorithmId);
 
             if (algorithm == null)
                 validationErrors.Add(new ValidationError

@@ -6,7 +6,7 @@ using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {
-    public class AlgorithmsMapper
+    public class AlgorithmMapper
     {
         public Algorithm ToDomain(AlgorithmEntity algorithmEntity, AlgorithmTimeComplexity timeComplexity, IEnumerable<Test> tests)
         {

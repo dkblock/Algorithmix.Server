@@ -5,7 +5,7 @@ using VisualAlgorithms.Models.Tests;
 
 namespace VisualAlgorithms.Mappers
 {
-    public class TestAnswersMapper
+    public class TestAnswerMapper
     {
         public TestAnswerEntity ToEntity(TestAnswerPayload answerPayload, int? id = null)
         {

@@ -6,11 +6,11 @@ namespace VisualAlgorithms.Server.Controllers
 {
     [ApiController]
     [Route("api/images")]
-    public class ImagesController : Controller
+    public class ImageController : Controller
     {
         private readonly IWebHostEnvironment _env;
 
-        public ImagesController(IWebHostEnvironment env)
+        public ImageController(IWebHostEnvironment env)
         {
             _env = env;
         }

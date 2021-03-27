@@ -12,9 +12,9 @@ namespace VisualAlgorithms.Api.Validation
     {
         private const string EmailPattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
-        private readonly UsersService _usersService;
+        private readonly UserService _usersService;
 
-        public AccountValidator(UsersService usersService)
+        public AccountValidator(UserService usersService)
         {
             _usersService = usersService;
         }

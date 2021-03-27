@@ -6,9 +6,9 @@ namespace VisualAlgorithms.Api.Managers
     {
         public static void AddManagers(this IServiceCollection services)
         {
-            services.AddScoped<TestAnswersManager, TestAnswersManager>();
-            services.AddScoped<TestQuestionsManager, TestQuestionsManager>();
-            services.AddScoped<TestsManager, TestsManager>();
+            services.AddScoped<TestAnswerManager, TestAnswerManager>();
+            services.AddScoped<TestQuestionManager, TestQuestionManager>();
+            services.AddScoped<TestManager, TestManager>();
         }
     }
 }

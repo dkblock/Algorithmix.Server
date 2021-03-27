@@ -4,11 +4,11 @@ namespace VisualAlgorithms.Services
 {
     public class GroupsService
     {
-        private readonly GroupsRepository _groupsRepository;
+        private readonly GroupRepository _groupRepository;
 
-        public GroupsService(GroupsRepository groupsRepository)
+        public GroupsService(GroupRepository groupRepository)
         {
-            _groupsRepository = groupsRepository;
+            _groupRepository = groupRepository;
         }
     }
 }

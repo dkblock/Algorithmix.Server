@@ -6,11 +6,11 @@ using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Repository
 {
-    public class AlgorithmTimeComplexitiesRepository
+    public class AlgorithmTimeComplexityRepository
     {
         private readonly ApplicationContext _context;
 
-        public AlgorithmTimeComplexitiesRepository(ApplicationContext context)
+        public AlgorithmTimeComplexityRepository(ApplicationContext context)
         {
             _context = context;
         }

@@ -12,17 +12,17 @@ namespace VisualAlgorithms.Api.Controllers
     [ApiController]
     [Route("api/tests/{testId}/questions")]
     [Authorize]
-    public class TestQuestionsController : Controller
+    public class TestQuestionController : Controller
     {
-        private readonly TestQuestionsManager _questionsManager;
-        private readonly TestsManager _testsManager;
-        private readonly TestQuestionsValidator _questionsValidator;
+        private readonly TestQuestionManager _questionManager;
+        private readonly TestManager _testManager;
+        private readonly TestQuestionValidator _questionValidator;
 
-        public TestQuestionsController(TestQuestionsManager questionsManager, TestsManager testsManager, TestQuestionsValidator questionsValidator)
+        public TestQuestionController(TestQuestionManager questionManager, TestManager testManager, TestQuestionValidator questionValidator)
         {
-            _questionsManager = questionsManager;
-            _questionsValidator = questionsValidator;
-            _testsManager = testsManager;
+            _questionManager = questionManager;
+            _questionValidator = questionValidator;
+            _testManager = testManager;
         }
 
         [HttpPost]
@@ -30,12 +30,12 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> CreateTestQuestion([FromBody] TestQuestionPayload questionPayload)
         {
-            var validationResult = await _questionsValidator.Validate(questionPayload);
+            var validationResult = await _questionValidator.Validate(questionPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdQuestion = await _questionsManager.CreateTestQuestion(questionPayload);
+            var createdQuestion = await _questionManager.CreateTestQuestion(questionPayload);
             return CreatedAtAction(nameof(GetTestQuestion), new { id = createdQuestion.Id }, createdQuestion);
         }
 
@@ -44,10 +44,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestQuestion(int testId, int questionId)
         {
-            if (!await _questionsManager.Exists(questionId, testId))
+            if (!await _questionManager.Exists(questionId, testId))
                 return NotFound();
 
-            var question = await _questionsManager.GetTestQuestion(questionId);
+            var question = await _questionManager.GetTestQuestion(questionId);
             return Ok(question);
         }
 
@@ -56,10 +56,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestQuestions(int testId)
         {
-            if (!await _testsManager.Exists(testId))
+            if (!await _testManager.Exists(testId))
                 return NotFound();
 
-            var questions = await _questionsManager.GetTestQuestions(testId);
+            var questions = await _questionManager.GetTestQuestions(testId);
             return Ok(questions);
         }
 
@@ -68,10 +68,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> DeleteTestQuestion(int testId, int questionId)
         {
-            if (!await _questionsManager.Exists(questionId, testId))
+            if (!await _questionManager.Exists(questionId, testId))
                 return NotFound();
 
-            await _questionsManager.DeleteTestQuestion(questionId);
+            await _questionManager.DeleteTestQuestion(questionId);
             return StatusCode((int)HttpStatusCode.NoContent);
         }
 
@@ -80,15 +80,15 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTestQuestion(int testId, int questionId, [FromBody] TestQuestionPayload questionPayload)
         {
-            if (!await _questionsManager.Exists(questionId, testId))
+            if (!await _questionManager.Exists(questionId, testId))
                 return NotFound();
 
-            var validationResult = await _questionsValidator.Validate(questionPayload);
+            var validationResult = await _questionValidator.Validate(questionPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var updatedQuestion = await _questionsManager.UpdateTestQuestion(questionId, questionPayload);
+            var updatedQuestion = await _questionManager.UpdateTestQuestion(questionId, questionPayload);
             return Ok(updatedQuestion);
         }
     }

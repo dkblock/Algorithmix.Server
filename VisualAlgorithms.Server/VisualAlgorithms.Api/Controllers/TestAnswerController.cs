@@ -12,20 +12,20 @@ namespace VisualAlgorithms.Api.Controllers
     [ApiController]
     [Route("api/tests/{testId}/questions/{questionId}/answers")]
     [Authorize]
-    public class TestAnswersController : Controller
+    public class TestAnswerController : Controller
     {
-        private readonly TestAnswersManager _answersManager;
-        private readonly TestQuestionsManager _questionsManager;
-        private readonly TestAnswersValidator _answersValidator;
+        private readonly TestAnswerManager _answerManager;
+        private readonly TestQuestionManager _questionManager;
+        private readonly TestAnswerValidator _answerValidator;
 
-        public TestAnswersController(
-            TestAnswersManager answersManager,
-            TestQuestionsManager questionsManager,
-            TestAnswersValidator answersValidator)
+        public TestAnswerController(
+            TestAnswerManager answerManager,
+            TestQuestionManager questionManager,
+            TestAnswerValidator answerValidator)
         {
-            _answersManager = answersManager;
-            _answersValidator = answersValidator;
-            _questionsManager = questionsManager;
+            _answerManager = answerManager;
+            _answerValidator = answerValidator;
+            _questionManager = questionManager;
         }
 
         [HttpPost]
@@ -33,12 +33,12 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> CreateTestAnswer([FromBody] TestAnswerPayload answerPayload)
         {
-            var validationResult = await _answersValidator.Validate(answerPayload);
+            var validationResult = await _answerValidator.Validate(answerPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdAnswer = await _answersManager.CreateTestAnswer(answerPayload);
+            var createdAnswer = await _answerManager.CreateTestAnswer(answerPayload);
             return CreatedAtAction(nameof(GetTestAnswer), new { id = createdAnswer.Id }, createdAnswer);
         }
 
@@ -47,10 +47,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestAnswer(int questionId, int answerId)
         {
-            if (!await _answersManager.Exists(answerId, questionId))
+            if (!await _answerManager.Exists(answerId, questionId))
                 return NotFound();
 
-            var answer = await _answersManager.GetTestAnswer(answerId);
+            var answer = await _answerManager.GetTestAnswer(answerId);
             return Ok(answer);
         }
 
@@ -59,10 +59,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetTestAnswers(int testId, int questionId)
         {
-            if (!await _questionsManager.Exists(questionId, testId))
+            if (!await _questionManager.Exists(questionId, testId))
                 return NotFound();
 
-            var answers = await _answersManager.GetTestAnswers(questionId);
+            var answers = await _answerManager.GetTestAnswers(questionId);
             return Ok(answers);
         }
 
@@ -71,10 +71,10 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> DeleteTestAnswer(int questionId, int answerId)
         {
-            if (!await _answersManager.Exists(answerId, questionId))
+            if (!await _answerManager.Exists(answerId, questionId))
                 return NotFound();
 
-            await _answersManager.DeleteTestAnswer(answerId);
+            await _answerManager.DeleteTestAnswer(answerId);
             return StatusCode((int)HttpStatusCode.NoContent);
         }
 
@@ -83,15 +83,15 @@ namespace VisualAlgorithms.Api.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTestAnswer(int questionId, int answerId, [FromBody] TestAnswerPayload answerPayload)
         {
-            if (!await _answersManager.Exists(answerId, questionId))
+            if (!await _answerManager.Exists(answerId, questionId))
                 return NotFound();
 
-            var validationResult = await _answersValidator.Validate(answerPayload);
+            var validationResult = await _answerValidator.Validate(answerPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var updatedAnswer = await _answersManager.UpdateTestAnswer(answerId, answerPayload);
+            var updatedAnswer = await _answerManager.UpdateTestAnswer(answerId, answerPayload);
             return Ok(updatedAnswer);
         }
     }

@@ -4,7 +4,7 @@ using VisualAlgorithms.Models.Account;
 
 namespace VisualAlgorithms.Mappers
 {
-    public class ApplicationUsersMapper
+    public class ApplicationUserMapper
     {
         public ApplicationUser ToDomain(ApplicationUserEntity userEntity, string role)
         {

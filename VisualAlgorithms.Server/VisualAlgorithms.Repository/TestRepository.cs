@@ -9,11 +9,11 @@ using VisualAlgorithms.Entities;
 
 namespace VisualAlgorithms.Repository
 {
-    public class TestsRepository
+    public class TestRepository
     {
         private readonly ApplicationContext _context;
 
-        public TestsRepository(ApplicationContext context)
+        public TestRepository(ApplicationContext context)
         {
             _context = context;
         }

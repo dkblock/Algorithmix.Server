@@ -6,63 +6,63 @@ using VisualAlgorithms.Services;
 
 namespace VisualAlgorithms.Api.Managers
 {
-    public class TestQuestionsManager
+    public class TestQuestionManager
     {
-        private readonly TestAnswersService _answersService;
-        private readonly TestQuestionsService _questionsService;
-        private readonly TestsService _testsService;
+        private readonly TestAnswerService _answerService;
+        private readonly TestQuestionService _questionService;
+        private readonly TestService _testService;
 
-        public TestQuestionsManager(TestAnswersService answersService, TestQuestionsService questionsService, TestsService testsService)
+        public TestQuestionManager(TestAnswerService answerService, TestQuestionService questionService, TestService testService)
         {
-            _answersService = answersService;
-            _questionsService = questionsService;
-            _testsService = testsService;
+            _answerService = answerService;
+            _questionService = questionService;
+            _testService = testService;
         }
 
         public async Task<TestQuestion> CreateTestQuestion(TestQuestionPayload questionPayload)
         {
-            var createdQuestion = await _questionsService.CreateTestQuestion(questionPayload);
+            var createdQuestion = await _questionService.CreateTestQuestion(questionPayload);
             return await PrepareQuestion(createdQuestion);
         }
 
         public async Task<bool> Exists(int questionId, int testId)
         {
-            return await _questionsService.Exists(questionId, testId);
+            return await _questionService.Exists(questionId, testId);
         }
 
         public async Task<TestQuestion> GetTestQuestion(int id)
         {
-            var question = await _questionsService.GetTestQuestion(id);
+            var question = await _questionService.GetTestQuestion(id);
             return await PrepareQuestion(question);
         }
 
         public async Task<IEnumerable<TestQuestion>> GetTestQuestions(int testId)
         {
-            var questions = await _questionsService.GetTestQuestions(testId);
+            var questions = await _questionService.GetTestQuestions(testId);
             return await PrepareQuestions(questions);
         }
 
         public async Task<IEnumerable<TestQuestion>> GetTestQuestions(IEnumerable<int> testIds)
         {
-            var questions = await _questionsService.GetTestQuestions(testIds);
+            var questions = await _questionService.GetTestQuestions(testIds);
             return await PrepareQuestions(questions);
         }
 
         public async Task DeleteTestQuestion(int id)
         {
-            await _questionsService.DeleteTestQuestion(id);
+            await _questionService.DeleteTestQuestion(id);
         }
 
         public async Task<TestQuestion> UpdateTestQuestion(int questionId, TestQuestionPayload questionPayload)
         {
-            var updatedQuestion = await _questionsService.UpdateTestQuestion(questionId, questionPayload);
+            var updatedQuestion = await _questionService.UpdateTestQuestion(questionId, questionPayload);
             return await PrepareQuestion(updatedQuestion);
         }
 
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)
         {
-            question.Test = await _testsService.GetTest(question.Test.Id);
-            question.Answers = await _answersService.GetTestAnswers(question.Id);
+            question.Test = await _testService.GetTest(question.Test.Id);
+            question.Answers = await _answerService.GetTestAnswers(question.Id);
 
             return question;
         }
