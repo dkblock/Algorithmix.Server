@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Algorithmix.Common\Algorithmix.Common.csproj" />
+    <ProjectReference Include="..\Algorithmix.Identity\Algorithmix.Identity.csproj" />
+    <ProjectReference Include="..\Algorithmix.Mappers\Algorithmix.Mappers.csproj" />
+    <ProjectReference Include="..\Algorithmix.Repository\Algorithmix.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

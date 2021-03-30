@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Algorithmix.Database\Algorithmix.Database.csproj" />
+    <ProjectReference Include="..\Algorithmix.Entities\Algorithmix.Entities.csproj" />
+    <ProjectReference Include="..\Algorithmix.Identity\Algorithmix.Identity.csproj" />
+    <ProjectReference Include="..\Algorithmix.Mappers\Algorithmix.Mappers.csproj" />
+    <ProjectReference Include="..\Algorithmix.Repository\Algorithmix.Repository.csproj" />
+    <ProjectReference Include="..\Algorithmix.Services\Algorithmix.Services.csproj" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+
+</Project>
