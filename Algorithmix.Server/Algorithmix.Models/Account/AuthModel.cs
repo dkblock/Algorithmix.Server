@@ -1,6 +1,4 @@
-﻿using Algorithmix.Domain;
-
-namespace Algorithmix.Models.Account
+﻿namespace Algorithmix.Models.Account
 {
     public class AuthModel
     {

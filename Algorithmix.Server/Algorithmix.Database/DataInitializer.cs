@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Algorithmix.Common.Constants;
+using Algorithmix.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Algorithmix.Common.Constants;
-using Algorithmix.Entities;
 
 namespace Algorithmix.Database
 {

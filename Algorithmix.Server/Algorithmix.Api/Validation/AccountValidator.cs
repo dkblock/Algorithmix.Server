@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Algorithmix.Common.Validation;
+using Algorithmix.Models.Account;
+using Algorithmix.Services;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Algorithmix.Common.Validation;
-using Algorithmix.Models.Account;
-using Algorithmix.Services;
 
 namespace Algorithmix.Api.Validation
 {

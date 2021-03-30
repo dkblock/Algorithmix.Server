@@ -1,5 +1,5 @@
-﻿using Algorithmix.Domain;
-using Algorithmix.Entities;
+﻿using Algorithmix.Entities;
+using Algorithmix.Models;
 using Algorithmix.Models.Account;
 
 namespace Algorithmix.Mappers

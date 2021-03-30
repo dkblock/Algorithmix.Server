@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Algorithmix.Entities;
+﻿using Algorithmix.Entities;
 using Algorithmix.Models.Algorithms;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithmix.Mappers
 {

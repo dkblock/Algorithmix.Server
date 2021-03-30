@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using Algorithmix.Common.Constants;
+﻿using Algorithmix.Common.Constants;
 using Algorithmix.Entities;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Identity
 {

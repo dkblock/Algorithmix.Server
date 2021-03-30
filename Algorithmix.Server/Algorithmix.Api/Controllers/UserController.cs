@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Algorithmix.Common.Constants;
+using Algorithmix.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Algorithmix.Common.Constants;
-using Algorithmix.Database;
-using Algorithmix.Services;
 
 namespace Algorithmix.Server.Controllers
 {

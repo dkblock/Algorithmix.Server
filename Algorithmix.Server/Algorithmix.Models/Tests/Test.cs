@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Algorithmix.Models.Algorithms;
+﻿using Algorithmix.Models.Algorithms;
+using System.Collections.Generic;
 
 namespace Algorithmix.Models.Tests
 {

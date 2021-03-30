@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
-using Algorithmix.Api.Managers;
+﻿using Algorithmix.Api.Managers;
 using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
 using Algorithmix.Models.Tests;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Controllers
 {

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Algorithmix.Common.Validation;
+﻿using Algorithmix.Common.Validation;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Validation
 {

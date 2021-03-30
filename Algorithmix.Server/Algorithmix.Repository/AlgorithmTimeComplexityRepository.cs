@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Algorithmix.Database;
+using Algorithmix.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Algorithmix.Database;
-using Algorithmix.Entities;
 
 namespace Algorithmix.Repository
 {

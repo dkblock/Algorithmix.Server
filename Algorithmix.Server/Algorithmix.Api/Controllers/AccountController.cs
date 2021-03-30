@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Algorithmix.Api.Validation;
+﻿using Algorithmix.Api.Validation;
 using Algorithmix.Models.Account;
 using Algorithmix.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Server.Controllers
 {

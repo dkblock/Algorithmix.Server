@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Algorithmix.Domain;
-using Algorithmix.Entities;
+﻿using Algorithmix.Entities;
 using Algorithmix.Identity;
 using Algorithmix.Mappers;
+using Algorithmix.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Services
 {

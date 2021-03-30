@@ -1,4 +1,4 @@
-﻿using Algorithmix.Domain;
+﻿using Algorithmix.Models;
 using Algorithmix.Models.Account;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

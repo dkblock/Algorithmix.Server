@@ -1,4 +1,4 @@
-﻿namespace Algorithmix.Domain
+﻿namespace Algorithmix.Models
 {
     public class Group
     {

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Algorithmix.Common.Extensions;
+﻿using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Managers
 {
