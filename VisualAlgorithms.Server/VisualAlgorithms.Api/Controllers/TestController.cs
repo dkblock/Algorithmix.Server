@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using VisualAlgorithms.Api.Managers;
 using VisualAlgorithms.Api.Validation;

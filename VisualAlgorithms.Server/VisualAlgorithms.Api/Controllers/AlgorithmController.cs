@@ -19,6 +19,7 @@ namespace VisualAlgorithms.Server.Controllers
 
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAlgorithms()
         {
             var algorithms = await _algorithmService.GetAllAlgorithms();
