@@ -8,7 +8,7 @@ namespace Algorithmix.Services
         {
             services.AddScoped<AccountService, AccountService>();
             services.AddScoped<AlgorithmService, AlgorithmService>();
-            services.AddScoped<GroupsService, GroupsService>();
+            services.AddScoped<GroupService, GroupService>();
             services.AddScoped<TestService, TestService>();
             services.AddScoped<TestAnswerService, TestAnswerService>();
             services.AddScoped<TestQuestionService, TestQuestionService>();

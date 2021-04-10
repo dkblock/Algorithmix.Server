@@ -59,6 +59,12 @@ namespace Algorithmix.Api.Managers
             return await PrepareQuestion(updatedQuestion);
         }
 
+        public async Task<IEnumerable<TestQuestion>> MoveTestQuestions(int testId, int oldIndex, int newIndex)
+        {
+            var movedQuestions = await _questionService.MoveTestQuestion(testId, oldIndex, newIndex);
+            return await PrepareQuestions(movedQuestions);
+        }
+
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)
         {
             question.Test = await _testService.GetTest(question.Test.Id);

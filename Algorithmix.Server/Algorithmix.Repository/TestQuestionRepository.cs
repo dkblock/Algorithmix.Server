@@ -33,7 +33,22 @@ namespace Algorithmix.Repository
 
         public async Task<IEnumerable<TestQuestionEntity>> GetTestQuestions(Expression<Func<TestQuestionEntity, bool>> predicate)
         {
-            return await _context.TestQuestions.Where(predicate).ToListAsync();
+            var questions = await _context.TestQuestions.Where(predicate).ToListAsync();
+            return GetOrderedTestQuestions(questions);
+        }
+
+        private IEnumerable<TestQuestionEntity> GetOrderedTestQuestions(IEnumerable<TestQuestionEntity> questions)
+        {
+            var orderedQuestions = new List<TestQuestionEntity>();
+            var next = questions.SingleOrDefault(q => q.PreviousQuestionId == null);
+
+            while (next != null)
+            {
+                orderedQuestions.Add(next);
+                next = questions.SingleOrDefault(q => q.Id == next.NextQuestionId);
+            }
+
+            return orderedQuestions;
         }
 
         public async Task<TestQuestionEntity> GetTestQuestionById(int id)

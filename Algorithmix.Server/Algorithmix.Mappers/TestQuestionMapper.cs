@@ -13,8 +13,10 @@ namespace Algorithmix.Mappers
             {
                 Id = id ?? 0,
                 Value = questionPayload.Value,
+                PreviousQuestionId = questionPayload.PreviousQuestionId,
+                NextQuestionId = questionPayload.NextQuestionId,
                 Image = questionPayload.Image,
-                CorrectAnswerId = questionPayload.CorrectAnswerId,
+                Type = questionPayload.Type,
                 TestId = questionPayload.TestId
             };
         }
@@ -28,8 +30,10 @@ namespace Algorithmix.Mappers
             {
                 Id = questionEntity.Id,
                 Value = questionEntity.Value,
+                PreviousQuestionId = questionEntity.PreviousQuestionId,
+                NextQuestionId = questionEntity.NextQuestionId,
                 Image = questionEntity.Image,
-                CorrectAnswerId = questionEntity.CorrectAnswerId,
+                Type = questionEntity.Type,
                 Test = new Test { Id = questionEntity.TestId },
                 Answers = new List<TestAnswer>()
             };

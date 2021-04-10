@@ -9,12 +9,10 @@ namespace Algorithmix.Api.Validation
 {
     public class TestQuestionValidator
     {
-        private readonly TestAnswerService _answerService;
         private readonly TestService _testService;
 
-        public TestQuestionValidator(TestAnswerService answerService, TestService testService)
+        public TestQuestionValidator(TestService testService)
         {
-            _answerService = answerService;
             _testService = testService;
         }
 
@@ -29,15 +27,7 @@ namespace Algorithmix.Api.Validation
                     Message = "Введите вопрос"
                 });
 
-            var answer = await _answerService.GetTestAnswer(question.CorrectAnswerId);
             var test = await _testService.GetTest(question.TestId);
-
-            if (answer == null)
-                validationErrors.Add(new ValidationError
-                {
-                    Field = nameof(question.CorrectAnswerId),
-                    Message = "Ответа с данным ID не существует"
-                });
 
             if (test == null)
                 validationErrors.Add(new ValidationError

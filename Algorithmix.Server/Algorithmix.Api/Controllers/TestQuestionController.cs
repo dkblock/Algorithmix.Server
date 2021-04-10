@@ -36,7 +36,7 @@ namespace Algorithmix.Api.Controllers
                 return BadRequest(validationResult);
 
             var createdQuestion = await _questionManager.CreateTestQuestion(questionPayload);
-            return CreatedAtAction(nameof(GetTestQuestion), new { id = createdQuestion.Id }, createdQuestion);
+            return CreatedAtAction(nameof(GetTestQuestion), new { testId = createdQuestion.Test.Id, questionId = createdQuestion.Id }, createdQuestion);
         }
 
         [HttpGet]
@@ -90,6 +90,15 @@ namespace Algorithmix.Api.Controllers
 
             var updatedQuestion = await _questionManager.UpdateTestQuestion(questionId, questionPayload);
             return Ok(updatedQuestion);
+        }
+
+        [HttpPut]
+        [Route("move")]
+        [Authorize(Roles = Roles.Executive)]
+        public async Task<IActionResult> MoveTestQuestions(int testId, [FromBody] TestQuestionMovePayload movePayload)
+        {
+            var movedQuestions = await _questionManager.MoveTestQuestions(testId, movePayload.OldIndex, movePayload.NewIndex);
+            return Ok(movedQuestions);
         }
     }
 }

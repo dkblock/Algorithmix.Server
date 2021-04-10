@@ -2,11 +2,11 @@
 
 namespace Algorithmix.Services
 {
-    public class GroupsService
+    public class GroupService
     {
         private readonly GroupRepository _groupRepository;
 
-        public GroupsService(GroupRepository groupRepository)
+        public GroupService(GroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
         }
