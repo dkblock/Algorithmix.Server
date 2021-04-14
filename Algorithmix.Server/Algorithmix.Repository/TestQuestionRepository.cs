@@ -46,6 +46,9 @@ namespace Algorithmix.Repository
             {
                 orderedQuestions.Add(next);
                 next = questions.SingleOrDefault(q => q.Id == next.NextQuestionId);
+
+                if (orderedQuestions.Count > 100)           // TODO: Need to investigate problem when there is infinite count of questions
+                    break;
             }
 
             return orderedQuestions;

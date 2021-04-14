@@ -13,6 +13,7 @@ namespace Algorithmix.Mappers
             {
                 Id = id ?? 0,
                 Value = answerPayload.Value,
+                IsCorrect = answerPayload.IsCorrect,
                 QuestionId = answerPayload.QuestionId
             };
         }
@@ -26,6 +27,7 @@ namespace Algorithmix.Mappers
             {
                 Id = answerEntity.Id,
                 Value = answerEntity.Value,
+                IsCorrect = answerEntity.IsCorrect,
                 Question = new TestQuestion { Id = answerEntity.QuestionId }
             };
         }

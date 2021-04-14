@@ -1,4 +1,5 @@
-﻿using Algorithmix.Mappers;
+﻿using Algorithmix.Entities;
+using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
 using System.Collections.Generic;
@@ -20,8 +21,19 @@ namespace Algorithmix.Services
 
         public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload)
         {
+            var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerPayload.QuestionId);
             var answerEntity = _answerMapper.ToEntity(answerPayload);
             var createdAnswer = await _answerRepository.CreateTestAnswer(answerEntity);
+
+            if (answers.Any())
+            {
+                var lastAnswer = answers.Last();
+                createdAnswer.PreviousAnswerId = lastAnswer.Id;
+                lastAnswer.NextAnswerId = createdAnswer.Id;
+
+                await _answerRepository.UpdateTestAnswer(lastAnswer);
+                await _answerRepository.UpdateTestAnswer(createdAnswer);
+            }
 
             return _answerMapper.ToModel(createdAnswer);
         }
@@ -52,6 +64,22 @@ namespace Algorithmix.Services
 
         public async Task DeleteTestAnswer(int id)
         {
+            var answer = await _answerRepository.GetTestAnswerById(id);
+
+            if (answer.PreviousAnswerId != null)
+            {
+                var previousAnswer = await _answerRepository.GetTestAnswerById((int)answer.PreviousAnswerId);
+                previousAnswer.NextAnswerId = answer.NextAnswerId;
+                await _answerRepository.UpdateTestAnswer(previousAnswer);
+            }
+
+            if (answer.NextAnswerId != null)
+            {
+                var nextQuestion = await _answerRepository.GetTestAnswerById((int)answer.NextAnswerId);
+                nextQuestion.PreviousAnswerId = answer.PreviousAnswerId;
+                await _answerRepository.UpdateTestAnswer(nextQuestion);
+            }
+
             await _answerRepository.DeleteTestAnswer(id);
         }
 
@@ -61,6 +89,46 @@ namespace Algorithmix.Services
             var updatedAnswer = await _answerRepository.UpdateTestAnswer(answerEntity);
 
             return _answerMapper.ToModel(updatedAnswer);
+        }
+
+        public async Task<IEnumerable<TestAnswer>> MoveTestAnswer(int questionId, int oldIndex, int newIndex)
+        {
+            var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == questionId);
+            var movedAnswer = answers.ElementAt(oldIndex);
+
+            var oldPrevious = answers.ElementAtOrDefault(oldIndex - 1);
+            var oldNext = answers.ElementAtOrDefault(oldIndex + 1);
+            TestAnswerEntity newPrevious;
+            TestAnswerEntity newNext;
+
+            if (oldIndex < newIndex)
+            {
+                newPrevious = answers.ElementAtOrDefault(newIndex);
+                newNext = answers.ElementAtOrDefault(newIndex + 1);
+            }
+            else
+            {
+                newPrevious = answers.ElementAtOrDefault(newIndex - 1);
+                newNext = answers.ElementAtOrDefault(newIndex);
+            }
+
+            await HandleMoveTestAnswer(movedAnswer, newPrevious?.Id, newNext?.Id);
+            await HandleMoveTestAnswer(oldPrevious, oldPrevious?.PreviousAnswerId, oldNext?.Id);
+            await HandleMoveTestAnswer(oldNext, oldPrevious?.Id, oldNext?.NextAnswerId);
+            await HandleMoveTestAnswer(newPrevious, newPrevious?.PreviousAnswerId, movedAnswer.Id);
+            await HandleMoveTestAnswer(newNext, movedAnswer.Id, newNext?.NextAnswerId);
+
+            return await GetTestAnswers(questionId);
+        }
+
+        private async Task HandleMoveTestAnswer(TestAnswerEntity answer, int? previousAnswerId, int? nextAnswerId)
+        {
+            if (answer != null)
+            {
+                answer.PreviousAnswerId = previousAnswerId;
+                answer.NextAnswerId = nextAnswerId;
+                await _answerRepository.UpdateTestAnswer(answer);
+            }
         }
     }
 }

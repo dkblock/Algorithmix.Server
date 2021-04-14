@@ -33,7 +33,25 @@ namespace Algorithmix.Repository
 
         public async Task<IEnumerable<TestAnswerEntity>> GetTestAnswers(Expression<Func<TestAnswerEntity, bool>> predicate)
         {
-            return await _context.TestAnswers.Where(predicate).ToListAsync();
+            var answers = await _context.TestAnswers.Where(predicate).ToListAsync();
+            return GetOrderedTestAnswers(answers);
+        }
+
+        private IEnumerable<TestAnswerEntity> GetOrderedTestAnswers(IEnumerable<TestAnswerEntity> answers)
+        {
+            var orderedAnswers = new List<TestAnswerEntity>();
+            var next = answers.SingleOrDefault(q => q.PreviousAnswerId == null);
+
+            while (next != null)
+            {
+                orderedAnswers.Add(next);
+                next = answers.SingleOrDefault(q => q.Id == next.NextAnswerId);
+
+                if (orderedAnswers.Count > 100)           // TODO: Need to investigate problem when there is infinite count of answers
+                    break;
+            }
+
+            return orderedAnswers;
         }
 
         public async Task<TestAnswerEntity> GetTestAnswerById(int id)
