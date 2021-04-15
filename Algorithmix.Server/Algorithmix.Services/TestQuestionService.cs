@@ -53,13 +53,13 @@ namespace Algorithmix.Services
         public async Task<IEnumerable<TestQuestion>> GetTestQuestions(int testId)
         {
             var questionEntities = await _questionRepository.GetTestQuestions(q => q.TestId == testId);
-            return _questionMapper.ToModelsCollection(questionEntities);
+            return _questionMapper.ToModelCollection(questionEntities);
         }
 
         public async Task<IEnumerable<TestQuestion>> GetTestQuestions(IEnumerable<int> testIds)
         {
             var questionEntities = await _questionRepository.GetTestQuestions(q => testIds.Contains(q.TestId));
-            return _questionMapper.ToModelsCollection(questionEntities);
+            return _questionMapper.ToModelCollection(questionEntities);
         }
 
         public async Task DeleteTestQuestion(int id)

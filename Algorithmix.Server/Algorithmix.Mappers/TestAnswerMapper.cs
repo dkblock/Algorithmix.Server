@@ -32,9 +32,9 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<TestAnswer> ToModelsCollection(IEnumerable<TestAnswerEntity> answerEntities)
+        public IEnumerable<TestAnswer> ToModelCollection(IEnumerable<TestAnswerEntity> answerEntities)
         {
             return answerEntities.Select(entity => ToModel(entity));
-        }             
+        }
     }
 }

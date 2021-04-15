@@ -55,7 +55,12 @@ namespace Algorithmix.Api.Managers
 
         public async Task<TestQuestion> UpdateTestQuestion(int questionId, TestQuestionPayload questionPayload)
         {
+            var question = await _questionService.GetTestQuestion(questionId);
             var updatedQuestion = await _questionService.UpdateTestQuestion(questionId, questionPayload);
+
+            if (question.Type != updatedQuestion.Type)
+                await _answerService.UpdateTestAnswers(questionId, updatedQuestion.Type);
+
             return await PrepareQuestion(updatedQuestion);
         }
 

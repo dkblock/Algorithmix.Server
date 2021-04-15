@@ -1,4 +1,6 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Common.Constants;
+using Algorithmix.Common.Extensions;
+using Algorithmix.Entities;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
@@ -19,7 +21,7 @@ namespace Algorithmix.Services
             _answerRepository = answerRepository;
         }
 
-        public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload)
+        public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload, string questionType)
         {
             var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerPayload.QuestionId);
             var answerEntity = _answerMapper.ToEntity(answerPayload);
@@ -34,6 +36,8 @@ namespace Algorithmix.Services
                 await _answerRepository.UpdateTestAnswer(lastAnswer);
                 await _answerRepository.UpdateTestAnswer(createdAnswer);
             }
+            else
+                await HandleCorrectTestAnswer(createdAnswer, questionType);
 
             return _answerMapper.ToModel(createdAnswer);
         }
@@ -53,13 +57,13 @@ namespace Algorithmix.Services
         public async Task<IEnumerable<TestAnswer>> GetTestAnswers(int questionId)
         {
             var answerEntities = await _answerRepository.GetTestAnswers(a => a.QuestionId == questionId);
-            return _answerMapper.ToModelsCollection(answerEntities);
+            return _answerMapper.ToModelCollection(answerEntities);
         }
 
         public async Task<IEnumerable<TestAnswer>> GetTestAnswers(IEnumerable<int> questionIds)
         {
             var answerEntities = await _answerRepository.GetTestAnswers(a => questionIds.Contains(a.QuestionId));
-            return _answerMapper.ToModelsCollection(answerEntities);
+            return _answerMapper.ToModelCollection(answerEntities);
         }
 
         public async Task DeleteTestAnswer(int id)
@@ -83,12 +87,40 @@ namespace Algorithmix.Services
             await _answerRepository.DeleteTestAnswer(id);
         }
 
-        public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload)
+        public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload, string questionType)
         {
             var answerEntity = _answerMapper.ToEntity(answerPayload, id);
-            var updatedAnswer = await _answerRepository.UpdateTestAnswer(answerEntity);
 
+            if (answerEntity.IsCorrect && questionType == TestQuestionTypes.SingleAnswerQuestion)
+            {
+                var correctAnswers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerEntity.QuestionId && a.IsCorrect);
+                var oldCorrectAnswer = correctAnswers.Single();
+
+                if (oldCorrectAnswer.Id != id)
+                {
+                    oldCorrectAnswer.IsCorrect = false;
+                    await _answerRepository.UpdateTestAnswer(oldCorrectAnswer);
+                }
+            }
+
+            var updatedAnswer = await _answerRepository.UpdateTestAnswer(answerEntity);
             return _answerMapper.ToModel(updatedAnswer);
+        }
+
+        public async Task UpdateTestAnswers(int questionId, string questionType)
+        {
+            var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == questionId);
+
+            if (!answers.Any())
+                return;
+
+            await answers.ForEachAsync(async answer =>
+            {
+                answer.IsCorrect = false;
+                await _answerRepository.UpdateTestAnswer(answer);
+            });
+
+            await HandleCorrectTestAnswer(answers.First(), questionType);
         }
 
         public async Task<IEnumerable<TestAnswer>> MoveTestAnswer(int questionId, int oldIndex, int newIndex)
@@ -128,6 +160,25 @@ namespace Algorithmix.Services
                 answer.PreviousAnswerId = previousAnswerId;
                 answer.NextAnswerId = nextAnswerId;
                 await _answerRepository.UpdateTestAnswer(answer);
+            }
+        }
+
+        private async Task HandleCorrectTestAnswer(TestAnswerEntity answer, string questionType)
+        {
+            switch (questionType)
+            {
+                case TestQuestionTypes.FreeAnswerQuestion:
+                    answer.IsCorrect = true;
+                    await _answerRepository.UpdateTestAnswer(answer);
+                    break;
+                case TestQuestionTypes.SingleAnswerQuestion:
+                    answer.IsCorrect = true;
+                    await _answerRepository.UpdateTestAnswer(answer);
+                    break;
+                case TestQuestionTypes.MultiAnswerQuestion:
+                    break;
+                default:
+                    break;
             }
         }
     }

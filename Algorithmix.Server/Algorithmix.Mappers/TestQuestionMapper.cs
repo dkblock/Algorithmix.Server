@@ -39,7 +39,7 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<TestQuestion> ToModelsCollection(IEnumerable<TestQuestionEntity> questionEntities)
+        public IEnumerable<TestQuestion> ToModelCollection(IEnumerable<TestQuestionEntity> questionEntities)
         {
             return questionEntities.Select(entity => ToModel(entity));
         }

@@ -19,7 +19,9 @@ namespace Algorithmix.Api.Managers
 
         public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload)
         {
-            var createdAnswer = await _answerService.CreateTestAnswer(answerPayload);
+            var question = await _questionService.GetTestQuestion(answerPayload.QuestionId);
+            var createdAnswer = await _answerService.CreateTestAnswer(answerPayload, question.Type);
+
             return await PrepareAnswer(createdAnswer);
         }
 
@@ -53,7 +55,9 @@ namespace Algorithmix.Api.Managers
 
         public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload)
         {
-            var updatedAnswer = await _answerService.UpdateTestAnswer(id, answerPayload);
+            var question = await _questionService.GetTestQuestion(answerPayload.QuestionId);
+            var updatedAnswer = await _answerService.UpdateTestAnswer(id, answerPayload, question.Type);
+
             return await PrepareAnswer(updatedAnswer);
         }
 
