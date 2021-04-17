@@ -24,7 +24,7 @@ namespace Algorithmix.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddCors();
 
             services.AddCommonServices();

@@ -66,9 +66,10 @@ namespace Algorithmix.Services
             return _answerMapper.ToModelCollection(answerEntities);
         }
 
-        public async Task DeleteTestAnswer(int id)
+        public async Task DeleteTestAnswer(int id, string questionType)
         {
             var answer = await _answerRepository.GetTestAnswerById(id);
+            var questionAnswers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answer.QuestionId);
 
             if (answer.PreviousAnswerId != null)
             {
@@ -84,6 +85,17 @@ namespace Algorithmix.Services
                 await _answerRepository.UpdateTestAnswer(nextQuestion);
             }
 
+            if (questionType == TestQuestionTypes.SingleAnswerQuestion && answer.IsCorrect)
+            {
+                var newCorrectAnswer = questionAnswers.FirstOrDefault(a => a.Id != id);
+
+                if (newCorrectAnswer != null)
+                {
+                    newCorrectAnswer.IsCorrect = true;
+                    await _answerRepository.UpdateTestAnswer(newCorrectAnswer);
+                }
+            }
+
             await _answerRepository.DeleteTestAnswer(id);
         }
 
@@ -93,8 +105,8 @@ namespace Algorithmix.Services
 
             if (answerEntity.IsCorrect && questionType == TestQuestionTypes.SingleAnswerQuestion)
             {
-                var correctAnswers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerEntity.QuestionId && a.IsCorrect);
-                var oldCorrectAnswer = correctAnswers.Single();
+                var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerEntity.QuestionId);
+                var oldCorrectAnswer = answers.Single(a => a.IsCorrect);
 
                 if (oldCorrectAnswer.Id != id)
                 {

@@ -14,6 +14,8 @@ namespace Algorithmix.Mappers
                 Id = id ?? 0,
                 Value = answerPayload.Value,
                 IsCorrect = answerPayload.IsCorrect,
+                PreviousAnswerId = answerPayload.PreviousAnswerId,
+                NextAnswerId = answerPayload.NextAnswerId,
                 QuestionId = answerPayload.QuestionId
             };
         }
@@ -28,6 +30,8 @@ namespace Algorithmix.Mappers
                 Id = answerEntity.Id,
                 Value = answerEntity.Value,
                 IsCorrect = answerEntity.IsCorrect,
+                PreviousAnswerId = answerEntity.PreviousAnswerId,
+                NextAnswerId = answerEntity.NextAnswerId,
                 Question = new TestQuestion { Id = answerEntity.QuestionId }
             };
         }

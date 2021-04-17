@@ -50,7 +50,9 @@ namespace Algorithmix.Api.Managers
 
         public async Task DeleteTestAnswer(int id)
         {
-            await _answerService.DeleteTestAnswer(id);
+            var answer = await _answerService.GetTestAnswer(id);
+            var question = await _questionService.GetTestQuestion(answer.Question.Id);
+            await _answerService.DeleteTestAnswer(id, question.Type);
         }
 
         public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload)
