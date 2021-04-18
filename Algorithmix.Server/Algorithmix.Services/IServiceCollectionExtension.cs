@@ -12,6 +12,8 @@ namespace Algorithmix.Services
             services.AddScoped<TestService, TestService>();
             services.AddScoped<TestAnswerService, TestAnswerService>();
             services.AddScoped<TestQuestionService, TestQuestionService>();
+            services.AddScoped<UserAnswerService, UserAnswerService>();
+            services.AddScoped<UserTestResultService, UserTestResultService>();
             services.AddScoped<UserService, UserService>();
         }
     }

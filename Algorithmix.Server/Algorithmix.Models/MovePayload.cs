@@ -1,4 +1,4 @@
-﻿namespace Algorithmix.Models.Tests
+﻿namespace Algorithmix.Models
 {
     public class MovePayload
     {

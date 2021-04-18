@@ -19,5 +19,7 @@ namespace Algorithmix.Database
         public DbSet<TestEntity> Tests { get; set; }
         public DbSet<TestAnswerEntity> TestAnswers { get; set; }
         public DbSet<TestQuestionEntity> TestQuestions { get; set; }
+        public DbSet<UserAnswerEntity> UserAnswers { get; set; }
+        public DbSet<UserTestResultEntity> UserTestResults { get; set; }
     }
 }

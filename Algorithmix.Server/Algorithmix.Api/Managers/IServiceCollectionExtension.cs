@@ -9,6 +9,7 @@ namespace Algorithmix.Api.Managers
             services.AddScoped<TestAnswerManager, TestAnswerManager>();
             services.AddScoped<TestQuestionManager, TestQuestionManager>();
             services.AddScoped<TestManager, TestManager>();
+            services.AddScoped<TestPassManager, TestPassManager>();
         }
     }
 }

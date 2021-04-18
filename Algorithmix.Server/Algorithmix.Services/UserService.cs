@@ -10,13 +10,23 @@ namespace Algorithmix.Services
 {
     public class UserService
     {
+        private readonly AuthenticationService _authService;
         private readonly ApplicationUserMapper _userMapper;
         private readonly UserManager<ApplicationUserEntity> _userManager;        
 
-        public UserService(ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
+        public UserService(AuthenticationService authService, ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
         {
+            _authService = authService;
             _userMapper = userMapper;
             _userManager = userManager;
+        }
+
+        public string GetUserIdByAccessToken(string authorization)
+        {
+            var accessToken = authorization.Replace("Bearer ", "");
+            var authModel = _authService.CheckAuth(accessToken);
+
+            return authModel.CurrentUser.Id;
         }
 
         public async Task<ApplicationUser> GetUserByEmail(string email)

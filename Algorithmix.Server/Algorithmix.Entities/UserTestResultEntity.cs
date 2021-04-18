@@ -1,0 +1,15 @@
+﻿using System;
+
+namespace Algorithmix.Entities
+{
+    public class UserTestResultEntity
+    {
+        public string UserId { get; set; }
+        public int TestId { get; set; }
+        public int Result { get; set; }
+        public int CorrectAnswers { get; set; }
+        public int TotalQuestions { get; set; }
+        public bool IsPassed { get; set; }
+        public DateTime PassingTime { get; set; }
+    }
+}
