@@ -13,6 +13,7 @@ namespace Algorithmix.Mappers
             services.AddScoped<TestAnswerMapper, TestAnswerMapper>();
             services.AddScoped<TestQuestionMapper, TestQuestionMapper>();
             services.AddScoped<UserAnswerMapper, UserAnswerMapper>();
+            services.AddScoped<UserTestResultMapper, UserTestResultMapper>();
         }
     }
 }
