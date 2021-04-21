@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Common.Constants;
+using Algorithmix.Common.Extensions;
 using Algorithmix.Entities;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
@@ -35,12 +36,7 @@ namespace Algorithmix.Api.Managers
         public async Task<TestQuestion> GetNextTestQuestion(UserAnswerPayload userAnswerPayload, string userId, int testId)
         {
             if (userAnswerPayload == null)
-            {
-                var test = await _testManager.GetTest(testId);
-                var firstQuestion = await _questionManager.GetTestQuestion(test.Questions.First().Id);
-
-                return firstQuestion;
-            }
+                return await HandleTestStart(userId, testId);
 
             var currentQuestion = await _questionManager.GetTestQuestion(userAnswerPayload.QuestionId);
             await HandleUserAnswer(userAnswerPayload, currentQuestion, userId);
@@ -52,6 +48,20 @@ namespace Algorithmix.Api.Managers
                 await ProcessUserTestResult(currentQuestion.Test.Id, userId);
                 return null;
             }
+        }
+
+        private async Task<TestQuestion> HandleTestStart(string userId, int testId)
+        {
+            var test = await _testManager.GetTest(testId);
+            var firstQuestion = await _questionManager.GetTestQuestion(test.Questions.First().Id);
+
+            await test.Questions.ForEachAsync(async q =>
+            {
+                if (await _userAnswerService.Exists(q.Id, userId))
+                    await _userAnswerService.DeleteUserAnswer(q.Id, userId);
+            });
+
+            return firstQuestion;
         }
 
         private async Task HandleUserAnswer(UserAnswerPayload userAnswerPayload, TestQuestion currentQuestion, string userId)
@@ -91,7 +101,7 @@ namespace Algorithmix.Api.Managers
             var correctUserAnswers = userAnswers.Where(ua => correctAnswers.Contains(ua));
 
             userAnswerEntity.Value = string.Join("__", userAnswers);
-            userAnswerEntity.IsCorrect = correctUserAnswers.Count() == correctAnswers.Count();
+            userAnswerEntity.IsCorrect = correctUserAnswers.Count() == userAnswers.Count();
         }
 
         private void HandleUserAnswerOnFreeAnswerQuestionType(UserAnswerEntity userAnswerEntity, IEnumerable<string> userAnswers, TestQuestion currentQuestion)

@@ -22,5 +22,10 @@ namespace Algorithmix.Services
             var createdUserTestResult = await _userTestResultRepository.CreateUserTestResult(userTestResultEntity);
             return _userTestResultMapper.ToModel(createdUserTestResult);
         }
+
+        public async Task DeleteUserTestResult(int testId, string userId)
+        {
+            await _userTestResultRepository.DeleteUserTestResult(testId, userId);
+        }
     }
 }

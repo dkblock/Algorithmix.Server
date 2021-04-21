@@ -25,6 +25,11 @@ namespace Algorithmix.Services
             return _userAnswerMapper.ToDomain(createdUserAnswer);
         }
 
+        public async Task<bool> Exists(int questionId, string userId)
+        {
+            return await _userAnswerRepository.GetUserAnswerById(questionId, userId) != null;
+        }
+
         public async Task<IEnumerable<UserAnswer>> GetUserAnswers(IEnumerable<int> questionIds, string userId)
         {
             var userAnswerEntities = await _userAnswerRepository.GetUserAnswers(ua => questionIds.Contains(ua.QuestionId) && ua.UserId == userId);

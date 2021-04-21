@@ -21,6 +21,16 @@ namespace Algorithmix.Api.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> StartTestPass(int testId, [FromHeader] string authorization)
+        {
+            var userId = _userService.GetUserIdByAccessToken(authorization);
+            var nextQuestion = await _testPassManager.GetNextTestQuestion(null, userId, testId);
+
+            return Ok(nextQuestion);
+        }
+
         [HttpPost]
         [Route("next")]
         public async Task<IActionResult> GetNextTestQuestion(int testId, [FromHeader] string authorization, [FromBody] UserAnswerPayload userAnswerPayload)
