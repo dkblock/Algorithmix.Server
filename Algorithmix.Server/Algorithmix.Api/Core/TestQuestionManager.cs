@@ -4,7 +4,7 @@ using Algorithmix.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Api.Managers
+namespace Algorithmix.Api.Core
 {
     public class TestQuestionManager
     {

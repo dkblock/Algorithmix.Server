@@ -1,5 +1,4 @@
-﻿using Algorithmix.Entities;
-using Algorithmix.Mappers;
+﻿using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
 using System.Collections.Generic;
@@ -19,9 +18,11 @@ namespace Algorithmix.Services
             _userAnswerMapper = userAnswerMapper;
         }
 
-        public async Task<UserAnswer> CreateUserAnswer(UserAnswerEntity userAnswerEntity)
+        public async Task<UserAnswer> CreateUserAnswer(UserAnswerData userAnswerData)
         {
+            var userAnswerEntity = _userAnswerMapper.ToEntity(userAnswerData);
             var createdUserAnswer = await _userAnswerRepository.CreateUserAnswer(userAnswerEntity);
+
             return _userAnswerMapper.ToDomain(createdUserAnswer);
         }
 

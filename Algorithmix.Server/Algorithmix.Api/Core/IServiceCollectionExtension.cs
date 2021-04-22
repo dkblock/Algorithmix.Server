@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Algorithmix.Api.Managers
+namespace Algorithmix.Api.Core
 {
     public static class IServiceCollectionExtension
     {
@@ -10,6 +10,8 @@ namespace Algorithmix.Api.Managers
             services.AddScoped<TestQuestionManager, TestQuestionManager>();
             services.AddScoped<TestManager, TestManager>();
             services.AddScoped<TestPassManager, TestPassManager>();
+            services.AddScoped<UserAnswerManager, UserAnswerManager>();
+            services.AddScoped<UserTestResultManager, UserTestResultManager>();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Algorithmix.Models.Tests
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsPassedByUser { get; set; }
         public Algorithm Algorithm { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }
     }

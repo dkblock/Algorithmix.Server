@@ -12,7 +12,7 @@ namespace Algorithmix.Services
     {
         private readonly AuthenticationService _authService;
         private readonly ApplicationUserMapper _userMapper;
-        private readonly UserManager<ApplicationUserEntity> _userManager;        
+        private readonly UserManager<ApplicationUserEntity> _userManager;
 
         public UserService(AuthenticationService authService, ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
         {
@@ -27,6 +27,14 @@ namespace Algorithmix.Services
             var authModel = _authService.CheckAuth(accessToken);
 
             return authModel.CurrentUser.Id;
+        }
+
+        public async Task<ApplicationUser> GetUserById(string id)
+        {
+            var userEntity = await _userManager.FindByIdAsync(id);
+            var userRole = await _userManager.GetRoleAsync(userEntity);
+
+            return _userMapper.ToDomain(userEntity, userRole);
         }
 
         public async Task<ApplicationUser> GetUserByEmail(string email)

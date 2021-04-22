@@ -7,12 +7,24 @@ namespace Algorithmix.Mappers
 {
     public class UserAnswerMapper
     {
-        public UserAnswerEntity ToEntity(UserAnswerPayload userAnswerPayload, string userId)
+        public UserAnswerData ToData(UserAnswerPayload userAnswerPayload, string userId)
+        {
+            return new UserAnswerData
+            {
+                Answers = userAnswerPayload.Answers,
+                QuestionId = userAnswerPayload.QuestionId,
+                UserId = userId
+            };
+        }
+
+        public UserAnswerEntity ToEntity(UserAnswerData userAnswerData)
         {
             return new UserAnswerEntity
             {
-                QuestionId = userAnswerPayload.QuestionId,
-                UserId = userId
+                QuestionId = userAnswerData.QuestionId,
+                UserId = userAnswerData.UserId,
+                Value = userAnswerData.Value,
+                IsCorrect = userAnswerData.IsCorrect
             };
         }
 
@@ -22,8 +34,7 @@ namespace Algorithmix.Mappers
             {
                 Value = userAnswerEntity.Value,
                 IsCorrect = userAnswerEntity.IsCorrect,
-                QuestionId = userAnswerEntity.QuestionId,
-                UserId = userAnswerEntity.UserId
+                Question = new TestQuestion { Id = userAnswerEntity.QuestionId }
             };
         }
 

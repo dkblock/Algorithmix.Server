@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Api.Managers
+namespace Algorithmix.Api.Core
 {
     public class TestManager
     {
@@ -78,6 +78,7 @@ namespace Algorithmix.Api.Managers
         {
             var preparedTests = new List<Test>();
             await tests.ForEachAsync(async test => preparedTests.Add(await PrepareTest(test)));
+
             return preparedTests.OrderByDescending(test => test.Id);
         }
     }
