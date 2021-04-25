@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -12,11 +11,13 @@ namespace Algorithmix.Identity
 {
     public class AuthenticationService
     {
+        private readonly IdentityHelper _identityHelper;
         private readonly JwtSecurityTokenHandler _tokenHandler;
         private readonly byte[] _secret;
 
         public AuthenticationService(IOptions<IdentitySettings> identitySettings)
         {
+            _identityHelper = new IdentityHelper();
             _tokenHandler = new JwtSecurityTokenHandler();
             _secret = Encoding.ASCII.GetBytes(identitySettings.Value.Secret);
         }
@@ -39,17 +40,13 @@ namespace Algorithmix.Identity
             return _tokenHandler.WriteToken(token);
         }
 
-        public AuthModel CheckAuth(string accessToken)
+        public AuthModel CheckAuth(string authorization)
         {
-            var token = new JwtSecurityToken(accessToken);
-            var user = new ApplicationUser
-            {
-                Id = token.Claims.FirstOrDefault(c => c.Type == "primarysid").Value,
-                Email = token.Claims.FirstOrDefault(c => c.Type == "email").Value,
-                Role = token.Claims.FirstOrDefault(c => c.Type == "role").Value
-            };
+            var accessToken = _identityHelper.GetAccessToken(authorization);
+            var jwtToken = _identityHelper.GetAccessJwtToken(authorization);
+            var user = _identityHelper.GetUser(jwtToken);
 
-            if (token.Payload.Exp > DateTimeOffset.Now.ToUnixTimeSeconds())
+            if (jwtToken.Payload.Exp > DateTimeOffset.Now.ToUnixTimeSeconds())
                 return new AuthModel { AccessToken = accessToken, CurrentUser = user };
 
             return new AuthModel { AccessToken = Authenticate(user), CurrentUser = user };

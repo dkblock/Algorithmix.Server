@@ -1,6 +1,6 @@
 ﻿using Algorithmix.Api.Core;
+using Algorithmix.Identity;
 using Algorithmix.Models.Tests;
-using Algorithmix.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,20 +14,18 @@ namespace Algorithmix.Api.Controllers
     {
         private readonly TestPassManager _testPassManager;
         private readonly UserTestResultManager _userTestResultManager;
-        private readonly UserService _userService;
 
-        public TestPassController(TestPassManager testPassManager, UserTestResultManager userTestResultManager, UserService userService)
+        public TestPassController(TestPassManager testPassManager, UserTestResultManager userTestResultManager)
         {
             _testPassManager = testPassManager;
             _userTestResultManager = userTestResultManager;
-            _userService = userService;
         }
 
         [HttpGet]
         [Route("pass")]
-        public async Task<IActionResult> StartTestPass(int testId, [FromHeader] string authorization)
+        public async Task<IActionResult> StartTestPass(int testId)
         {
-            var userId = _userService.GetUserIdByAccessToken(authorization);
+            var userId = this.GetUser().Id;
             var nextQuestion = await _testPassManager.GetNextTestQuestion(null, testId, userId);
 
             return Ok(nextQuestion);
@@ -35,9 +33,9 @@ namespace Algorithmix.Api.Controllers
 
         [HttpPost]
         [Route("pass/next")]
-        public async Task<IActionResult> GetNextTestQuestion(int testId, [FromHeader] string authorization, [FromBody] UserAnswerPayload userAnswerPayload)
+        public async Task<IActionResult> GetNextTestQuestion(int testId, [FromBody] UserAnswerPayload userAnswerPayload)
         {
-            var userId = _userService.GetUserIdByAccessToken(authorization);
+            var userId = this.GetUser().Id;
             var nextQuestion = await _testPassManager.GetNextTestQuestion(userAnswerPayload, testId, userId);
 
             return Ok(nextQuestion);
@@ -45,9 +43,9 @@ namespace Algorithmix.Api.Controllers
 
         [HttpPost]
         [Route("pass/previous")]
-        public async Task<IActionResult> GetPreviousTestQuestion([FromHeader] string authorization, [FromBody] UserAnswerPayload userAnswerPayload)
+        public async Task<IActionResult> GetPreviousTestQuestion([FromBody] UserAnswerPayload userAnswerPayload)
         {
-            var userId = _userService.GetUserIdByAccessToken(authorization);
+            var userId = this.GetUser().Id;
             var previousQuestion = await _testPassManager.GetPreviousTestQuestion(userAnswerPayload.QuestionId, userId);
 
             return Ok(previousQuestion);
@@ -55,9 +53,9 @@ namespace Algorithmix.Api.Controllers
 
         [HttpGet]
         [Route("result")]
-        public async Task<IActionResult> GetTestPassResult(int testId, [FromHeader] string authorization)
+        public async Task<IActionResult> GetTestPassResult(int testId)
         {
-            var userId = _userService.GetUserIdByAccessToken(authorization);
+            var userId = this.GetUser().Id;
 
             if (!await _userTestResultManager.Exists(testId, userId))
                 return NotFound();

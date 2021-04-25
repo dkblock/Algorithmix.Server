@@ -26,8 +26,7 @@ namespace Algorithmix.Services
 
         public async Task<AuthModel> Authenticate(string authorization)
         {
-            var accessToken = authorization.Replace("Bearer ", "");
-            var authModel = _authService.CheckAuth(accessToken);
+            var authModel = _authService.CheckAuth(authorization);
             var userEntity = await _userManager.FindByIdAsync(authModel.CurrentUser.Id);
 
             return _userMapper.ToModel(userEntity, authModel.CurrentUser.Role, authModel.AccessToken);

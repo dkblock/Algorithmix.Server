@@ -2,6 +2,8 @@
 using Algorithmix.Api.Core;
 using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
+using Algorithmix.Identity;
+using Algorithmix.Models.SearchFilters;
 using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,13 @@ namespace Algorithmix.Server.Controllers
     [Route("api/tests")]
     public class TestController : Controller
     {
+        private readonly AuthenticationService _authService;
         private readonly TestManager _testManager;
         private readonly TestValidator _testValidator;
 
-        public TestController(TestManager testManager, TestValidator testValidator)
+        public TestController(AuthenticationService authService, TestManager testManager, TestValidator testValidator)
         {
+            _authService = authService;
             _testManager = testManager;
             _testValidator = testValidator;
         }
@@ -45,7 +49,9 @@ namespace Algorithmix.Server.Controllers
             if (!await _testManager.Exists(testId))
                 return NotFound();
 
-            var test = await _testManager.GetTest(testId);
+            var filter = new TestFilterPayload() { UserId = this.GetUser().Id };
+            var test = await _testManager.GetTest(testId, filter);
+
             return Ok(test);
         }
 
@@ -53,7 +59,9 @@ namespace Algorithmix.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests()
         {
-            var tests = await _testManager.GetTests();
+            var filter = new TestFilterPayload() { UserId = this.GetUser().Id };
+            var tests = await _testManager.GetTests(filter);
+
             return Ok(tests);
         }
 

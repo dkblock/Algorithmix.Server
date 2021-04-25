@@ -1,4 +1,6 @@
 ﻿using Algorithmix.Common.Extensions;
+using Algorithmix.Common.Helpers;
+using Algorithmix.Models.SearchFilters;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
 using System.Collections.Generic;
@@ -12,12 +14,21 @@ namespace Algorithmix.Api.Core
         private readonly AlgorithmService _algorithmService;
         private readonly TestService _testService;
         private readonly TestQuestionService _questionService;
+        private readonly UserTestResultService _userTestResultService;
+        private readonly FilterHelper _filterHelper;
 
-        public TestManager(AlgorithmService algorithmService, TestService testService, TestQuestionService questionService)
+        public TestManager(
+            AlgorithmService algorithmService,
+            TestService testService,
+            TestQuestionService questionService,
+            UserTestResultService userTestResultService)
         {
             _algorithmService = algorithmService;
             _testService = testService;
             _questionService = questionService;
+            _userTestResultService = userTestResultService;
+
+            _filterHelper = new FilterHelper();
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)
@@ -31,28 +42,16 @@ namespace Algorithmix.Api.Core
             return await _testService.Exists(id);
         }
 
-        public async Task<Test> GetTest(int id)
+        public async Task<Test> GetTest(int id, TestFilterPayload filter = null)
         {
             var test = await _testService.GetTest(id);
-            return await PrepareTest(test);
+            return await PrepareTest(test, filter);
         }
 
-        public async Task<IEnumerable<Test>> GetTests()
+        public async Task<IEnumerable<Test>> GetTests(TestFilterPayload filter = null)
         {
             var tests = await _testService.GetTests();
-            return await PrepareTests(tests);
-        }
-
-        public async Task<IEnumerable<Test>> GetTests(string algorithmId)
-        {
-            var tests = await _testService.GetTests(algorithmId);
-            return await PrepareTests(tests);
-        }
-
-        public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
-        {
-            var tests = await _testService.GetTests(algorithmIds);
-            return await PrepareTests(tests);
+            return await PrepareTests(tests, filter);
         }
 
         public async Task DeleteTest(int id)
@@ -66,18 +65,36 @@ namespace Algorithmix.Api.Core
             return await PrepareTest(updatedTest);
         }
 
-        private async Task<Test> PrepareTest(Test test)
+        private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)
         {
             test.Algorithm = await _algorithmService.GetAlgorithm(test.Algorithm.Id);
             test.Questions = await _questionService.GetTestQuestions(test.Id);
+            test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);
+
+            if (filter != null && await _userTestResultService.Exists(test.Id, filter.UserId))
+                test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, filter.UserId);
 
             return test;
         }
 
-        private async Task<IEnumerable<Test>> PrepareTests(IEnumerable<Test> tests)
+        private async Task<IEnumerable<Test>> PrepareTests(IEnumerable<Test> tests, TestFilterPayload filter = null)
         {
             var preparedTests = new List<Test>();
-            await tests.ForEachAsync(async test => preparedTests.Add(await PrepareTest(test)));
+
+            if (filter != null)
+            {
+                if (!string.IsNullOrEmpty(filter.SearchText))
+                    tests = tests.Where(t =>
+                        _filterHelper.IsMatch(filter.SearchText, t.Name) || _filterHelper.IsMatch(filter.SearchText, t.Algorithm.Name));
+
+                if (filter.OnlyPassed)
+                    tests = await tests.WhereAsync(async t => await _userTestResultService.Exists(t.Id, filter.UserId));
+
+                if (filter.AlgorithmIds.Any())
+                    tests = tests.Where(t => filter.AlgorithmIds.Contains(t.Algorithm.Id));
+            }
+
+            await tests.ForEachAsync(async test => preparedTests.Add(await PrepareTest(test, filter)));
 
             return preparedTests.OrderByDescending(test => test.Id);
         }

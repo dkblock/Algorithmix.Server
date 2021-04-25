@@ -21,14 +21,6 @@ namespace Algorithmix.Services
             _userManager = userManager;
         }
 
-        public string GetUserIdByAccessToken(string authorization)
-        {
-            var accessToken = authorization.Replace("Bearer ", "");
-            var authModel = _authService.CheckAuth(accessToken);
-
-            return authModel.CurrentUser.Id;
-        }
-
         public async Task<ApplicationUser> GetUserById(string id)
         {
             var userEntity = await _userManager.FindByIdAsync(id);

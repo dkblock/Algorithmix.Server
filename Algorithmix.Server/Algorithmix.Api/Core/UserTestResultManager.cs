@@ -29,7 +29,7 @@ namespace Algorithmix.Api.Core
 
         public async Task<UserTestResult> CreateUserTestResult(int testId, string userId)
         {
-            var test = await _testManager.GetTest(testId);
+            var test = await _testManager.GetTest(testId, null);
             var questionIds = test.Questions.Select(q => q.Id);
             var userAnswers = await _userAnswerManager.GetUserAnswers(questionIds, userId);
             var correctUserAnswersCount = userAnswers.Count(ua => ua.IsCorrect);
@@ -62,7 +62,7 @@ namespace Algorithmix.Api.Core
 
         private async Task<UserTestResult> PrepareUserTestResult(UserTestResult userTestResult)
         {
-            userTestResult.Test = await _testManager.GetTest(userTestResult.Test.Id);
+            userTestResult.Test = await _testManager.GetTest(userTestResult.Test.Id, null);
             userTestResult.User = await _userService.GetUserById(userTestResult.User.Id);
 
             var questionIds = userTestResult.Test.Questions.Select(q => q.Id);
