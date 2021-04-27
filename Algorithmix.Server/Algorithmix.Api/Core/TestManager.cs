@@ -16,24 +16,28 @@ namespace Algorithmix.Api.Core
         private readonly TestQuestionService _questionService;
         private readonly UserTestResultService _userTestResultService;
         private readonly FilterHelper _filterHelper;
+        private readonly TestDataManager _testDataManager;
 
         public TestManager(
             AlgorithmService algorithmService,
             TestService testService,
             TestQuestionService questionService,
-            UserTestResultService userTestResultService)
+            UserTestResultService userTestResultService,
+            TestDataManager testDataManager)
         {
             _algorithmService = algorithmService;
             _testService = testService;
             _questionService = questionService;
             _userTestResultService = userTestResultService;
-
             _filterHelper = new FilterHelper();
+            _testDataManager = testDataManager;
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)
         {
             var createdTest = await _testService.CreateTest(testPayload);
+            _testDataManager.CreateTestQuestionImagesDirectory(createdTest.Id);
+
             return await PrepareTest(createdTest);
         }
 
@@ -57,6 +61,7 @@ namespace Algorithmix.Api.Core
         public async Task DeleteTest(int id)
         {
             await _testService.DeleteTest(id);
+            _testDataManager.DeleteTestQuestionImagesDirectory(id);
         }
 
         public async Task<Test> UpdateTest(int id, TestPayload testPayload)

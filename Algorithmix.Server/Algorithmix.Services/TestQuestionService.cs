@@ -83,12 +83,32 @@ namespace Algorithmix.Services
             await _questionRepository.DeleteTestQuestion(id);
         }
 
-        public async Task<TestQuestion> UpdateTestQuestion(int questionId, TestQuestionPayload questionPayload)
+        public async Task<TestQuestion> UpdateTestQuestion(int id, TestQuestionPayload questionPayload)
         {
-            var questionEntity = _questionMapper.ToEntity(questionPayload, questionId);
+            var questionEntity = _questionMapper.ToEntity(questionPayload, id);
             var updatedQuestion = await _questionRepository.UpdateTestQuestion(questionEntity);
 
             return _questionMapper.ToModel(updatedQuestion);
+        }
+
+        public async Task<TestQuestion> UpdateTestQuestionImage(int id, string imagePath)
+        {
+            var questionEntity = await _questionRepository.GetTestQuestionById(id);
+            questionEntity.Image = imagePath;
+            var updatedQuestion = await _questionRepository.UpdateTestQuestion(questionEntity);
+
+            return _questionMapper.ToModel(updatedQuestion);
+        }
+
+        public async Task<string> ClearTestQuestionImage(int id)
+        {
+            var questionEntity = await _questionRepository.GetTestQuestionById(id);
+            var imagePath = questionEntity.Image;
+
+            questionEntity.Image = null;
+            await _questionRepository.UpdateTestQuestion(questionEntity);
+
+            return imagePath;
         }
 
         public async Task<IEnumerable<TestQuestion>> MoveTestQuestion(int testId, int oldIndex, int newIndex)

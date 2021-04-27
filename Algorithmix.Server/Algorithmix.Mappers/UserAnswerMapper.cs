@@ -32,8 +32,8 @@ namespace Algorithmix.Mappers
         {
             return new UserAnswer
             {
-                Value = userAnswerEntity.Value,
                 IsCorrect = userAnswerEntity.IsCorrect,
+                Answers = userAnswerEntity.Value.Split("__"),
                 Question = new TestQuestion { Id = userAnswerEntity.QuestionId }
             };
         }

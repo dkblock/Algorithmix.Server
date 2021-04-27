@@ -6,6 +6,7 @@ namespace Algorithmix.Api.Core
     {
         public static void AddManagers(this IServiceCollection services)
         {
+            services.AddScoped<TestDataManager, TestDataManager>();
             services.AddScoped<TestAnswerManager, TestAnswerManager>();
             services.AddScoped<TestQuestionManager, TestQuestionManager>();
             services.AddScoped<TestManager, TestManager>();

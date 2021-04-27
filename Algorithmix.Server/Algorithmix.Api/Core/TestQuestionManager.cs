@@ -53,15 +53,26 @@ namespace Algorithmix.Api.Core
             await _questionService.DeleteTestQuestion(id);
         }
 
-        public async Task<TestQuestion> UpdateTestQuestion(int questionId, TestQuestionPayload questionPayload)
+        public async Task<TestQuestion> UpdateTestQuestion(int id, TestQuestionPayload questionPayload)
         {
-            var question = await _questionService.GetTestQuestion(questionId);
-            var updatedQuestion = await _questionService.UpdateTestQuestion(questionId, questionPayload);
+            var question = await _questionService.GetTestQuestion(id);
+            var updatedQuestion = await _questionService.UpdateTestQuestion(id, questionPayload);
 
             if (question.Type != updatedQuestion.Type)
-                await _answerService.UpdateTestAnswers(questionId, updatedQuestion.Type);
+                await _answerService.UpdateTestAnswers(id, updatedQuestion.Type);
 
             return await PrepareQuestion(updatedQuestion);
+        }
+
+        public async Task<TestQuestion> UpdateTestQuestionImage(int id, string imagePath)
+        {
+            var updatedQuestion = await _questionService.UpdateTestQuestionImage(id, imagePath);
+            return await PrepareQuestion(updatedQuestion);
+        }
+
+        public async Task<string> ClearTestQuestionImage(int id)
+        {
+            return await _questionService.ClearTestQuestionImage(id);
         }
 
         public async Task<IEnumerable<TestQuestion>> MoveTestQuestion(int testId, int oldIndex, int newIndex)

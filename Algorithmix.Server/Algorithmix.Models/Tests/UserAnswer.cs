@@ -1,9 +1,11 @@
-﻿namespace Algorithmix.Models.Tests
+﻿using System.Collections.Generic;
+
+namespace Algorithmix.Models.Tests
 {
     public class UserAnswer
     {
-        public string Value { get; set; }
         public bool IsCorrect { get; set; }
+        public IEnumerable<string> Answers { get; set; }
         public TestQuestion Question { get; set; }
     }
 }

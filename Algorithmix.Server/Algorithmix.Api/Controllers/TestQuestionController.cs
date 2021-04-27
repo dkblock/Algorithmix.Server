@@ -5,6 +5,7 @@ using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -17,13 +18,19 @@ namespace Algorithmix.Api.Controllers
     {
         private readonly TestQuestionManager _questionManager;
         private readonly TestManager _testManager;
+        private readonly TestDataManager _testDataManager;
         private readonly TestQuestionValidator _questionValidator;
 
-        public TestQuestionController(TestQuestionManager questionManager, TestManager testManager, TestQuestionValidator questionValidator)
+        public TestQuestionController(
+            TestQuestionManager questionManager,
+            TestManager testManager,
+            TestDataManager testDataManager,
+            TestQuestionValidator questionValidator)
         {
             _questionManager = questionManager;
-            _questionValidator = questionValidator;
             _testManager = testManager;
+            _testDataManager = testDataManager;
+            _questionValidator = questionValidator;
         }
 
         [HttpPost]
@@ -100,6 +107,33 @@ namespace Algorithmix.Api.Controllers
         {
             var movedQuestions = await _questionManager.MoveTestQuestion(testId, movePayload.OldIndex, movePayload.NewIndex);
             return Ok(movedQuestions);
+        }
+
+        [HttpPost]
+        [Route("{questionId}/image")]
+        [Authorize(Roles = Roles.Executive)]
+        public async Task<IActionResult> UploadTestQuestionImage(int testId, int questionId)
+        {
+            var image = HttpContext.Request.Form.Files.FirstOrDefault();
+
+            if (image == null)
+                return NoContent();
+
+            var imagePath = await _testDataManager.CreateTestQuestionImage(testId, questionId, image);
+            var updatedQuestion = await _questionManager.UpdateTestQuestionImage(questionId, imagePath);
+
+            return Ok(updatedQuestion);
+        }
+
+        [HttpDelete]
+        [Route("{questionId}/image")]
+        [Authorize(Roles = Roles.Executive)]
+        public async Task<IActionResult> ClearTestQuestionImage(int questionId)
+        {
+            var imagepath = await _questionManager.ClearTestQuestionImage(questionId);
+            _testDataManager.DeleteTestQuestionImage(imagepath);
+
+            return NoContent();
         }
     }
 }
