@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Database;
-using Algorithmix.Entities;
+using Algorithmix.Entities.Test;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Repository
+namespace Algorithmix.Repository.TestDesign
 {
     public class TestAnswerRepository
     {

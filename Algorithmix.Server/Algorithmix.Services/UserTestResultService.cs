@@ -1,4 +1,5 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Common.Extensions;
+using Algorithmix.Entities;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
@@ -46,6 +47,12 @@ namespace Algorithmix.Services
         public async Task DeleteUserTestResult(int testId, string userId)
         {
             await _userTestResultRepository.DeleteUserTestResult(testId, userId);
+        }
+
+        public async Task DeleteUserTestResults(int testId)
+        {
+            var userTestResults = await _userTestResultRepository.GetUserTestResults(utr => utr.TestId == testId);
+            await userTestResults.ForEachAsync(async utr => await _userTestResultRepository.DeleteUserTestResult(testId, utr.UserId));
         }
     }
 }

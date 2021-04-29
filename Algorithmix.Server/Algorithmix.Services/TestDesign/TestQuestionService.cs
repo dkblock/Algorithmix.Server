@@ -1,12 +1,12 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Entities.Test;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
-using Algorithmix.Repository;
+using Algorithmix.Repository.TestDesign;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Services
+namespace Algorithmix.Services.TestDesign
 {
     public class TestQuestionService
     {

@@ -1,4 +1,5 @@
-﻿using Algorithmix.Mappers;
+﻿using Algorithmix.Api.Core.TestPass;
+using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,15 @@ namespace Algorithmix.Api.Core
 {
     public class TestPassManager
     {
-        private readonly TestManager _testManager;
-        private readonly TestQuestionManager _questionManager;
+        private readonly PublishedTestManager _testManager;
+        private readonly PublishedTestQuestionManager _questionManager;
         private readonly UserAnswerMapper _userAnswerMapper;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultManager _userTestResultManager;
 
         public TestPassManager(
-            TestManager testManager,
-            TestQuestionManager questionManager,
+            PublishedTestManager testManager,
+            PublishedTestQuestionManager questionManager,
             UserAnswerMapper userAnswerMapper,
             UserAnswerManager userAnswerManager,
             UserTestResultManager userTestResultManager)

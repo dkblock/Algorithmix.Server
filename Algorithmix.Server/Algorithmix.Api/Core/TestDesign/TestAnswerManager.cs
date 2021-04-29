@@ -1,10 +1,10 @@
 ﻿using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
-using Algorithmix.Services;
+using Algorithmix.Services.TestDesign;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Api.Core
+namespace Algorithmix.Api.Core.TestDesign
 {
     public class TestAnswerManager
     {

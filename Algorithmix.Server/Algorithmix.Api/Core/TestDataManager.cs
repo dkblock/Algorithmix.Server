@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Algorithmix.Common.Constants;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -17,30 +18,30 @@ namespace Algorithmix.Api.Core
             _random = new Random();
         }
 
-        public void CreateTestQuestionImagesDirectory(int testId)
+        public void CreateTestQuestionImagesDirectory(int testId, bool isPublished = false)
         {
-            var path = GetTestQuestionImagesDirectory(testId);
+            var path = GetTestQuestionImagesDirectory(testId, isPublished);
             Directory.CreateDirectory(path);
         }
 
-        public void DeleteTestQuestionImagesDirectory(int testId)
+        public void DeleteTestQuestionImagesDirectory(int testId, bool isPublished = false)
         {
-            var path = GetTestQuestionImagesDirectory(testId);
+            var path = GetTestQuestionImagesDirectory(testId, isPublished);
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
         }
 
-        public async Task<string> CreateTestQuestionImage(int testId, int questionId, IFormFile image)
+        public async Task<string> CreateTestQuestionImage(int testId, int questionId, IFormFile image, bool isPublished = false)
         {
             var ext = Path.GetExtension(image.FileName);
             var fileName = $"question{questionId}_{_random.Next(0, 10000)}{ext}";
-            var imagesDirectory = GetTestQuestionImagesDirectory(testId);
+            var imagesDirectory = GetTestQuestionImagesDirectory(testId, isPublished);
 
             if (!Directory.Exists(imagesDirectory))
                 CreateTestQuestionImagesDirectory(testId);
 
-            var path = Path.Combine(GetTestQuestionImagesDirectory(testId), fileName);
+            var path = Path.Combine(GetTestQuestionImagesDirectory(testId, isPublished), fileName);
             var absolutePath = Path.Combine(_env.WebRootPath, path);
 
             using var stream = new FileStream(absolutePath, FileMode.Create);
@@ -57,9 +58,25 @@ namespace Algorithmix.Api.Core
                 File.Delete(path);
         }
 
-        private string GetTestQuestionImagesDirectory(int testId)
+        public void CopyTestQuestionImagesToPublishedTest(int testId)
         {
-            return Path.Combine(_env.WebRootPath, "images", "test-questions", $"test_{testId}");
+            var sourceDirectory = GetTestQuestionImagesDirectory(testId, false);
+            var targetDirectory = GetTestQuestionImagesDirectory(testId, true);
+
+            if (!Directory.Exists(sourceDirectory))
+                return;
+
+            if (!Directory.Exists(targetDirectory))
+                CreateTestQuestionImagesDirectory(testId, true);
+
+            foreach (var file in Directory.GetFiles(sourceDirectory))
+                File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
+        }
+
+        private string GetTestQuestionImagesDirectory(int testId, bool isPublished)
+        {
+            var testsDirectory = isPublished ? TestQuestionImageDirectories.PublishedTestImagesDirectory : TestQuestionImageDirectories.TestImagesDirectory;
+            return Path.Combine(_env.WebRootPath, "images", testsDirectory, $"test_{testId}");
         }
     }
 }

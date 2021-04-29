@@ -1,28 +1,30 @@
 ﻿using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
-using Algorithmix.Services;
+using Algorithmix.Services.TestPass;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Api.Core
+namespace Algorithmix.Api.Core.TestPass
 {
-    public class TestQuestionManager
+    public class PublishedTestQuestionManager
     {
-        private readonly TestAnswerService _answerService;
-        private readonly TestQuestionService _questionService;
-        private readonly TestService _testService;
+        private readonly PublishedTestAnswerService _answerService;
+        private readonly PublishedTestQuestionService _questionService;
+        private readonly PublishedTestService _testService;
 
-        public TestQuestionManager(TestAnswerService answerService, TestQuestionService questionService, TestService testService)
+        public PublishedTestQuestionManager(
+            PublishedTestAnswerService answerService,
+            PublishedTestQuestionService questionService,
+            PublishedTestService testService)
         {
             _answerService = answerService;
             _questionService = questionService;
             _testService = testService;
         }
 
-        public async Task<TestQuestion> CreateTestQuestion(TestQuestionPayload questionPayload)
+        public async Task CreateTestQuestion(TestQuestion testQuestion)
         {
-            var createdQuestion = await _questionService.CreateTestQuestion(questionPayload);
-            return await PrepareQuestion(createdQuestion);
+            await _questionService.CreateTestQuestion(testQuestion);
         }
 
         public async Task<bool> Exists(int questionId, int testId)
@@ -51,34 +53,6 @@ namespace Algorithmix.Api.Core
         public async Task DeleteTestQuestion(int id)
         {
             await _questionService.DeleteTestQuestion(id);
-        }
-
-        public async Task<TestQuestion> UpdateTestQuestion(int id, TestQuestionPayload questionPayload)
-        {
-            var question = await _questionService.GetTestQuestion(id);
-            var updatedQuestion = await _questionService.UpdateTestQuestion(id, questionPayload);
-
-            if (question.Type != updatedQuestion.Type)
-                await _answerService.UpdateTestAnswers(id, updatedQuestion.Type);
-
-            return await PrepareQuestion(updatedQuestion);
-        }
-
-        public async Task<TestQuestion> UpdateTestQuestionImage(int id, string imagePath)
-        {
-            var updatedQuestion = await _questionService.UpdateTestQuestionImage(id, imagePath);
-            return await PrepareQuestion(updatedQuestion);
-        }
-
-        public async Task<string> ClearTestQuestionImage(int id)
-        {
-            return await _questionService.ClearTestQuestionImage(id);
-        }
-
-        public async Task<IEnumerable<TestQuestion>> MoveTestQuestion(int testId, int oldIndex, int newIndex)
-        {
-            var movedQuestions = await _questionService.MoveTestQuestion(testId, oldIndex, newIndex);
-            return await PrepareQuestions(movedQuestions);
         }
 
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)

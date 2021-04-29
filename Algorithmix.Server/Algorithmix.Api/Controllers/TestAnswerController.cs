@@ -1,4 +1,4 @@
-﻿using Algorithmix.Api.Core;
+﻿using Algorithmix.Api.Core.TestDesign;
 using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
 using Algorithmix.Models;

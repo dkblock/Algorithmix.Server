@@ -10,6 +10,7 @@ namespace Algorithmix.Api.Validation
             services.AddScoped<TestValidator, TestValidator>();
             services.AddScoped<TestAnswerValidator, TestAnswerValidator>();
             services.AddScoped<TestQuestionValidator, TestQuestionValidator>();
+            services.AddScoped<TestPublishValidator, TestPublishValidator>();
         }
     }
 }

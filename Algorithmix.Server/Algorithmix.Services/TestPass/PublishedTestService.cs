@@ -1,26 +1,26 @@
 ﻿using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
-using Algorithmix.Repository;
+using Algorithmix.Repository.TestPass;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Services
+namespace Algorithmix.Services.TestPass
 {
-    public class TestService
+    public class PublishedTestService
     {
         private readonly TestMapper _testMapper;
-        private readonly TestRepository _testRepository;
+        private readonly PublishedTestRepository _testRepository;
 
-        public TestService(TestMapper testMapper, TestRepository testRepository)
+        public PublishedTestService(TestMapper testMapper, PublishedTestRepository testRepository)
         {
             _testMapper = testMapper;
             _testRepository = testRepository;
         }
 
-        public async Task<Test> CreateTest(TestPayload testPayload)
+        public async Task<Test> CreateTest(Test test)
         {
-            var testEntity = _testMapper.ToEntity(testPayload);
+            var testEntity = _testMapper.ToEntity(test);
             var createdTest = await _testRepository.CreateTest(testEntity);
 
             return _testMapper.ToModel(createdTest);
@@ -43,12 +43,6 @@ namespace Algorithmix.Services
             return _testMapper.ToModelsCollection(testEntities);
         }
 
-        public async Task<IEnumerable<Test>> GetTests(string algorithmId)
-        {
-            var testEntities = await _testRepository.GetTests(t => t.AlgorithmId == algorithmId);
-            return _testMapper.ToModelsCollection(testEntities);
-        }
-
         public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
         {
             var testEntities = await _testRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
@@ -58,14 +52,6 @@ namespace Algorithmix.Services
         public async Task DeleteTest(int id)
         {
             await _testRepository.DeleteTest(id);
-        }
-
-        public async Task<Test> UpdateTest(int id, TestPayload testPayload)
-        {
-            var testEntity = _testMapper.ToEntity(testPayload, id);
-            var updatedTest = await _testRepository.UpdateTest(testEntity);
-
-            return _testMapper.ToModel(updatedTest);
         }
     }
 }

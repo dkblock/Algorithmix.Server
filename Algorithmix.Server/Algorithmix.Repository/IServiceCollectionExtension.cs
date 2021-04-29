@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Algorithmix.Repository.TestDesign;
+using Algorithmix.Repository.TestPass;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Algorithmix.Repository
 {
@@ -9,6 +11,9 @@ namespace Algorithmix.Repository
             services.AddScoped<AlgorithmRepository, AlgorithmRepository>();
             services.AddScoped<AlgorithmTimeComplexityRepository, AlgorithmTimeComplexityRepository>();
             services.AddScoped<GroupRepository, GroupRepository>();
+            services.AddScoped<PublishedTestRepository, PublishedTestRepository>();
+            services.AddScoped<PublishedTestAnswerRepository, PublishedTestAnswerRepository>();
+            services.AddScoped<PublishedTestQuestionRepository, PublishedTestQuestionRepository>();
             services.AddScoped<TestRepository, TestRepository>();
             services.AddScoped<TestAnswerRepository, TestAnswerRepository>();
             services.AddScoped<TestQuestionRepository, TestQuestionRepository>();

@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Entities;
+using Algorithmix.Entities.Test;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,11 +42,26 @@ namespace Algorithmix.Database
                 .WithMany()
                 .HasForeignKey(a => a.QuestionId);
 
+            builder.Entity<PublishedTestEntity>()
+                .HasOne<AlgorithmEntity>()
+                .WithMany()
+                .HasForeignKey(t => t.AlgorithmId);
+
+            builder.Entity<PublishedTestQuestionEntity>()
+                .HasOne<PublishedTestEntity>()
+                .WithMany()
+                .HasForeignKey(q => q.TestId);
+
+            builder.Entity<PublishedTestAnswerEntity>()
+                .HasOne<PublishedTestQuestionEntity>()
+                .WithMany()
+                .HasForeignKey(a => a.QuestionId);
+
             builder.Entity<UserAnswerEntity>()
                 .HasKey(ua => new { ua.QuestionId, ua.UserId });
 
             builder.Entity<UserAnswerEntity>()
-                .HasOne<TestQuestionEntity>()
+                .HasOne<PublishedTestQuestionEntity>()
                 .WithMany()
                 .HasForeignKey(ua => ua.QuestionId);
 
@@ -58,7 +74,7 @@ namespace Algorithmix.Database
                 .HasKey(utr => new { utr.TestId, utr.UserId });
 
             builder.Entity<UserTestResultEntity>()
-                .HasOne<TestEntity>()
+                .HasOne<PublishedTestEntity>()
                 .WithMany()
                 .HasForeignKey(utr => utr.TestId);
 
@@ -72,6 +88,9 @@ namespace Algorithmix.Database
         public DbSet<AlgorithmEntity> Algorithms { get; set; }
         public DbSet<AlgorithmTimeComplexityEntity> AlgorithmTimeComplexities { get; set; }
         public DbSet<GroupEntity> Groups { get; set; }
+        public DbSet<PublishedTestEntity> PublishedTests { get; set; }
+        public DbSet<PublishedTestAnswerEntity> PublishedTestAnswers { get; set; }
+        public DbSet<PublishedTestQuestionEntity> PublishedTestQuestions { get; set; }
         public DbSet<TestEntity> Tests { get; set; }
         public DbSet<TestAnswerEntity> TestAnswers { get; set; }
         public DbSet<TestQuestionEntity> TestQuestions { get; set; }

@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Algorithmix.Common\Algorithmix.Common.csproj" />
     <ProjectReference Include="..\Algorithmix.Entities\Algorithmix.Entities.csproj" />
     <ProjectReference Include="..\Algorithmix.Models\Algorithmix.Models.csproj" />
   </ItemGroup>

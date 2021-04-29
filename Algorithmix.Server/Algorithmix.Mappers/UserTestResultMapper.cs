@@ -1,4 +1,4 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Entities.Test;
 using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;

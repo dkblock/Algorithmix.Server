@@ -1,4 +1,5 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Common.Constants;
+using Algorithmix.Entities.Test;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,21 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public TestQuestion ToModel(TestQuestionEntity questionEntity)
+        public PublishedTestQuestionEntity ToEntity(TestQuestion question)
+        {
+            return new PublishedTestQuestionEntity
+            {
+                Id = question.Id,
+                Value = question.Value,
+                PreviousQuestionId = question.PreviousQuestionId,
+                NextQuestionId = question.NextQuestionId,
+                Image = question.Image?.Replace(TestQuestionImageDirectories.TestImagesDirectory, TestQuestionImageDirectories.PublishedTestImagesDirectory),
+                Type = question.Type,
+                TestId = question.Test.Id
+            };
+        }
+
+        public TestQuestion ToModel(BaseTestQuestionEntity questionEntity)
         {
             if (questionEntity == null)
                 return null;
@@ -39,7 +54,7 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<TestQuestion> ToModelCollection(IEnumerable<TestQuestionEntity> questionEntities)
+        public IEnumerable<TestQuestion> ToModelCollection(IEnumerable<BaseTestQuestionEntity> questionEntities)
         {
             return questionEntities.Select(entity => ToModel(entity));
         }

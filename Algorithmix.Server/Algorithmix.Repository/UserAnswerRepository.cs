@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Database;
-using Algorithmix.Entities;
+using Algorithmix.Entities.Test;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
-﻿namespace Algorithmix.Entities
+﻿namespace Algorithmix.Entities.Test
 {
-    public class TestEntity
+    public class BaseTestEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

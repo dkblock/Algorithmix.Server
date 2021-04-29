@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Algorithmix.Api.Core.TestDesign;
+using Algorithmix.Api.Core.TestPass;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Algorithmix.Api.Core
 {
@@ -11,6 +13,10 @@ namespace Algorithmix.Api.Core
             services.AddScoped<TestQuestionManager, TestQuestionManager>();
             services.AddScoped<TestManager, TestManager>();
             services.AddScoped<TestPassManager, TestPassManager>();
+            services.AddScoped<TestPublishManager, TestPublishManager>();
+            services.AddScoped<PublishedTestAnswerManager, PublishedTestAnswerManager>();
+            services.AddScoped<PublishedTestQuestionManager, PublishedTestQuestionManager>();
+            services.AddScoped<PublishedTestManager, PublishedTestManager>();
             services.AddScoped<UserAnswerManager, UserAnswerManager>();
             services.AddScoped<UserTestResultManager, UserTestResultManager>();
         }

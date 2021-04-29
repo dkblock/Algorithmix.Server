@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Algorithmix.Services.TestDesign;
+using Algorithmix.Services.TestPass;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Algorithmix.Services
 {
@@ -9,6 +11,9 @@ namespace Algorithmix.Services
             services.AddScoped<AccountService, AccountService>();
             services.AddScoped<AlgorithmService, AlgorithmService>();
             services.AddScoped<GroupService, GroupService>();
+            services.AddScoped<PublishedTestService, PublishedTestService>();
+            services.AddScoped<PublishedTestAnswerService, PublishedTestAnswerService>();
+            services.AddScoped<PublishedTestQuestionService, PublishedTestQuestionService>();
             services.AddScoped<TestService, TestService>();
             services.AddScoped<TestAnswerService, TestAnswerService>();
             services.AddScoped<TestQuestionService, TestQuestionService>();

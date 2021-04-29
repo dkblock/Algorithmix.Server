@@ -1,6 +1,7 @@
 ﻿using Algorithmix.Mappers;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Repository;
+using Algorithmix.Services.TestDesign;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,6 +28,11 @@ namespace Algorithmix.Services
             _algorithmRepository = algorithmRepository;
             _algorithmTimeComplexityRepository = algorithmTimeComplexityRepository;
             _testService = testService;
+        }
+
+        public async Task<bool> Exists(string algorithmId)
+        {
+            return await _algorithmRepository.GetAlgorithmById(algorithmId) != null;
         }
 
         public async Task<Algorithm> GetAlgorithm(string algorithmId)

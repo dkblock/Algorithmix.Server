@@ -3,25 +3,26 @@ using Algorithmix.Common.Helpers;
 using Algorithmix.Models.SearchFilters;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
+using Algorithmix.Services.TestPass;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Algorithmix.Api.Core
+namespace Algorithmix.Api.Core.TestPass
 {
-    public class TestManager
+    public class PublishedTestManager
     {
         private readonly AlgorithmService _algorithmService;
-        private readonly TestService _testService;
-        private readonly TestQuestionService _questionService;
+        private readonly PublishedTestService _testService;
+        private readonly PublishedTestQuestionService _questionService;
         private readonly UserTestResultService _userTestResultService;
         private readonly FilterHelper _filterHelper;
         private readonly TestDataManager _testDataManager;
 
-        public TestManager(
+        public PublishedTestManager(
             AlgorithmService algorithmService,
-            TestService testService,
-            TestQuestionService questionService,
+            PublishedTestService testService,
+            PublishedTestQuestionService questionService,
             UserTestResultService userTestResultService,
             TestDataManager testDataManager)
         {
@@ -33,12 +34,10 @@ namespace Algorithmix.Api.Core
             _testDataManager = testDataManager;
         }
 
-        public async Task<Test> CreateTest(TestPayload testPayload)
+        public async Task CreateTest(Test test)
         {
-            var createdTest = await _testService.CreateTest(testPayload);
-            _testDataManager.CreateTestQuestionImagesDirectory(createdTest.Id);
-
-            return await PrepareTest(createdTest);
+            var createdTest = await _testService.CreateTest(test);
+            _testDataManager.CreateTestQuestionImagesDirectory(createdTest.Id, true);
         }
 
         public async Task<bool> Exists(int id)
@@ -61,13 +60,7 @@ namespace Algorithmix.Api.Core
         public async Task DeleteTest(int id)
         {
             await _testService.DeleteTest(id);
-            _testDataManager.DeleteTestQuestionImagesDirectory(id);
-        }
-
-        public async Task<Test> UpdateTest(int id, TestPayload testPayload)
-        {
-            var updatedTest = await _testService.UpdateTest(id, testPayload);
-            return await PrepareTest(updatedTest);
+            _testDataManager.DeleteTestQuestionImagesDirectory(id, true);
         }
 
         private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)

@@ -1,4 +1,4 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Entities.Test;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public UserAnswer ToDomain(UserAnswerEntity userAnswerEntity)
+        public UserAnswer ToModel(UserAnswerEntity userAnswerEntity)
         {
             return new UserAnswer
             {
@@ -38,9 +38,9 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<UserAnswer> ToDomainCollection(IEnumerable<UserAnswerEntity> userAnswerEntities)
+        public IEnumerable<UserAnswer> ToModelsCollection(IEnumerable<UserAnswerEntity> userAnswerEntities)
         {
-            return userAnswerEntities.Select(ua => ToDomain(ua));
+            return userAnswerEntities.Select(ua => ToModel(ua));
         }
     }
 }

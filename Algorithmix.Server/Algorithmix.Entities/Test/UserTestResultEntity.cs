@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Algorithmix.Entities
+namespace Algorithmix.Entities.Test
 {
     public class UserTestResultEntity
     {

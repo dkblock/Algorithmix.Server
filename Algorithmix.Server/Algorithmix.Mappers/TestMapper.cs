@@ -1,4 +1,4 @@
-﻿using Algorithmix.Entities;
+﻿using Algorithmix.Entities.Test;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
@@ -18,7 +18,17 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public Test ToModel(TestEntity testEntity)
+        public PublishedTestEntity ToEntity(Test test)
+        {
+            return new PublishedTestEntity
+            {
+                Id = test.Id,
+                Name = test.Name,
+                AlgorithmId = test.Algorithm.Id
+            };
+        }
+
+        public Test ToModel(BaseTestEntity testEntity)
         {
             if (testEntity == null)
                 return null;
@@ -32,7 +42,7 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<Test> ToModelsCollection(IEnumerable<TestEntity> testEntities)
+        public IEnumerable<Test> ToModelsCollection(IEnumerable<BaseTestEntity> testEntities)
         {
             return testEntities.Select(entity => ToModel(entity));
         }

@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Api.Core;
-using Algorithmix.Identity;
+using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +12,13 @@ namespace Algorithmix.Api.Controllers
     [Authorize]
     public class TestPassController : Controller
     {
+        private readonly PublishedTestManager _pubTestManager;
         private readonly TestPassManager _testPassManager;
         private readonly UserTestResultManager _userTestResultManager;
 
-        public TestPassController(TestPassManager testPassManager, UserTestResultManager userTestResultManager)
+        public TestPassController(PublishedTestManager pubTestManager, TestPassManager testPassManager, UserTestResultManager userTestResultManager)
         {
+            _pubTestManager = pubTestManager;
             _testPassManager = testPassManager;
             _userTestResultManager = userTestResultManager;
         }
@@ -25,6 +27,9 @@ namespace Algorithmix.Api.Controllers
         [Route("pass")]
         public async Task<IActionResult> StartTestPass(int testId)
         {
+            if (!await _pubTestManager.Exists(testId))
+                return NotFound();
+
             var userId = this.GetUser().Id;
             var nextQuestion = await _testPassManager.GetNextTestQuestion(null, testId, userId);
 
