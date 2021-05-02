@@ -6,7 +6,7 @@
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int GroupId { get; set; }
         public string Role { get; set; }
+        public Group Group { get; set; }
     }
 }

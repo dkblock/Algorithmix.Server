@@ -12,7 +12,11 @@ namespace Algorithmix.Api.Controllers
         public static ApplicationUser GetUser(this Controller controller)
         {
             controller.Request.Headers.TryGetValue("Authorization", out StringValues authorization);
-            return _identityHelper.GetUser(authorization.ToString());
+
+            if (authorization != "null")
+                return _identityHelper.GetUser(authorization.ToString());
+
+            return null;
         }
     }
 }

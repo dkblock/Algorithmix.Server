@@ -9,6 +9,7 @@ namespace Algorithmix.Mappers
             services.AddScoped<AlgorithmMapper, AlgorithmMapper>();
             services.AddScoped<AlgorithmTimeComplexityMapper, AlgorithmTimeComplexityMapper>();
             services.AddScoped<ApplicationUserMapper, ApplicationUserMapper>();
+            services.AddScoped<GroupMapper, GroupMapper>();
             services.AddScoped<TestMapper, TestMapper>();
             services.AddScoped<TestAnswerMapper, TestAnswerMapper>();
             services.AddScoped<TestQuestionMapper, TestQuestionMapper>();

@@ -49,7 +49,7 @@ namespace Algorithmix.Server.Controllers
             if (!await _testManager.Exists(testId))
                 return NotFound();
 
-            var filter = new TestFilterPayload() { UserId = this.GetUser().Id };
+            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
             var test = await _testManager.GetTest(testId, filter);
 
             return Ok(test);
@@ -59,7 +59,7 @@ namespace Algorithmix.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests()
         {
-            var filter = new TestFilterPayload() { UserId = this.GetUser().Id };
+            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
             var tests = await _testManager.GetTests(filter);
 
             return Ok(tests);

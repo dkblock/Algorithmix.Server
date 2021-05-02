@@ -10,13 +10,11 @@ namespace Algorithmix.Services
 {
     public class UserService
     {
-        private readonly AuthenticationService _authService;
         private readonly ApplicationUserMapper _userMapper;
         private readonly UserManager<ApplicationUserEntity> _userManager;
 
-        public UserService(AuthenticationService authService, ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
+        public UserService(ApplicationUserMapper userMapper, UserManager<ApplicationUserEntity> userManager)
         {
-            _authService = authService;
             _userMapper = userMapper;
             _userManager = userManager;
         }
@@ -24,17 +22,23 @@ namespace Algorithmix.Services
         public async Task<ApplicationUser> GetUserById(string id)
         {
             var userEntity = await _userManager.FindByIdAsync(id);
-            var userRole = await _userManager.GetRoleAsync(userEntity);
 
-            return _userMapper.ToDomain(userEntity, userRole);
+            if (userEntity == null)
+                return null;
+
+            var userRole = await _userManager.GetRoleAsync(userEntity);
+            return _userMapper.ToModel(userEntity, userRole);
         }
 
         public async Task<ApplicationUser> GetUserByEmail(string email)
         {
             var userEntity = await _userManager.FindByEmailAsync(email);
-            var userRole = await _userManager.GetRoleAsync(userEntity);
 
-            return _userMapper.ToDomain(userEntity, userRole);
+            if (userEntity == null)
+                return null;
+
+            var userRole = await _userManager.GetRoleAsync(userEntity);
+            return _userMapper.ToModel(userEntity, userRole);
         }
 
         public async Task<bool> IsPasswordValid(string email, string password)

@@ -18,12 +18,12 @@ namespace Algorithmix.Repository
             _context = context;
         }
 
-        public async Task<int> AddGroup(GroupEntity group)
+        public async Task<GroupEntity> CreateGroup(GroupEntity group)
         {
             var result = await _context.Groups.AddAsync(group);
             await _context.SaveChangesAsync();
 
-            return result.Entity.Id;
+            return result.Entity;
         }
 
         public async Task<IEnumerable<GroupEntity>> GetAllGroups()
@@ -41,18 +41,20 @@ namespace Algorithmix.Repository
             return await _context.Groups.FindAsync(id);
         }
 
-        public async Task RemoveGroup(int id)
+        public async Task DeleteGroup(int id)
         {
             var group = await GetGroupById(id);
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateGroup(GroupEntity group)
+        public async Task<GroupEntity> UpdateGroup(GroupEntity group)
         {
             var groupToUpdate = await GetGroupById(group.Id);
             _context.Entry(groupToUpdate).CurrentValues.SetValues(group);
             await _context.SaveChangesAsync();
+
+            return await GetGroupById(group.Id);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Algorithmix.Services
         {
             var userEntity = await _userManager.FindByEmailAsync(loginModel.Email);
             var userRole = await _userManager.GetRoleAsync(userEntity);
-            var user = _userMapper.ToDomain(userEntity, userRole);
+            var user = _userMapper.ToModel(userEntity, userRole);
             var accessToken = _authService.Authenticate(user);
 
             return _userMapper.ToModel(userEntity, userRole, accessToken);
@@ -51,7 +51,7 @@ namespace Algorithmix.Services
             {
                 var userRole = Roles.User;
                 await _userManager.AddToRoleAsync(userEntity, userRole);
-                var user = _userMapper.ToDomain(userEntity, userRole);
+                var user = _userMapper.ToModel(userEntity, userRole);
                 var accessToken = _authService.Authenticate(user);
 
                 return _userMapper.ToModel(userEntity, userRole, accessToken);

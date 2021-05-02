@@ -6,7 +6,7 @@ namespace Algorithmix.Mappers
 {
     public class ApplicationUserMapper
     {
-        public ApplicationUser ToDomain(ApplicationUserEntity userEntity, string role)
+        public ApplicationUser ToModel(ApplicationUserEntity userEntity, string role)
         {
             if (userEntity == null)
                 return null;
@@ -17,8 +17,8 @@ namespace Algorithmix.Mappers
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
                 LastName = userEntity.LastName,
-                GroupId = userEntity.GroupId,
-                Role = role
+                Role = role,
+                Group = new Group { Id = userEntity.GroupId }
             };
         }
 
@@ -41,7 +41,7 @@ namespace Algorithmix.Mappers
         {
             return new AuthModel
             {
-                CurrentUser = ToDomain(userEntity, role),
+                CurrentUser = ToModel(userEntity, role),
                 AccessToken = accessToken
             };
         }
