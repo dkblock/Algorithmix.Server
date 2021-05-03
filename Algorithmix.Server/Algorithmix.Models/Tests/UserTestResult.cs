@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Algorithmix.Models.Users;
+using System;
 using System.Collections.Generic;
 
 namespace Algorithmix.Models.Tests

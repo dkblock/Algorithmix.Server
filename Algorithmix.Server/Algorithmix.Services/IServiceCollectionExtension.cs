@@ -8,7 +8,6 @@ namespace Algorithmix.Services
     {
         public static void AddCommonServices(this IServiceCollection services)
         {
-            services.AddScoped<AccountService, AccountService>();
             services.AddScoped<AlgorithmService, AlgorithmService>();
             services.AddScoped<GroupService, GroupService>();
             services.AddScoped<PublishedTestService, PublishedTestService>();
@@ -19,7 +18,7 @@ namespace Algorithmix.Services
             services.AddScoped<TestQuestionService, TestQuestionService>();
             services.AddScoped<UserAnswerService, UserAnswerService>();
             services.AddScoped<UserTestResultService, UserTestResultService>();
-            services.AddScoped<UserService, UserService>();
+            services.AddScoped<ApplicationUserService, ApplicationUserService>();
         }
     }
 }

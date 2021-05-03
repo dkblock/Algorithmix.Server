@@ -13,18 +13,18 @@ namespace Algorithmix.Api.Validation
     {
         private const string EmailPattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
-        private readonly UserService _usersService;
+        private readonly ApplicationUserService _userService;
 
-        public AccountValidator(UserService usersService)
+        public AccountValidator(ApplicationUserService userService)
         {
-            _usersService = usersService;
+            _userService = userService;
         }
 
-        public async Task<ValidationResult> Validate(LoginModel loginModel)
+        public async Task<ValidationResult> Validate(LoginPayload loginModel)
         {
             var validationErrors = new List<ValidationError>();
 
-            if (!await _usersService.IsPasswordValid(loginModel.Email, loginModel.Password))
+            if (!await _userService.IsPasswordValid(loginModel.Email, loginModel.Password))
             {
                 validationErrors.Add(new ValidationError
                 {
@@ -46,7 +46,7 @@ namespace Algorithmix.Api.Validation
             };
         }
 
-        public async Task<ValidationResult> Validate(RegisterModel registerModel)
+        public async Task<ValidationResult> Validate(RegisterPayload registerModel)
         {
             var validationErrors = new List<ValidationError>();
 
@@ -61,7 +61,7 @@ namespace Algorithmix.Api.Validation
             };
         }
 
-        private async Task<IEnumerable<ValidationError>> ValidateEmail(RegisterModel registerModel)
+        private async Task<IEnumerable<ValidationError>> ValidateEmail(RegisterPayload registerModel)
         {
             var validationErrors = new List<ValidationError>();
 
@@ -79,7 +79,7 @@ namespace Algorithmix.Api.Validation
                     Message = "Неверный формат Email"
                 });
 
-            if (await _usersService.GetUserByEmail(registerModel.Email) != null)
+            if (await _userService.GetUserByEmail(registerModel.Email) != null)
                 validationErrors.Add(new ValidationError
                 {
                     Field = nameof(registerModel.Email).ToCamelCase(),
@@ -89,7 +89,7 @@ namespace Algorithmix.Api.Validation
             return validationErrors;
         }
 
-        private IEnumerable<ValidationError> ValidateName(RegisterModel registerModel)
+        private IEnumerable<ValidationError> ValidateName(RegisterPayload registerModel)
         {
             var validationErrors = new List<ValidationError>();
 
@@ -124,7 +124,7 @@ namespace Algorithmix.Api.Validation
             return validationErrors;
         }
 
-        private IEnumerable<ValidationError> ValidatePassword(RegisterModel registerModel)
+        private IEnumerable<ValidationError> ValidatePassword(RegisterPayload registerModel)
         {
             var validationErrors = new List<ValidationError>();
 

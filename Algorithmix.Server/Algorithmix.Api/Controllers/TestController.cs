@@ -32,12 +32,13 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> CreateTest([FromBody] TestPayload testPayload)
         {
+            var userId = this.GetUser().Id;
             var validationResult = await _testValidator.Validate(testPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdTest = await _testManager.CreateTest(testPayload);
+            var createdTest = await _testManager.CreateTest(testPayload, userId);
             return CreatedAtAction(nameof(GetTest), new { testId = createdTest.Id }, createdTest);
         }
 

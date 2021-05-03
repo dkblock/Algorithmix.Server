@@ -1,12 +1,30 @@
 ﻿using Algorithmix.Entities;
-using Algorithmix.Models;
 using Algorithmix.Models.Account;
+using Algorithmix.Models.Groups;
+using Algorithmix.Models.Users;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithmix.Mappers
 {
     public class ApplicationUserMapper
     {
-        public ApplicationUser ToModel(ApplicationUserEntity userEntity, string role)
+        public ApplicationUserEntity ToEntity(RegisterPayload registerPayload)
+        {
+            if (registerPayload == null)
+                return null;
+
+            return new ApplicationUserEntity
+            {
+                Email = registerPayload.Email,
+                UserName = registerPayload.Email,
+                FirstName = registerPayload.FirstName,
+                LastName = registerPayload.LastName,
+                GroupId = registerPayload.GroupId
+            };
+        }
+
+        public ApplicationUser ToModel(ApplicationUserEntity userEntity)
         {
             if (userEntity == null)
                 return null;
@@ -17,33 +35,27 @@ namespace Algorithmix.Mappers
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
                 LastName = userEntity.LastName,
-                Role = role,
                 Group = new Group { Id = userEntity.GroupId }
             };
         }
 
-        public ApplicationUserEntity ToEntity(RegisterModel registerModel)
+        public UserAccount ToModel(ApplicationUser user, string accessToken)
         {
-            if (registerModel == null)
-                return null;
-
-            return new ApplicationUserEntity
+            return new UserAccount
             {
-                Email = registerModel.Email,
-                UserName = registerModel.Email,
-                FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName,
-                GroupId = registerModel.GroupId
+                CurrentUser = user,
+                AccessToken = accessToken
             };
         }
 
-        public AuthModel ToModel(ApplicationUserEntity userEntity, string role, string accessToken)
+        public ApplicationUserEntity UpdateEntity(ApplicationUserEntity userEntity, ApplicationUserPayload userPayload)
         {
-            return new AuthModel
-            {
-                CurrentUser = ToModel(userEntity, role),
-                AccessToken = accessToken
-            };
+            userEntity.Email = userPayload.Email ?? userEntity.Email;
+            userEntity.FirstName = userPayload.FirstName ?? userEntity.FirstName;
+            userEntity.LastName = userPayload.LastName ?? userEntity.LastName;
+            userEntity.GroupId = userPayload.GroupId ?? userEntity.GroupId;
+
+            return userEntity;
         }
     }
 }

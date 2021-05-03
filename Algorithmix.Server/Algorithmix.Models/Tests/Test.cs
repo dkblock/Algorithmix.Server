@@ -1,4 +1,6 @@
 ﻿using Algorithmix.Models.Algorithms;
+using Algorithmix.Models.Users;
+using System;
 using System.Collections.Generic;
 
 namespace Algorithmix.Models.Tests
@@ -8,6 +10,8 @@ namespace Algorithmix.Models.Tests
         public int Id { get; set; }
         public string Name { get; set; }
         public int AverageResult { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
         public Algorithm Algorithm { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }
         public UserTestResult UserResult { get; set; }

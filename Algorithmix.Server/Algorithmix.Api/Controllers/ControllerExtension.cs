@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Identity;
-using Algorithmix.Models;
+using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 

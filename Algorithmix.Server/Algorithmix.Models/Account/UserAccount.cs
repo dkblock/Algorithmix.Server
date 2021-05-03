@@ -1,6 +1,8 @@
-﻿namespace Algorithmix.Models.Account
+﻿using Algorithmix.Models.Users;
+
+namespace Algorithmix.Models.Account
 {
-    public class AuthModel
+    public class UserAccount
     {
         public ApplicationUser CurrentUser { get; set; }
         public string AccessToken { get; set; }

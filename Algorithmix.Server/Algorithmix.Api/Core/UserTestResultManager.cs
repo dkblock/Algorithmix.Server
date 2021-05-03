@@ -14,13 +14,13 @@ namespace Algorithmix.Api.Core
         private readonly TestManager _testManager;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultService _userTestResultService;
-        private readonly UserService _userService;
+        private readonly ApplicationUserService _userService;
 
         public UserTestResultManager(
             TestManager testManager,
             UserAnswerManager userAnswerManager,
             UserTestResultService userTestResultService,
-            UserService userService)
+            ApplicationUserService userService)
         {
             _testManager = testManager;
             _userAnswerManager = userAnswerManager;

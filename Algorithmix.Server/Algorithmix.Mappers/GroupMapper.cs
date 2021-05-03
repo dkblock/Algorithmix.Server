@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Entities;
-using Algorithmix.Models;
+using Algorithmix.Models.Groups;
 using System.Collections.Generic;
 using System.Linq;
 

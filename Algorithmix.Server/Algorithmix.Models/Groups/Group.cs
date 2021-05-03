@@ -1,4 +1,4 @@
-﻿namespace Algorithmix.Models
+﻿namespace Algorithmix.Models.Groups
 {
     public class Group
     {

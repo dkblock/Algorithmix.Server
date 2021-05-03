@@ -1,6 +1,6 @@
 ﻿namespace Algorithmix.Models.Account
 {
-    public class RegisterModel
+    public class RegisterPayload
     {
         public string Email { get; set; }
         public string FirstName { get; set; }

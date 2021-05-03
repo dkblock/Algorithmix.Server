@@ -15,6 +15,7 @@ namespace Algorithmix.Api.Core.TestPass
         private readonly AlgorithmService _algorithmService;
         private readonly PublishedTestService _testService;
         private readonly PublishedTestQuestionService _questionService;
+        private readonly ApplicationUserService _userService;
         private readonly UserTestResultService _userTestResultService;
         private readonly FilterHelper _filterHelper;
         private readonly TestDataManager _testDataManager;
@@ -23,12 +24,14 @@ namespace Algorithmix.Api.Core.TestPass
             AlgorithmService algorithmService,
             PublishedTestService testService,
             PublishedTestQuestionService questionService,
+            ApplicationUserService userService,
             UserTestResultService userTestResultService,
             TestDataManager testDataManager)
         {
             _algorithmService = algorithmService;
             _testService = testService;
             _questionService = questionService;
+            _userService = userService;
             _userTestResultService = userTestResultService;
             _filterHelper = new FilterHelper();
             _testDataManager = testDataManager;
@@ -65,6 +68,7 @@ namespace Algorithmix.Api.Core.TestPass
 
         private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)
         {
+            test.CreatedBy = await _userService.GetUserById(test.CreatedBy.Id);
             test.Algorithm = await _algorithmService.GetAlgorithm(test.Algorithm.Id);
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);

@@ -1,5 +1,5 @@
-﻿using Algorithmix.Models;
-using Algorithmix.Models.Account;
+﻿using Algorithmix.Models.Account;
+using Algorithmix.Models.Users;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -40,16 +40,16 @@ namespace Algorithmix.Identity
             return _tokenHandler.WriteToken(token);
         }
 
-        public AuthModel CheckAuth(string authorization)
+        public UserAccount CheckAuth(string authorization)
         {
             var accessToken = _identityHelper.GetAccessToken(authorization);
             var jwtToken = _identityHelper.GetAccessJwtToken(authorization);
             var user = _identityHelper.GetUser(jwtToken);
 
             if (jwtToken.Payload.Exp > DateTimeOffset.Now.ToUnixTimeSeconds())
-                return new AuthModel { AccessToken = accessToken, CurrentUser = user };
+                return new UserAccount { AccessToken = accessToken, CurrentUser = user };
 
-            return new AuthModel { AccessToken = Authenticate(user), CurrentUser = user };
+            return new UserAccount { AccessToken = Authenticate(user), CurrentUser = user };
         }
     }
 }

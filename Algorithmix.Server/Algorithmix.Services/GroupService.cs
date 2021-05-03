@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Mappers;
-using Algorithmix.Models;
+using Algorithmix.Models.Groups;
 using Algorithmix.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,6 +29,12 @@ namespace Algorithmix.Services
         {
             var groupEntities = await _groupRepository.GetAllGroups();
             return _groupMapper.ToModelsCollection(groupEntities);
+        }
+
+        public async Task<Group> GetGroup(int id)
+        {
+            var groupEntity = await _groupRepository.GetGroupById(id);
+            return _groupMapper.ToModel(groupEntity);
         }
 
         public async Task DeleteGroup(int id)

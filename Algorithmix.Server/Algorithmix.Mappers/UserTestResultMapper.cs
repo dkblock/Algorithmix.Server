@@ -1,6 +1,6 @@
 ﻿using Algorithmix.Entities.Test;
-using Algorithmix.Models;
 using Algorithmix.Models.Tests;
+using Algorithmix.Models.Users;
 using System.Collections.Generic;
 
 namespace Algorithmix.Mappers

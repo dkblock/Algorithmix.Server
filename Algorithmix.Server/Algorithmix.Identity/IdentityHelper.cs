@@ -1,4 +1,4 @@
-﻿using Algorithmix.Models;
+﻿using Algorithmix.Models.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 

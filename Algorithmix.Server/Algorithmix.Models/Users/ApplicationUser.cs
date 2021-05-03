@@ -1,4 +1,6 @@
-﻿namespace Algorithmix.Models
+﻿using Algorithmix.Models.Groups;
+
+namespace Algorithmix.Models.Users
 {
     public class ApplicationUser
     {

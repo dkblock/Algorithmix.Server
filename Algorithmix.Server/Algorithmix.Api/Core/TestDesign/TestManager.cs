@@ -15,6 +15,7 @@ namespace Algorithmix.Api.Core.TestDesign
         private readonly AlgorithmService _algorithmService;
         private readonly TestService _testService;
         private readonly TestQuestionService _questionService;
+        private readonly ApplicationUserService _userService;
         private readonly UserTestResultService _userTestResultService;
         private readonly FilterHelper _filterHelper;
         private readonly TestDataManager _testDataManager;
@@ -23,20 +24,22 @@ namespace Algorithmix.Api.Core.TestDesign
             AlgorithmService algorithmService,
             TestService testService,
             TestQuestionService questionService,
+            ApplicationUserService userService,
             UserTestResultService userTestResultService,
             TestDataManager testDataManager)
         {
             _algorithmService = algorithmService;
             _testService = testService;
             _questionService = questionService;
+            _userService = userService;
             _userTestResultService = userTestResultService;
             _filterHelper = new FilterHelper();
             _testDataManager = testDataManager;
         }
 
-        public async Task<Test> CreateTest(TestPayload testPayload)
+        public async Task<Test> CreateTest(TestPayload testPayload, string userId)
         {
-            var createdTest = await _testService.CreateTest(testPayload);
+            var createdTest = await _testService.CreateTest(testPayload, userId);
             _testDataManager.CreateTestQuestionImagesDirectory(createdTest.Id);
 
             return await PrepareTest(createdTest);
@@ -73,6 +76,7 @@ namespace Algorithmix.Api.Core.TestDesign
 
         private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)
         {
+            test.CreatedBy = await _userService.GetUserById(test.CreatedBy.Id);
             test.Algorithm = await _algorithmService.GetAlgorithm(test.Algorithm.Id);
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);

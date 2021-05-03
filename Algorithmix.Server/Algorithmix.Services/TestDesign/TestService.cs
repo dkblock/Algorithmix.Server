@@ -1,6 +1,7 @@
 ﻿using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository.TestDesign;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +19,13 @@ namespace Algorithmix.Services.TestDesign
             _testRepository = testRepository;
         }
 
-        public async Task<Test> CreateTest(TestPayload testPayload)
+        public async Task<Test> CreateTest(TestPayload testPayload, string userId)
         {
             var testEntity = _testMapper.ToEntity(testPayload);
-            var createdTest = await _testRepository.CreateTest(testEntity);
+            testEntity.CreatedBy = userId;
+            testEntity.CreatedDate = DateTime.Now;
 
+            var createdTest = await _testRepository.CreateTest(testEntity);
             return _testMapper.ToModel(createdTest);
         }
 

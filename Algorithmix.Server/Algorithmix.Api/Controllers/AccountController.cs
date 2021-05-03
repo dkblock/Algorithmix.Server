@@ -1,6 +1,6 @@
-﻿using Algorithmix.Api.Validation;
+﻿using Algorithmix.Api.Core;
+using Algorithmix.Api.Validation;
 using Algorithmix.Models.Account;
-using Algorithmix.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,12 +12,12 @@ namespace Algorithmix.Server.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly AccountService _accountService;
+        private readonly AccountManager _accountManager;
         private readonly AccountValidator _accountValidator;
 
-        public AccountController(AccountService accountService, AccountValidator accountValidator)
+        public AccountController(AccountManager accountManager, AccountValidator accountValidator)
         {
-            _accountService = accountService;
+            _accountManager = accountManager;
             _accountValidator = accountValidator;
         }
 
@@ -26,21 +26,21 @@ namespace Algorithmix.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromHeader] string authorization)
         {
-            var authModel = await _accountService.Authenticate(authorization);
+            var authModel = await _accountManager.Authenticate(authorization);
             return Ok(authModel);
         }
 
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        public async Task<IActionResult> Login([FromBody] LoginPayload loginModel)
         {
             var validationResult = await _accountValidator.Validate(loginModel);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var authModel = await _accountService.Login(loginModel);
+            var authModel = await _accountManager.Login(loginModel);
 
             if (string.IsNullOrEmpty(authModel.AccessToken))
                 return StatusCode(500);
@@ -51,14 +51,14 @@ namespace Algorithmix.Server.Controllers
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
+        public async Task<IActionResult> Register([FromBody] RegisterPayload registerModel)
         {
             var validationResult = await _accountValidator.Validate(registerModel);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var authModel = await _accountService.Register(registerModel);
+            var authModel = await _accountManager.Register(registerModel);
 
             if (string.IsNullOrEmpty(authModel.AccessToken))
                 return StatusCode(500);
