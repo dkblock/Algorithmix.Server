@@ -25,6 +25,11 @@ namespace Algorithmix.Services
             return _groupMapper.ToModel(createdGroup);
         }
 
+        public async Task<bool> Exists(int id)
+        {
+            return await _groupRepository.GetGroupById(id) != null;
+        }
+
         public async Task<IEnumerable<Group>> GetAllGroups()
         {
             var groupEntities = await _groupRepository.GetAllGroups();

@@ -10,6 +10,7 @@ namespace Algorithmix.Api.Core
         {
             services.AddScoped<AccountManager, AccountManager>();
             services.AddScoped<ApplicationUserManager, ApplicationUserManager>();
+            services.AddScoped<GroupManager, GroupManager>();
             services.AddScoped<TestDataManager, TestDataManager>();
             services.AddScoped<TestAnswerManager, TestAnswerManager>();
             services.AddScoped<TestQuestionManager, TestQuestionManager>();

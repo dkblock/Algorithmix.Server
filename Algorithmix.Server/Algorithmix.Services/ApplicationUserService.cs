@@ -8,6 +8,7 @@ using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Services
@@ -54,9 +55,19 @@ namespace Algorithmix.Services
 
         public async Task<IEnumerable<ApplicationUser>> GetUsers()
         {
-            var userEntities = (IEnumerable<ApplicationUserEntity>)_userManager.Users.ToListAsync().Result;
+            var userEntities = await _userManager.Users.ToListAsync();
             var preparedUsers = new List<ApplicationUser>();
             await userEntities.ForEachAsync(async userEntity => preparedUsers.Add(await PrepareUser(userEntity)));
+
+            return preparedUsers;
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUsersByGroup(int groupId)
+        {
+            var userEntities = await _userManager.Users.ToListAsync();
+            var usersInGroup = userEntities.Where(user => user.GroupId == groupId);
+            var preparedUsers = new List<ApplicationUser>();
+            await usersInGroup.ForEachAsync(async user => preparedUsers.Add(await PrepareUser(user)));
 
             return preparedUsers;
         }
@@ -93,6 +104,18 @@ namespace Algorithmix.Services
             var updatedUser = await _userManager.FindByIdAsync(id);
 
             return await PrepareUser(updatedUser);
+        }
+
+        public async Task UpdateUsersGroup(int oldGroupId, int newGroupId)
+        {
+            var userEntities = await _userManager.Users.ToListAsync();
+            var usersInGroup = userEntities.Where(user => user.GroupId == oldGroupId);
+
+            await usersInGroup.ForEachAsync(async user =>
+            {
+                user.GroupId = newGroupId;
+                await _userManager.UpdateAsync(user);
+            });
         }
 
         private async Task<ApplicationUser> PrepareUser(ApplicationUserEntity userEntity)
