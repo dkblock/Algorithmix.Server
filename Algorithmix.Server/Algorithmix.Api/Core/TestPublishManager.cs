@@ -62,6 +62,8 @@ namespace Algorithmix.Api.Core
             await UpdatePublishedQuestions(questions);
             await UpdatePublishedAnswers(answers);
             _testDataManager.CopyTestQuestionImagesToPublishedTest(test.Id);
+
+            await _testManager.PublishTest(test.Id);
         }
 
         private async Task ClearTestResults(Test test, IEnumerable<TestQuestion> questions)

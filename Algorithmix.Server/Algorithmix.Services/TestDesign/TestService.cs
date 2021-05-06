@@ -70,5 +70,13 @@ namespace Algorithmix.Services.TestDesign
 
             return _testMapper.ToModel(updatedTest);
         }
+
+        public async Task UpdateTest(int id, bool isPublished = false)
+        {
+            var testEntity = await _testRepository.GetTestById(id);
+            testEntity.IsPublished = isPublished;
+            testEntity.UpdatedDate = DateTime.Now;
+            await _testRepository.UpdateTest(testEntity);
+        }
     }
 }

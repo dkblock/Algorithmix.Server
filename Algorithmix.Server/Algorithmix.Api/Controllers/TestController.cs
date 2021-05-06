@@ -1,13 +1,12 @@
 ﻿using Algorithmix.Api.Controllers;
 using Algorithmix.Api.Core.TestDesign;
+using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
-using Algorithmix.Identity;
 using Algorithmix.Models.SearchFilters;
 using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Server.Controllers
@@ -16,13 +15,13 @@ namespace Algorithmix.Server.Controllers
     [Route("api/tests")]
     public class TestController : Controller
     {
-        private readonly AuthenticationService _authService;
+        private readonly PublishedTestManager _pubTestManager;
         private readonly TestManager _testManager;
         private readonly TestValidator _testValidator;
 
-        public TestController(AuthenticationService authService, TestManager testManager, TestValidator testValidator)
+        public TestController(PublishedTestManager pubTestManager, TestManager testManager, TestValidator testValidator)
         {
-            _authService = authService;
+            _pubTestManager = pubTestManager;
             _testManager = testManager;
             _testValidator = testValidator;
         }
@@ -66,6 +65,16 @@ namespace Algorithmix.Server.Controllers
             return Ok(tests);
         }
 
+        [HttpGet]
+        [Route("published")]
+        public async Task<IActionResult> GetPublishedTests()
+        {
+            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
+            var tests = await _pubTestManager.GetTests(filter);
+
+            return Ok(tests);
+        }
+
         [HttpDelete]
         [Route("{testId}")]
         [Authorize(Roles = Roles.Executive)]
@@ -74,8 +83,12 @@ namespace Algorithmix.Server.Controllers
             if (!await _testManager.Exists(testId))
                 return NotFound();
 
+            if (await _pubTestManager.Exists(testId))
+                await _pubTestManager.DeleteTest(testId);
+
             await _testManager.DeleteTest(testId);
-            return StatusCode((int)HttpStatusCode.NoContent);
+
+            return NoContent();
         }
 
         [HttpPut]

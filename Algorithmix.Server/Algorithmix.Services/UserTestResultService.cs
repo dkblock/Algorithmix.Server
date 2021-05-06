@@ -3,6 +3,7 @@ using Algorithmix.Entities;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +37,12 @@ namespace Algorithmix.Services
         {
             var userTestResult = await _userTestResultRepository.GetUserTestResultById(testId, userId);
             return _userTestResultMapper.ToModel(userTestResult);
+        }
+
+        public async Task<IEnumerable<UserTestResult>> GetUserTestResults()
+        {
+            var userTestResults = await _userTestResultRepository.GetAllUserTestResults();
+            return _userTestResultMapper.ToModelsCollection(userTestResults);
         }
 
         public async Task<int> GetAverageUserTestResult(int testId)

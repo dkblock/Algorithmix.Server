@@ -2,6 +2,7 @@
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Models.Tests;
 using Algorithmix.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,8 @@ namespace Algorithmix.Mappers
             {
                 Id = id ?? 0,
                 Name = testPayload.Name,
+                IsPublished = false,
+                UpdatedDate = DateTime.Now,
                 AlgorithmId = testPayload.AlgorithmId
             };
         }
@@ -25,13 +28,31 @@ namespace Algorithmix.Mappers
             {
                 Id = test.Id,
                 Name = test.Name,
-                CreatedDate = test.CreatedDate,
+                CreatedDate = DateTime.Now,
                 CreatedBy = test.CreatedBy.Id,
                 AlgorithmId = test.Algorithm.Id
             };
         }
 
-        public Test ToModel(BaseTestEntity testEntity)
+        public Test ToModel(TestEntity testEntity)
+        {
+            if (testEntity == null)
+                return null;
+
+            return new Test
+            {
+                Id = testEntity.Id,
+                Name = testEntity.Name,
+                IsPublished = testEntity.IsPublished,
+                CreatedDate = testEntity.CreatedDate,
+                UpdatedDate = testEntity.UpdatedDate,
+                CreatedBy = new ApplicationUser { Id = testEntity.CreatedBy },
+                Algorithm = new Algorithm() { Id = testEntity.AlgorithmId },
+                Questions = new List<TestQuestion>()
+            };
+        }
+
+        public Test ToModel(PublishedTestEntity testEntity)
         {
             if (testEntity == null)
                 return null;
@@ -45,9 +66,14 @@ namespace Algorithmix.Mappers
                 Algorithm = new Algorithm() { Id = testEntity.AlgorithmId },
                 Questions = new List<TestQuestion>()
             };
+        }        
+
+        public IEnumerable<Test> ToModelsCollection(IEnumerable<TestEntity> testEntities)
+        {
+            return testEntities.Select(entity => ToModel(entity));
         }
 
-        public IEnumerable<Test> ToModelsCollection(IEnumerable<BaseTestEntity> testEntities)
+        public IEnumerable<Test> ToModelsCollection(IEnumerable<PublishedTestEntity> testEntities)
         {
             return testEntities.Select(entity => ToModel(entity));
         }

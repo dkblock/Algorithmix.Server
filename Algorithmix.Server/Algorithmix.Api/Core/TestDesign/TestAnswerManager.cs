@@ -10,17 +10,20 @@ namespace Algorithmix.Api.Core.TestDesign
     {
         private readonly TestAnswerService _answerService;
         private readonly TestQuestionService _questionService;
+        private readonly TestService _testService;
 
-        public TestAnswerManager(TestAnswerService answerService, TestQuestionService questionService)
+        public TestAnswerManager(TestAnswerService answerService, TestQuestionService questionService, TestService testService)
         {
             _answerService = answerService;
             _questionService = questionService;
+            _testService = testService;
         }
 
         public async Task<TestAnswer> CreateTestAnswer(TestAnswerPayload answerPayload)
         {
             var question = await _questionService.GetTestQuestion(answerPayload.QuestionId);
             var createdAnswer = await _answerService.CreateTestAnswer(answerPayload, question.Type);
+            await _testService.UpdateTest(question.Test.Id);
 
             return await PrepareAnswer(createdAnswer);
         }
@@ -52,20 +55,26 @@ namespace Algorithmix.Api.Core.TestDesign
         {
             var answer = await _answerService.GetTestAnswer(id);
             var question = await _questionService.GetTestQuestion(answer.Question.Id);
+
             await _answerService.DeleteTestAnswer(id, question.Type);
+            await _testService.UpdateTest(question.Test.Id);
         }
 
         public async Task<TestAnswer> UpdateTestAnswer(int id, TestAnswerPayload answerPayload)
         {
             var question = await _questionService.GetTestQuestion(answerPayload.QuestionId);
             var updatedAnswer = await _answerService.UpdateTestAnswer(id, answerPayload, question.Type);
+            await _testService.UpdateTest(question.Test.Id);
 
             return await PrepareAnswer(updatedAnswer);
         }
 
         public async Task<IEnumerable<TestAnswer>> MoveTestAnswer(int questionId, int oldIndex, int newIndex)
         {
+            var question = await _questionService.GetTestQuestion(questionId);
             var movedAnswers = await _answerService.MoveTestAnswer(questionId, oldIndex, newIndex);
+            await _testService.UpdateTest(question.Test.Id);
+
             return await PrepareAnswers(movedAnswers);
         }
 

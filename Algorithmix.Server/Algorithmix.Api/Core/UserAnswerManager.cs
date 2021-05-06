@@ -1,4 +1,4 @@
-﻿using Algorithmix.Api.Core.TestDesign;
+﻿using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Common.Constants;
 using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
@@ -11,10 +11,10 @@ namespace Algorithmix.Api.Core
 {
     public class UserAnswerManager
     {
-        private readonly TestQuestionManager _questionManager;
+        private readonly PublishedTestQuestionManager _questionManager;
         private readonly UserAnswerService _userAnswerService;
 
-        public UserAnswerManager(TestQuestionManager questionManager, UserAnswerService userAnswerService)
+        public UserAnswerManager(PublishedTestQuestionManager questionManager, UserAnswerService userAnswerService)
         {
             _questionManager = questionManager;
             _userAnswerService = userAnswerService;

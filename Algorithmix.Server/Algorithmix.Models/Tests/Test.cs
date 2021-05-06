@@ -9,8 +9,10 @@ namespace Algorithmix.Models.Tests
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsPublished { get; set; }
         public int AverageResult { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
         public ApplicationUser CreatedBy { get; set; }
         public Algorithm Algorithm { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }

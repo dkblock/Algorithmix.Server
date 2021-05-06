@@ -2,6 +2,7 @@
 using Algorithmix.Models.Tests;
 using Algorithmix.Models.Users;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithmix.Mappers
 {
@@ -32,6 +33,11 @@ namespace Algorithmix.Mappers
                 User = new ApplicationUser { Id = userTestResultEntity.UserId },
                 UserAnswers = new List<UserAnswer>()
             };
+        }
+
+        public IEnumerable<UserTestResult> ToModelsCollection(IEnumerable<UserTestResultEntity> userTestResultEntities)
+        {
+            return userTestResultEntities.Select(entity => ToModel(entity));
         }
     }
 }

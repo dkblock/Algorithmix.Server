@@ -1,4 +1,4 @@
-﻿using Algorithmix.Api.Core.TestDesign;
+﻿using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
@@ -11,21 +11,21 @@ namespace Algorithmix.Api.Core
 {
     public class UserTestResultManager
     {
-        private readonly TestManager _testManager;
+        private readonly ApplicationUserManager _userManager;
+        private readonly PublishedTestManager _testManager;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultService _userTestResultService;
-        private readonly ApplicationUserService _userService;
 
         public UserTestResultManager(
-            TestManager testManager,
+            ApplicationUserManager userManager,
+            PublishedTestManager testManager,
             UserAnswerManager userAnswerManager,
-            UserTestResultService userTestResultService,
-            ApplicationUserService userService)
+            UserTestResultService userTestResultService)
         {
+            _userManager = userManager;
             _testManager = testManager;
             _userAnswerManager = userAnswerManager;
             _userTestResultService = userTestResultService;
-            _userService = userService;
         }
 
         public async Task<UserTestResult> CreateUserTestResult(int testId, string userId)
@@ -56,15 +56,26 @@ namespace Algorithmix.Api.Core
             return await PrepareUserTestResult(userTestResult);
         }
 
+        public async Task<IEnumerable<UserTestResult>> GetUserTestResults()
+        {
+            var userTestResults = await _userTestResultService.GetUserTestResults();
+            return await PrepareUserTestResults(userTestResults);
+        }
+
         public async Task<bool> Exists(int testId, string userId)
         {
             return await _userTestResultService.Exists(testId, userId);
         }
 
+        public async Task DeleteUserTestResult(int testId, string userId)
+        {
+            await _userTestResultService.DeleteUserTestResult(testId, userId);
+        }
+
         private async Task<UserTestResult> PrepareUserTestResult(UserTestResult userTestResult)
         {
             userTestResult.Test = await _testManager.GetTest(userTestResult.Test.Id, null);
-            userTestResult.User = await _userService.GetUserById(userTestResult.User.Id);
+            userTestResult.User = await _userManager.GetUserById(userTestResult.User.Id);
 
             var questionIds = userTestResult.Test.Questions.Select(q => q.Id);
             userTestResult.UserAnswers = await _userAnswerManager.GetUserAnswers(questionIds, userTestResult.User.Id);

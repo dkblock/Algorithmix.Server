@@ -74,6 +74,11 @@ namespace Algorithmix.Api.Core.TestDesign
             return await PrepareTest(updatedTest);
         }
 
+        public async Task PublishTest(int id)
+        {
+            await _testService.UpdateTest(id, true);
+        }
+
         private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)
         {
             test.CreatedBy = await _userService.GetUserById(test.CreatedBy.Id);
