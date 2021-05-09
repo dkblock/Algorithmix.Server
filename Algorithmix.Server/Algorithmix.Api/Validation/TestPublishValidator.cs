@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Common.Constants;
+using Algorithmix.Common.Extensions;
 using Algorithmix.Common.Validation;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
@@ -34,21 +35,21 @@ namespace Algorithmix.Api.Validation
             if (string.IsNullOrEmpty(test.Name))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(test.Name),
+                    Field = nameof(test.Name).ToCamelCase(),
                     Message = "Название теста не может быть пустым"
                 });
 
             if (test.Name.Length > 50)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(test.Name),
+                    Field = nameof(test.Name).ToCamelCase(),
                     Message = "Название теста должно содержать не более 50 символов"
                 });
 
             if (!test.Questions.Any())
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(test.Questions),
+                    Field = nameof(test.Questions).ToCamelCase(),
                     Message = "Тест должен содержать хотя бы один вопрос"
                 });
 
@@ -77,44 +78,44 @@ namespace Algorithmix.Api.Validation
             if (string.IsNullOrEmpty(question.Value))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.Value),
+                    Field = nameof(question.Value).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder} не может быть пустым"
                 });
 
             if (questionOrder == 1 && question.PreviousQuestionId != null)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.PreviousQuestionId),
+                    Field = nameof(question.PreviousQuestionId).ToCamelCase(),
                     Message = "Первый вопрос не может иметь предка. Обратитесь к администратору"
                 });
 
             if (questionOrder == questionsCount && question.NextQuestionId != null)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.NextQuestionId),
+                    Field = nameof(question.NextQuestionId).ToCamelCase(),
                     Message = "Последний вопрос не может иметь потомка. Обратитесь к администратору"
                 });
 
             if (!question.Answers.Any())
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.Answers),
+                    Field = nameof(question.Answers).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder} должен содержать хотя бы один ответ"
                 });
 
             var correctAnswers = question.Answers.Where(a => a.IsCorrect);
 
-            if (!correctAnswers.Any())
+            if (question.Answers.Any() && !correctAnswers.Any())
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.Answers),
+                    Field = nameof(question.Answers).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder} должен содержать хотя бы один правильный ответ"
                 });
 
             if (correctAnswers.Count() > 1 && (question.Type == TestQuestionTypes.SingleAnswerQuestion || question.Type == TestQuestionTypes.FreeAnswerQuestion))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(question.Answers),
+                    Field = nameof(question.Answers).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder} не может содержать более одного правильного ответа"
                 });
 
@@ -148,21 +149,21 @@ namespace Algorithmix.Api.Validation
             if (string.IsNullOrEmpty(answer.Value))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(answer.Value),
+                    Field = nameof(answer.Value).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder}. Ответ #{answerOrder} не может быть пустым"
                 });
 
             if (answerOrder == 1 && answer.PreviousAnswerId != null)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(answer.PreviousAnswerId),
+                    Field = nameof(answer.PreviousAnswerId).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder}. Первый ответ не может иметь предка. Обратитесь к администратору"
                 });
 
             if (answerOrder == answersCount && answer.NextAnswerId != null)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(answer.NextAnswerId),
+                    Field = nameof(answer.NextAnswerId).ToCamelCase(),
                     Message = $"Вопрос #{questionOrder}. Последний ответ не может иметь потомка. Обратитесь к администратору"
                 });
 

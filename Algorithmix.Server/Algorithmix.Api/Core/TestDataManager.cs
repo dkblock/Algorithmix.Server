@@ -18,6 +18,18 @@ namespace Algorithmix.Api.Core
             _random = new Random();
         }
 
+        public FileStream GetImage(string src)
+        {
+            var path = Path.Combine(_env.WebRootPath, src);
+            return File.OpenRead(path);
+        }
+
+        public bool Exists(string src)
+        {
+            var path = Path.Combine(_env.WebRootPath, src);
+            return File.Exists(path);
+        }
+
         public void CreateTestQuestionImagesDirectory(int testId, bool isPublished = false)
         {
             var path = GetTestQuestionImagesDirectory(testId, isPublished);
@@ -34,15 +46,15 @@ namespace Algorithmix.Api.Core
 
         public async Task<string> CreateTestQuestionImage(int testId, int questionId, IFormFile image, bool isPublished = false)
         {
-            var ext = Path.GetExtension(image.FileName);
+            var ext = Path.GetExtension(image.FileName).ToLower();
             var fileName = $"question{questionId}_{_random.Next(0, 10000)}{ext}";
             var imagesDirectory = GetTestQuestionImagesDirectory(testId, isPublished);
 
             if (!Directory.Exists(imagesDirectory))
                 CreateTestQuestionImagesDirectory(testId);
 
-            var path = Path.Combine(GetTestQuestionImagesDirectory(testId, isPublished), fileName);
-            var absolutePath = Path.Combine(_env.WebRootPath, path);
+            var absolutePath = Path.Combine(imagesDirectory, fileName);
+            var path = absolutePath.Replace($"{_env.WebRootPath}", "").Remove(0, 1);
 
             using var stream = new FileStream(absolutePath, FileMode.Create);
             await image.CopyToAsync(stream);

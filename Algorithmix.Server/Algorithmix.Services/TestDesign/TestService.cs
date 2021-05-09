@@ -65,8 +65,9 @@ namespace Algorithmix.Services.TestDesign
 
         public async Task<Test> UpdateTest(int id, TestPayload testPayload)
         {
-            var testEntity = _testMapper.ToEntity(testPayload, id);
-            var updatedTest = await _testRepository.UpdateTest(testEntity);
+            var testEntity = await _testRepository.GetTestById(id);
+            var updatedTestEntity = _testMapper.UpdateEntity(testEntity, testPayload);
+            var updatedTest = await _testRepository.UpdateTest(updatedTestEntity);
 
             return _testMapper.ToModel(updatedTest);
         }

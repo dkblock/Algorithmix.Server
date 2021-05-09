@@ -10,16 +10,25 @@ namespace Algorithmix.Mappers
 {
     public class TestMapper
     {
-        public TestEntity ToEntity(TestPayload testPayload, int? id = null)
+        public TestEntity ToEntity(TestPayload testPayload)
         {
             return new TestEntity
             {
-                Id = id ?? 0,
                 Name = testPayload.Name,
                 IsPublished = false,
                 UpdatedDate = DateTime.Now,
                 AlgorithmId = testPayload.AlgorithmId
             };
+        }
+
+        public TestEntity UpdateEntity(TestEntity testEntity, TestPayload testPayload)
+        {
+            testEntity.Name = testPayload.Name;
+            testEntity.AlgorithmId = testPayload.AlgorithmId;
+            testEntity.IsPublished = false;
+            testEntity.UpdatedDate = DateTime.Now;
+
+            return testEntity;
         }
 
         public PublishedTestEntity ToEntity(Test test)

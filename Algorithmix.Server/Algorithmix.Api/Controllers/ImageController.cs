@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Algorithmix.Api.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 namespace Algorithmix.Server.Controllers
 {
@@ -8,20 +7,21 @@ namespace Algorithmix.Server.Controllers
     [Route("api/images")]
     public class ImageController : Controller
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly TestDataManager _testDataManager;
 
-        public ImageController(IWebHostEnvironment env)
+        public ImageController(TestDataManager testDataManager)
         {
-            _env = env;
+            _testDataManager = testDataManager;
         }
 
         [HttpGet]
         [Route("")]
         public IActionResult GetImage(string src)
         {
-            var path = Path.Combine(_env.WebRootPath, src);
-            var image = System.IO.File.OpenRead(path);
+            if (!_testDataManager.Exists(src))
+                return NotFound();
 
+            var image = _testDataManager.GetImage(src);
             return Ok(image);
         }
     }
