@@ -81,10 +81,13 @@ namespace Algorithmix.Api.Core.TestDesign
 
         private async Task<Test> PrepareTest(Test test, TestFilterPayload filter = null)
         {
+            var userTestResults = await _userTestResultService.GetUserTestResults(test.Id);
+
             test.CreatedBy = await _userService.GetUserById(test.CreatedBy.Id);
             test.Algorithm = await _algorithmService.GetAlgorithm(test.Algorithm.Id);
             test.Questions = await _questionService.GetTestQuestions(test.Id);
-            test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);
+            test.PassesCount = userTestResults.Count();
+            test.AverageResult = userTestResults.Any() ? (int)userTestResults.Average(utr => utr.Result) : 0;
 
             if (filter != null && await _userTestResultService.Exists(test.Id, filter.UserId))
                 test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, filter.UserId);

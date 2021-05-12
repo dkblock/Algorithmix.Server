@@ -45,6 +45,12 @@ namespace Algorithmix.Services
             return _userTestResultMapper.ToModelsCollection(userTestResults);
         }
 
+        public async Task<IEnumerable<UserTestResult>> GetUserTestResults(int testId)
+        {
+            var userTestResults = await _userTestResultRepository.GetUserTestResults(utr => utr.TestId == testId);
+            return _userTestResultMapper.ToModelsCollection(userTestResults);
+        }
+
         public async Task<int> GetAverageUserTestResult(int testId)
         {
             var userTestResults = await _userTestResultRepository.GetUserTestResults(utr => utr.TestId == testId);

@@ -38,6 +38,12 @@ namespace Algorithmix.Services
             return _userAnswerMapper.ToModelsCollection(userAnswerEntities);
         }
 
+        public async Task<IEnumerable<UserAnswer>> GetUserAnswers(int questionId)
+        {
+            var userAnswerEntities = await _userAnswerRepository.GetUserAnswers(ua => ua.QuestionId == questionId);
+            return _userAnswerMapper.ToModelsCollection(userAnswerEntities);
+        }
+
         public async Task DeleteUserAnswer(int questionId, string userId)
         {
             await _userAnswerRepository.DeleteUserAnswer(questionId, userId);

@@ -1,7 +1,9 @@
 ﻿using Algorithmix.Common.Extensions;
 using Algorithmix.Models.Tests;
+using Algorithmix.Services;
 using Algorithmix.Services.TestDesign;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core.TestDesign
@@ -11,12 +13,18 @@ namespace Algorithmix.Api.Core.TestDesign
         private readonly TestAnswerService _answerService;
         private readonly TestQuestionService _questionService;
         private readonly TestService _testService;
+        private readonly UserAnswerService _userAnswerService;
 
-        public TestQuestionManager(TestAnswerService answerService, TestQuestionService questionService, TestService testService)
+        public TestQuestionManager(
+            TestAnswerService answerService,
+            TestQuestionService questionService,
+            TestService testService,
+            UserAnswerService userAnswerService)
         {
             _answerService = answerService;
             _questionService = questionService;
             _testService = testService;
+            _userAnswerService = userAnswerService;
         }
 
         public async Task<TestQuestion> CreateTestQuestion(TestQuestionPayload questionPayload)
@@ -98,6 +106,12 @@ namespace Algorithmix.Api.Core.TestDesign
 
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)
         {
+            var userAnswers = await _userAnswerService.GetUserAnswers(question.Id);
+            var averageResult = (double)userAnswers.Count(ua => ua.IsCorrect) / userAnswers.Count() * 100;
+
+            question.AverageResult = (int)averageResult;
+            question.PassesCount = userAnswers.Count();
+            question.CorrectAnswersCount = userAnswers.Count(ua => ua.IsCorrect);
             question.Test = await _testService.GetTest(question.Test.Id);
             question.Answers = await _answerService.GetTestAnswers(question.Id);
 

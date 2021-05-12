@@ -8,6 +8,9 @@ namespace Algorithmix.Models.Tests
         public string Value { get; set; }
         public int? PreviousQuestionId { get; set; }
         public int? NextQuestionId { get; set; }
+        public int AverageResult { get; set; }
+        public int PassesCount { get; set; }
+        public int CorrectAnswersCount { get; set; }
         public string Image { get; set; }
         public string Type { get; set; }
         public Test Test { get; set; }

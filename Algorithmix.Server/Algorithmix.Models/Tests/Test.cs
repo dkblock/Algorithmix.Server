@@ -11,6 +11,7 @@ namespace Algorithmix.Models.Tests
         public string Name { get; set; }
         public bool IsPublished { get; set; }
         public int AverageResult { get; set; }
+        public int PassesCount { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public ApplicationUser CreatedBy { get; set; }
