@@ -77,8 +77,9 @@ namespace Algorithmix.Api.Core
             userTestResult.Test = await _testManager.GetTest(userTestResult.Test.Id, null);
             userTestResult.User = await _userManager.GetUserById(userTestResult.User.Id);
 
-            var questionIds = userTestResult.Test.Questions.Select(q => q.Id);
+            var questionIds = userTestResult.Test.Questions.Select(q => q.Id).ToList();
             userTestResult.UserAnswers = await _userAnswerManager.GetUserAnswers(questionIds, userTestResult.User.Id);
+            userTestResult.UserAnswers = userTestResult.UserAnswers.OrderBy(ua => questionIds.IndexOf(ua.Question.Id));
 
             return userTestResult;
         }

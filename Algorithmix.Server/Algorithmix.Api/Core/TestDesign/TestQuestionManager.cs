@@ -107,7 +107,7 @@ namespace Algorithmix.Api.Core.TestDesign
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)
         {
             var userAnswers = await _userAnswerService.GetUserAnswers(question.Id);
-            var averageResult = (double)userAnswers.Count(ua => ua.IsCorrect) / userAnswers.Count() * 100;
+            var averageResult = userAnswers.Any() ? (double)userAnswers.Count(ua => ua.IsCorrect) / userAnswers.Count() * 100 : 0;
 
             question.AverageResult = (int)averageResult;
             question.PassesCount = userAnswers.Count();
