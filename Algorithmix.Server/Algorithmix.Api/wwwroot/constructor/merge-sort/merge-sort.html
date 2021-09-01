@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Сортировка слиянием</title>
+    <link rel="stylesheet" href="./merge-sort.css"/>
+</head>
+<body>
+<div>
+    <div class="blockSort"></div>
+    <button id="btnSort" class="btnSort button button-primary">Отсортировать</button>
+
+    <div class="h2description">
+        Краткое описание сортировки
+    </div>
+    <div class="description">
+        Исходная последовательность представляется как последовательный набор отдельных элементов (представлены разными
+        цветами).
+        Из подпоследовательностей формируем упорядоченные пары методом слияния, затем - упорядоченные четверки и так
+        далее увеличивая шаг в 2 раза (каждая новая подпоследовательность после слияния выделяется одним цветом).
+
+    </div>
+</div>
+<script src="./merge-sort.js"></script>
+</body>
+</html>

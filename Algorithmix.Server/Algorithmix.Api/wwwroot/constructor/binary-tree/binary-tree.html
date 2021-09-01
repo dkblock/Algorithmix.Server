@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Бинарное дерево поиска</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/css/bootstrap-slider.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link href="binary-tree.css" rel="stylesheet">
+</head>
+<body>
+<div class="bst-toolbar bg-light">
+    <form class="bst-item" id="addNodeForm" role="form">
+        <input type="number" class="form-control" id="addNode">
+        <button type="submit" class="btn btn-default">Вставить</button>
+    </form>
+    <form class="bst-item" id="deleteNodeForm" role="form">
+        <input type="number" class="form-control" id="deleteNode">
+        <button type="submit" class="btn btn-default">Удалить</button>
+    </form>
+    <form class="bst-item" id="searchForNodeForm" role="form">
+        <input type="number" class="form-control" id="searchForNode">
+        <button type="submit" class="btn btn-default">Поиск</button>
+    </form>
+    <form class="bst-item" id="addRandomForm" role="form">
+        <input type="number" class="form-control" id="addRandom" data-toggle="popover"
+               data-trigger="hover"
+               data-content="Заполнить бинарное дерево случайными значениями">
+        <button type="submit" class="btn btn-default">Заполнить</button>
+    </form>
+    <form class="bst-item" id="animationSpeedForm" role="form">
+        <input type="range" id="animationSpeed" data-slider-id="animationSpeedSlider"
+               data-slider-min="0.1" data-slider-max="5.1" data-slider-step="0.1"
+               data-slider-value="1"/>
+        <label for="AnimationSpeed">Скорость</label>
+    </form>
+    <form class="bst-item" id="resetZoom" role="form">
+        <button type="submit" class="btn btn-default" onclick="resetPage()">Сбросить</button>
+    </form>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" id="svg" class="svg" shape-rendering="auto"></svg>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/bootstrap-slider.min.js"
+        charset="utf-8"></script>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="./binary-tree.js"></script>
+<script>
+    function resetPage() {
+        location.reload();
+    }
+
+    $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas').toggleClass('active');
+        });
+        $('#addRandom').popover({ placement: 'bottom' });
+    });
+</script>
+</body>
+</html>

@@ -38,6 +38,8 @@ namespace Algorithmix.Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var siteUrl = Configuration.GetValue<string>("SiteURL");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,15 +47,14 @@ namespace Algorithmix.Server
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins("http://localhost:8080");
-                builder.AllowCredentials();
+                builder.WithOrigins(siteUrl);
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();

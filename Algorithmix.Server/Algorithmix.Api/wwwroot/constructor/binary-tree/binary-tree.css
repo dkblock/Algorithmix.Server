@@ -1,0 +1,103 @@
+html,
+body {
+    overflow-x: hidden; 
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    background-color: #002766;
+    margin-top: auto;
+}
+
+p {
+    font-size: 30px;
+    color: white;
+}
+
+.bst-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.bst-toolbar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-bottom: 0.071rem solid rgba(18, 24, 33, 0.12);
+}
+
+.bst-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-right: 0.071rem solid rgba(18, 24, 33, 0.12);
+    padding: 6px 12px;
+    height: 100%;
+}
+
+
+.sidebar {
+	padding-top: 15px;
+    padding-left: 0;
+}
+
+.github-icon {
+    padding-right: 5px;
+    font-size: 10px;
+}
+
+.list-group, .btn {
+	border-radius: 4px;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+	background-color: #b2cfff;
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: aliceblue;
+}
+
+#addRandomForm .popover {
+    width: 300px;
+}
+
+.svg {
+	position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.svg .nodeLine {
+    stroke: #000;
+    stroke-width: 2;
+}
+
+text {
+    text-anchor: middle;
+}
+
+#animationSpeed {
+    display: none;
+}
+
+#animationSpeedForm  label {
+    margin-right: 2px;
+}
+
+#animationSpeedForm .slider-selection {
+  background: #b2cfff;
+}
+
+.slider.slider-horizontal {
+    width: 150px;
+    margin-right: 12px;
+}

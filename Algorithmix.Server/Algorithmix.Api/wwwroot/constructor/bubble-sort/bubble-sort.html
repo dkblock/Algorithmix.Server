@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Сортировка пузырьком</title>
+    <link rel="stylesheet" href="bubble-sort.css"/>
+</head>
+<body>
+<div>
+    <div class="blockSort"></div>
+    <button class="btnSort button button-primary" id="btnSort">Отсортировать</button>
+    <div class="h2description">
+        Краткое описание сортировки
+    </div>
+    <div class="description">
+        Обходим массив от начала до конца, попутно меняя местами неотсортированные соседние элементы (
+        <div class="circle" style="background-color: #FF0000;"></div>
+        - красный).
+        В результате первого прохода на последнее место «всплывёт» максимальный элемент (
+        <div class="circle" style="background-color: #00DD21;"></div>
+        - зеленый).
+        Теперь снова обходим неотсортированную часть массива (от первого элемента до предпоследнего) и меняем по пути
+        неотсортированных соседей.
+        Второй по величине элемент окажется на предпоследнем месте (
+        <div class="circle" style="background-color: #00DD21;"></div>
+        - зеленый). Продолжая дальше,
+        будем обходить всё уменьшающуюся неотсортированную часть массива,
+        передвигая найденные максимумы в конец.
+    </div>
+</div>
+<script src="bubble-sort.js"></script>
+</body>
+</html>
