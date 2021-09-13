@@ -7,7 +7,25 @@ namespace Algorithmix.Mappers
 {
     public class AlgorithmTimeComplexityMapper
     {
-        public AlgorithmTimeComplexity ToDomain(AlgorithmTimeComplexityEntity timeComplexityEntity)
+        public AlgorithmTimeComplexityEntity ToEntity(AlgorithmTimeComplexity timeComplexity)
+        {
+            return new AlgorithmTimeComplexityEntity
+            {
+                Id = timeComplexity.Id,
+                AlgorithmId = timeComplexity.AlgorithmId,
+                DeletionAverageTime = timeComplexity.DeletionAverageTime,
+                DeletionWorstTime = timeComplexity.DeletionWorstTime,
+                InsertionAverageTime = timeComplexity.InsertionAverageTime,
+                InsertionWorstTime = timeComplexity.InsertionWorstTime,
+                SearchingAverageTime = timeComplexity.SearchingAverageTime,
+                SearchingWorstTime = timeComplexity.SearchingWorstTime,
+                SortingAverageTime = timeComplexity.SortingAverageTime,
+                SortingBestTime = timeComplexity.SortingBestTime,
+                SortingWorstTime = timeComplexity.SortingWorstTime
+            };
+        }
+
+        public AlgorithmTimeComplexity ToModel(AlgorithmTimeComplexityEntity timeComplexityEntity)
         {
             if (timeComplexityEntity == null)
                 return null;
@@ -28,27 +46,9 @@ namespace Algorithmix.Mappers
             };
         }
 
-        public IEnumerable<AlgorithmTimeComplexity> ToDomainCollection(IEnumerable<AlgorithmTimeComplexityEntity> timeComplexityEntities)
+        public IEnumerable<AlgorithmTimeComplexity> ToModelsCollection(IEnumerable<AlgorithmTimeComplexityEntity> timeComplexityEntities)
         {
-            return timeComplexityEntities.Select(entity => ToDomain(entity));
-        }
-
-        public AlgorithmTimeComplexityEntity ToEntity(AlgorithmTimeComplexity timeComplexity)
-        {
-            return new AlgorithmTimeComplexityEntity
-            {
-                Id = timeComplexity.Id,
-                AlgorithmId = timeComplexity.AlgorithmId,
-                DeletionAverageTime = timeComplexity.DeletionAverageTime,
-                DeletionWorstTime = timeComplexity.DeletionWorstTime,
-                InsertionAverageTime = timeComplexity.InsertionAverageTime,
-                InsertionWorstTime = timeComplexity.InsertionWorstTime,
-                SearchingAverageTime = timeComplexity.SearchingAverageTime,
-                SearchingWorstTime = timeComplexity.SearchingWorstTime,
-                SortingAverageTime = timeComplexity.SortingAverageTime,
-                SortingBestTime = timeComplexity.SortingBestTime,
-                SortingWorstTime = timeComplexity.SortingWorstTime
-            };
-        }
+            return timeComplexityEntities.Select(entity => ToModel(entity));
+        }        
     }
 }

@@ -11,6 +11,7 @@ namespace Algorithmix.Mappers
             services.AddScoped<ApplicationUserMapper, ApplicationUserMapper>();
             services.AddScoped<GroupMapper, GroupMapper>();
             services.AddScoped<TestMapper, TestMapper>();
+            services.AddScoped<TestAlgorithmMapper, TestAlgorithmMapper>();
             services.AddScoped<TestAnswerMapper, TestAnswerMapper>();
             services.AddScoped<TestQuestionMapper, TestQuestionMapper>();
             services.AddScoped<UserAnswerMapper, UserAnswerMapper>();

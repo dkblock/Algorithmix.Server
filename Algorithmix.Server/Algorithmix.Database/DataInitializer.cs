@@ -14,8 +14,8 @@ namespace Algorithmix.Database
             await InitializeRoles(roleManager);
             await InitializeGroups(context);
 
-            // Only on initial launch
-            // await InitializeAdministratorAccount(userManager);
+             //Only on initial launch
+             await InitializeAdministratorAccount(userManager);
         }
 
         private static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)
@@ -36,12 +36,12 @@ namespace Algorithmix.Database
 
         private static async Task InitializeAdministratorAccount(UserManager<ApplicationUserEntity> userManager)
         {
-            const string administratorEmail = "ADMINISTRATOR_EMAIL";
-            const string administratorPassword = "ADMINISTRATOR_PASSWORD";
+            const string administratorEmail = "administrator";
+            const string administratorPassword = "administrator";
 
             if (await userManager.FindByNameAsync(administratorEmail) == null)
             {
-                var administrator = new ApplicationUserEntity { Email = administratorEmail, UserName = administratorEmail };
+                var administrator = new ApplicationUserEntity { Email = administratorEmail, UserName = administratorEmail, GroupId = 2 };
                 var result = await userManager.CreateAsync(administrator, administratorPassword);
 
                 if (result.Succeeded)

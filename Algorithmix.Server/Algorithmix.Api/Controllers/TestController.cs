@@ -3,7 +3,6 @@ using Algorithmix.Api.Core.TestDesign;
 using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
-using Algorithmix.Models.SearchFilters;
 using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,13 +30,14 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> CreateTest([FromBody] TestPayload testPayload)
         {
-            var userId = this.GetUser().Id;
+            testPayload.UserId = this.GetUser().Id;
+
             var validationResult = await _testValidator.Validate(testPayload);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            var createdTest = await _testManager.CreateTest(testPayload, userId);
+            var createdTest = await _testManager.CreateTest(testPayload);
             return CreatedAtAction(nameof(GetTest), new { testId = createdTest.Id }, createdTest);
         }
 
@@ -49,28 +49,27 @@ namespace Algorithmix.Server.Controllers
             if (!await _testManager.Exists(testId))
                 return NotFound();
 
-            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
-            var test = await _testManager.GetTest(testId, filter);
+            var test = await _testManager.GetTest(testId);
 
             return Ok(test);
         }
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetTests()
+        public async Task<IActionResult> GetTests(string searchText = "")
         {
-            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
-            var tests = await _testManager.GetTests(filter);
+            var query = new TestQuery(searchText);
+            var tests = await _testManager.GetTests(query);
 
             return Ok(tests);
         }
 
         [HttpGet]
         [Route("published")]
-        public async Task<IActionResult> GetPublishedTests()
+        public async Task<IActionResult> GetPublishedTests(string searchText = "")
         {
-            var filter = new TestFilterPayload() { UserId = this.GetUser()?.Id };
-            var tests = await _pubTestManager.GetTests(filter);
+            var query = new TestQuery(searchText);
+            var tests = await _pubTestManager.GetTests(query);
 
             return Ok(tests);
         }
@@ -96,6 +95,8 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTest(int testId, TestPayload testPayload)
         {
+            testPayload.UserId = this.GetUser().Id;
+
             if (!await _testManager.Exists(testId))
                 return NotFound();
 

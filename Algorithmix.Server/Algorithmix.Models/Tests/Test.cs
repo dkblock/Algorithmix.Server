@@ -15,7 +15,7 @@ namespace Algorithmix.Models.Tests
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public ApplicationUser CreatedBy { get; set; }
-        public Algorithm Algorithm { get; set; }
+        public IEnumerable<Algorithm> Algorithms { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }
         public UserTestResult UserResult { get; set; }
     }

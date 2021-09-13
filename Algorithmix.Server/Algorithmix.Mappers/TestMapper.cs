@@ -16,15 +16,15 @@ namespace Algorithmix.Mappers
             {
                 Name = testPayload.Name,
                 IsPublished = false,
+                CreatedBy = testPayload.UserId,
+                CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                AlgorithmId = testPayload.AlgorithmId
             };
         }
 
         public TestEntity UpdateEntity(TestEntity testEntity, TestPayload testPayload)
         {
             testEntity.Name = testPayload.Name;
-            testEntity.AlgorithmId = testPayload.AlgorithmId;
             testEntity.IsPublished = false;
             testEntity.UpdatedDate = DateTime.Now;
 
@@ -38,8 +38,7 @@ namespace Algorithmix.Mappers
                 Id = test.Id,
                 Name = test.Name,
                 CreatedDate = DateTime.Now,
-                CreatedBy = test.CreatedBy.Id,
-                AlgorithmId = test.Algorithm.Id
+                CreatedBy = test.CreatedBy.Id
             };
         }
 
@@ -56,7 +55,7 @@ namespace Algorithmix.Mappers
                 CreatedDate = testEntity.CreatedDate,
                 UpdatedDate = testEntity.UpdatedDate,
                 CreatedBy = new ApplicationUser { Id = testEntity.CreatedBy },
-                Algorithm = new Algorithm() { Id = testEntity.AlgorithmId },
+                Algorithms = new List<Algorithm>(),
                 Questions = new List<TestQuestion>()
             };
         }
@@ -72,10 +71,10 @@ namespace Algorithmix.Mappers
                 Name = testEntity.Name,
                 CreatedDate = testEntity.CreatedDate,
                 CreatedBy = new ApplicationUser { Id = testEntity.CreatedBy },
-                Algorithm = new Algorithm() { Id = testEntity.AlgorithmId },
+                Algorithms = new List<Algorithm>(),
                 Questions = new List<TestQuestion>()
             };
-        }        
+        }
 
         public IEnumerable<Test> ToModelsCollection(IEnumerable<TestEntity> testEntities)
         {

@@ -14,6 +14,7 @@ namespace Algorithmix.Repository
             services.AddScoped<PublishedTestRepository, PublishedTestRepository>();
             services.AddScoped<PublishedTestAnswerRepository, PublishedTestAnswerRepository>();
             services.AddScoped<PublishedTestQuestionRepository, PublishedTestQuestionRepository>();
+            services.AddScoped<TestAlgorithmRepository, TestAlgorithmRepository>();
             services.AddScoped<TestRepository, TestRepository>();
             services.AddScoped<TestAnswerRepository, TestAnswerRepository>();
             services.AddScoped<TestQuestionRepository, TestQuestionRepository>();

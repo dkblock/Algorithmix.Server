@@ -2,7 +2,6 @@
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository.TestPass;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Services.TestPass
@@ -37,15 +36,9 @@ namespace Algorithmix.Services.TestPass
             return _testMapper.ToModel(testEntity);
         }
 
-        public async Task<IEnumerable<Test>> GetTests()
+        public async Task<IEnumerable<Test>> GetAllTests()
         {
             var testEntities = await _testRepository.GetAllTests();
-            return _testMapper.ToModelsCollection(testEntities);
-        }
-
-        public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
-        {
-            var testEntities = await _testRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
             return _testMapper.ToModelsCollection(testEntities);
         }
 

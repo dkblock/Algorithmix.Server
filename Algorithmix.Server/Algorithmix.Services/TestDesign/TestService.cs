@@ -3,7 +3,6 @@ using Algorithmix.Models.Tests;
 using Algorithmix.Repository.TestDesign;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Services.TestDesign
@@ -19,13 +18,11 @@ namespace Algorithmix.Services.TestDesign
             _testRepository = testRepository;
         }
 
-        public async Task<Test> CreateTest(TestPayload testPayload, string userId)
+        public async Task<Test> CreateTest(TestPayload testPayload)
         {
             var testEntity = _testMapper.ToEntity(testPayload);
-            testEntity.CreatedBy = userId;
-            testEntity.CreatedDate = DateTime.Now;
-
             var createdTest = await _testRepository.CreateTest(testEntity);
+
             return _testMapper.ToModel(createdTest);
         }
 
@@ -40,21 +37,9 @@ namespace Algorithmix.Services.TestDesign
             return _testMapper.ToModel(testEntity);
         }
 
-        public async Task<IEnumerable<Test>> GetTests()
+        public async Task<IEnumerable<Test>> GetAllTests()
         {
             var testEntities = await _testRepository.GetAllTests();
-            return _testMapper.ToModelsCollection(testEntities);
-        }
-
-        public async Task<IEnumerable<Test>> GetTests(string algorithmId)
-        {
-            var testEntities = await _testRepository.GetTests(t => t.AlgorithmId == algorithmId);
-            return _testMapper.ToModelsCollection(testEntities);
-        }
-
-        public async Task<IEnumerable<Test>> GetTests(IEnumerable<string> algorithmIds)
-        {
-            var testEntities = await _testRepository.GetTests(t => algorithmIds.Contains(t.AlgorithmId));
             return _testMapper.ToModelsCollection(testEntities);
         }
 

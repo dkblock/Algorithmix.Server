@@ -34,20 +34,33 @@ namespace Algorithmix.Api.Validation
                     Message = "Название теста должно содержать не более 50 символов"
                 });
 
-            var algorithm = await _algorithmService.GetAlgorithm(test.AlgorithmId);
-
-            if (algorithm == null)
-                validationErrors.Add(new ValidationError
-                {
-                    Field = nameof(test.AlgorithmId),
-                    Message = "Алгоритма с данным ID не существует"
-                });
+            var algorithmValidationErrors = await ValidateAlgorithms(test);
+            validationErrors.AddRange(algorithmValidationErrors);
 
             return new ValidationResult
             {
                 IsValid = !validationErrors.Any(),
                 ValidationErrors = validationErrors
             };
+        }
+
+        private async Task<IEnumerable<ValidationError>> ValidateAlgorithms(TestPayload test)
+        {
+            var validationErrors = new List<ValidationError>();
+
+            foreach(var algorithmId in test.AlgorithmIds)
+            {
+                var algorithm = await _algorithmService.GetAlgorithm(algorithmId);
+
+                if (algorithm == null)
+                    validationErrors.Add(new ValidationError
+                    {
+                        Field = nameof(test.AlgorithmIds),
+                        Message = $"Алгоритма с данным ID ({algorithm.Id}) не существует"
+                    });
+            }
+
+            return validationErrors;
         }
     }
 }

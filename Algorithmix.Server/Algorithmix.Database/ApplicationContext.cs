@@ -27,10 +27,15 @@ namespace Algorithmix.Database
                 .WithMany()
                 .HasForeignKey(u => u.GroupId);
 
-            builder.Entity<TestEntity>()
+            builder.Entity<TestAlgorithmEntity>()
+                .HasOne<TestEntity>()
+                .WithOne()
+                .HasForeignKey<TestAlgorithmEntity>(ta => ta.TestId);
+
+            builder.Entity<TestAlgorithmEntity>()
                 .HasOne<AlgorithmEntity>()
-                .WithMany()
-                .HasForeignKey(t => t.AlgorithmId);
+                .WithOne()
+                .HasForeignKey<TestAlgorithmEntity>(ta => ta.AlgorithmId);
 
             builder.Entity<TestQuestionEntity>()
                 .HasOne<TestEntity>()
@@ -41,11 +46,6 @@ namespace Algorithmix.Database
                 .HasOne<TestQuestionEntity>()
                 .WithMany()
                 .HasForeignKey(a => a.QuestionId);
-
-            builder.Entity<PublishedTestEntity>()
-                .HasOne<AlgorithmEntity>()
-                .WithMany()
-                .HasForeignKey(t => t.AlgorithmId);
 
             builder.Entity<PublishedTestQuestionEntity>()
                 .HasOne<PublishedTestEntity>()
@@ -92,6 +92,7 @@ namespace Algorithmix.Database
         public DbSet<PublishedTestAnswerEntity> PublishedTestAnswers { get; set; }
         public DbSet<PublishedTestQuestionEntity> PublishedTestQuestions { get; set; }
         public DbSet<TestEntity> Tests { get; set; }
+        public DbSet<TestAlgorithmEntity> TestAlgorithms { get; set; }
         public DbSet<TestAnswerEntity> TestAnswers { get; set; }
         public DbSet<TestQuestionEntity> TestQuestions { get; set; }
         public DbSet<UserAnswerEntity> UserAnswers { get; set; }
