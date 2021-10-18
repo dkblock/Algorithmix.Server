@@ -2,6 +2,7 @@
 using Algorithmix.Models.Tests;
 using Algorithmix.Repository;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Services
@@ -38,6 +39,18 @@ namespace Algorithmix.Services
 
             foreach (var testAlgorithm in testAlgorithms)
                 await _testAlgorithmRepository.DeleteTestAlgorithm(testAlgorithm.Id);
+        }
+
+        public async Task UpdateTestAlgorithms(int testId, IEnumerable<string> algorithmIds)
+        {
+            var currentTestAlgorithms = await GetTestAlgorithms(testId);
+            var currentAlgorithmIds = currentTestAlgorithms.Select(ta => ta.AlgorithmId);
+
+            if (!currentAlgorithmIds.SequenceEqual(algorithmIds))
+            {
+                await DeleteTestAlgorithms(testId);
+                await CreateTestAlgorithms(testId, algorithmIds);
+            }
         }
     }
 }

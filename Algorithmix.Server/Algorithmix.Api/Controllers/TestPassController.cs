@@ -16,7 +16,10 @@ namespace Algorithmix.Api.Controllers
         private readonly TestPassManager _testPassManager;
         private readonly UserTestResultManager _userTestResultManager;
 
-        public TestPassController(PublishedTestManager pubTestManager, TestPassManager testPassManager, UserTestResultManager userTestResultManager)
+        public TestPassController(
+            PublishedTestManager pubTestManager,
+            TestPassManager testPassManager,
+            UserTestResultManager userTestResultManager)
         {
             _pubTestManager = pubTestManager;
             _testPassManager = testPassManager;
@@ -30,9 +33,7 @@ namespace Algorithmix.Api.Controllers
             if (!await _pubTestManager.Exists(testId))
                 return NotFound();
 
-            var userId = this.GetUser()?.Id;
-            var nextQuestion = await _testPassManager.GetNextTestQuestion(null, testId, userId);
-
+            var nextQuestion = await _testPassManager.GetNextTestQuestion(null, testId);
             return Ok(nextQuestion);
         }
 
@@ -40,9 +41,7 @@ namespace Algorithmix.Api.Controllers
         [Route("pass/next")]
         public async Task<IActionResult> GetNextTestQuestion(int testId, [FromBody] UserAnswerPayload userAnswerPayload)
         {
-            var userId = this.GetUser()?.Id;
-            var nextQuestion = await _testPassManager.GetNextTestQuestion(userAnswerPayload, testId, userId);
-
+            var nextQuestion = await _testPassManager.GetNextTestQuestion(userAnswerPayload, testId);
             return Ok(nextQuestion);
         }
 
@@ -50,9 +49,7 @@ namespace Algorithmix.Api.Controllers
         [Route("pass/previous")]
         public async Task<IActionResult> GetPreviousTestQuestion([FromBody] UserAnswerPayload userAnswerPayload)
         {
-            var userId = this.GetUser()?.Id;
-            var previousQuestion = await _testPassManager.GetPreviousTestQuestion(userAnswerPayload.QuestionId, userId);
-
+            var previousQuestion = await _testPassManager.GetPreviousTestQuestion(userAnswerPayload.QuestionId);
             return Ok(previousQuestion);
         }
 
@@ -60,12 +57,10 @@ namespace Algorithmix.Api.Controllers
         [Route("result")]
         public async Task<IActionResult> GetTestPassResult(int testId)
         {
-            var userId = this.GetUser()?.Id;
-
-            if (!await _userTestResultManager.Exists(testId, userId))
+            if (!await _userTestResultManager.Exists(testId))
                 return NotFound();
 
-            var userTestResult = await _userTestResultManager.GetUserTestResult(testId, userId);
+            var userTestResult = await _userTestResultManager.GetUserTestResult(testId);
             return Ok(userTestResult);
         }
     }

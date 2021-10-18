@@ -15,17 +15,20 @@ namespace Algorithmix.Api.Core
         private readonly PublishedTestManager _testManager;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultService _userTestResultService;
+        private readonly IUserContextManager _userContextManager;
 
         public UserTestResultManager(
             ApplicationUserManager userManager,
             PublishedTestManager testManager,
             UserAnswerManager userAnswerManager,
-            UserTestResultService userTestResultService)
+            UserTestResultService userTestResultService,
+            IUserContextManager userContextManager)
         {
             _userManager = userManager;
             _testManager = testManager;
             _userAnswerManager = userAnswerManager;
             _userTestResultService = userTestResultService;
+            _userContextManager = userContextManager;
         }
 
         public async Task<UserTestResult> CreateUserTestResult(int testId, string userId)
@@ -50,6 +53,14 @@ namespace Algorithmix.Api.Core
             return await PrepareUserTestResult(createdUserTestResult);
         }
 
+        public async Task<UserTestResult> GetUserTestResult(int testId)
+        {
+            var userId = _userContextManager.CurrentUser.Id;
+            var userTestResult = await _userTestResultService.GetUserTestResult(testId, userId);
+
+            return await PrepareUserTestResult(userTestResult);
+        }
+
         public async Task<UserTestResult> GetUserTestResult(int testId, string userId)
         {
             var userTestResult = await _userTestResultService.GetUserTestResult(testId, userId);
@@ -60,6 +71,12 @@ namespace Algorithmix.Api.Core
         {
             var userTestResults = await _userTestResultService.GetUserTestResults();
             return await PrepareUserTestResults(userTestResults);
+        }
+
+        public async Task<bool> Exists(int testId)
+        {
+            var userId = _userContextManager.CurrentUser.Id;
+            return await _userTestResultService.Exists(testId, userId);
         }
 
         public async Task<bool> Exists(int testId, string userId)

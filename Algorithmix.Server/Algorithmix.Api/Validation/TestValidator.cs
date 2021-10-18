@@ -27,13 +27,6 @@ namespace Algorithmix.Api.Validation
                     Message = "Введите название теста"
                 });
 
-            if (test.Name.Length > 50)
-                validationErrors.Add(new ValidationError
-                {
-                    Field = nameof(test.Name),
-                    Message = "Название теста должно содержать не более 50 символов"
-                });
-
             var algorithmValidationErrors = await ValidateAlgorithms(test);
             validationErrors.AddRange(algorithmValidationErrors);
 

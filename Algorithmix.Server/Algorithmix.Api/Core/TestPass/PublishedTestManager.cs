@@ -18,6 +18,7 @@ namespace Algorithmix.Api.Core.TestPass
         private readonly UserTestResultService _userTestResultService;
         private readonly TestDataManager _testDataManager;
         private readonly TestAlgorithmService _testAlgorithmService;
+        private readonly IUserContextManager _userContextManager;
         private readonly QueryHelper _queryHelper;
 
         public PublishedTestManager(
@@ -27,6 +28,7 @@ namespace Algorithmix.Api.Core.TestPass
             PublishedTestQuestionService questionService,
             ApplicationUserService userService,
             UserTestResultService userTestResultService,
+            IUserContextManager userContextManager,
             TestDataManager testDataManager)
         {
             _algorithmService = algorithmService;
@@ -36,6 +38,7 @@ namespace Algorithmix.Api.Core.TestPass
             _userTestResultService = userTestResultService;
             _testDataManager = testDataManager;
             _testAlgorithmService = testAlgorithmService;
+            _userContextManager = userContextManager;
             _queryHelper = new QueryHelper();
         }
 
@@ -77,8 +80,8 @@ namespace Algorithmix.Api.Core.TestPass
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);
 
-            //if (filter != null && await _userTestResultService.Exists(test.Id, filter.UserId))
-            //    test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, filter.UserId);
+            if (_userContextManager.CurrentUser != null && await _userTestResultService.Exists(test.Id, _userContextManager.CurrentUser.Id))
+                test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, _userContextManager.CurrentUser.Id);
 
             return test;
         }

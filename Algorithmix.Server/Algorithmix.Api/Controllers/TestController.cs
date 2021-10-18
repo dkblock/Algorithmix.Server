@@ -1,4 +1,4 @@
-﻿using Algorithmix.Api.Controllers;
+﻿using Algorithmix.Api.Core;
 using Algorithmix.Api.Core.TestDesign;
 using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Api.Validation;
@@ -18,7 +18,10 @@ namespace Algorithmix.Server.Controllers
         private readonly TestManager _testManager;
         private readonly TestValidator _testValidator;
 
-        public TestController(PublishedTestManager pubTestManager, TestManager testManager, TestValidator testValidator)
+        public TestController(
+            PublishedTestManager pubTestManager, 
+            TestManager testManager, 
+            TestValidator testValidator)
         {
             _pubTestManager = pubTestManager;
             _testManager = testManager;
@@ -30,8 +33,6 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> CreateTest([FromBody] TestPayload testPayload)
         {
-            testPayload.UserId = this.GetUser().Id;
-
             var validationResult = await _testValidator.Validate(testPayload);
 
             if (!validationResult.IsValid)
@@ -95,8 +96,6 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> UpdateTest(int testId, TestPayload testPayload)
         {
-            testPayload.UserId = this.GetUser().Id;
-
             if (!await _testManager.Exists(testId))
                 return NotFound();
 

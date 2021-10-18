@@ -49,6 +49,7 @@ namespace Algorithmix.Identity
             });
 
             services.AddScoped<AuthenticationService, AuthenticationService>();
+            services.AddScoped<IdentityHelper, IdentityHelper>();
         }
     }
 }

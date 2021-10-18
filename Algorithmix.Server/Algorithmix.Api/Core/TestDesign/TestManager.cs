@@ -17,6 +17,7 @@ namespace Algorithmix.Api.Core.TestDesign
         private readonly ApplicationUserService _userService;
         private readonly UserTestResultService _userTestResultService;
         private readonly TestDataManager _testDataManager;
+        private readonly IUserContextManager _userContextManager;
         private readonly QueryHelper _queryHelper;
 
         public TestManager(
@@ -26,7 +27,8 @@ namespace Algorithmix.Api.Core.TestDesign
             TestQuestionService questionService,
             ApplicationUserService userService,
             UserTestResultService userTestResultService,
-            TestDataManager testDataManager)
+            TestDataManager testDataManager,
+            IUserContextManager userContextManager)
         {
             _algorithmService = algorithmService;
             _testService = testService;
@@ -35,11 +37,14 @@ namespace Algorithmix.Api.Core.TestDesign
             _userService = userService;
             _userTestResultService = userTestResultService;
             _testDataManager = testDataManager;
+            _userContextManager = userContextManager;
             _queryHelper = new QueryHelper();
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)
         {
+            testPayload.UserId = _userContextManager.CurrentUser.Id;
+
             var createdTest = await _testService.CreateTest(testPayload);
             await _testAlgorithmService.CreateTestAlgorithms(createdTest.Id, testPayload.AlgorithmIds);
             _testDataManager.CreateTestQuestionImagesDirectory(createdTest.Id);
@@ -66,14 +71,18 @@ namespace Algorithmix.Api.Core.TestDesign
 
         public async Task DeleteTest(int id)
         {
-            await _testService.DeleteTest(id);
             await _testAlgorithmService.DeleteTestAlgorithms(id);
+            await _testService.DeleteTest(id);
             _testDataManager.DeleteTestQuestionImagesDirectory(id);
         }
 
         public async Task<Test> UpdateTest(int id, TestPayload testPayload)
         {
+            testPayload.UserId = _userContextManager.CurrentUser.Id;
+
             var updatedTest = await _testService.UpdateTest(id, testPayload);
+            await _testAlgorithmService.UpdateTestAlgorithms(id, testPayload.AlgorithmIds);
+
             return await PrepareTest(updatedTest);
         }
 

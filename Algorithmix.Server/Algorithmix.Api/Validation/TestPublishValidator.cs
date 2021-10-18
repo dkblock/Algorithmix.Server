@@ -53,6 +53,13 @@ namespace Algorithmix.Api.Validation
                     Message = "Тест должен содержать хотя бы один вопрос"
                 });
 
+            if (!test.Algorithms.Any())
+                validationErrors.Add(new ValidationError
+                {
+                    Field = nameof(test.Algorithms).ToCamelCase(),
+                    Message = "Тест должен относиться хотя бы к одному алгоритму"
+                });
+
             return validationErrors;
         }
 

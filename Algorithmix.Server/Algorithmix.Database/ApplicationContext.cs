@@ -29,13 +29,13 @@ namespace Algorithmix.Database
 
             builder.Entity<TestAlgorithmEntity>()
                 .HasOne<TestEntity>()
-                .WithOne()
-                .HasForeignKey<TestAlgorithmEntity>(ta => ta.TestId);
+                .WithMany()
+                .HasForeignKey(ta => ta.TestId);
 
             builder.Entity<TestAlgorithmEntity>()
                 .HasOne<AlgorithmEntity>()
-                .WithOne()
-                .HasForeignKey<TestAlgorithmEntity>(ta => ta.AlgorithmId);
+                .WithMany()
+                .HasForeignKey(ta => ta.AlgorithmId);
 
             builder.Entity<TestQuestionEntity>()
                 .HasOne<TestEntity>()

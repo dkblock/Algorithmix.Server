@@ -14,23 +14,28 @@ namespace Algorithmix.Api.Core
         private readonly UserAnswerMapper _userAnswerMapper;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultManager _userTestResultManager;
+        private readonly IUserContextManager _userContextManager;
 
         public TestPassManager(
             PublishedTestManager testManager,
             PublishedTestQuestionManager questionManager,
             UserAnswerMapper userAnswerMapper,
             UserAnswerManager userAnswerManager,
-            UserTestResultManager userTestResultManager)
+            UserTestResultManager userTestResultManager,
+            IUserContextManager userContextManager)
         {
             _testManager = testManager;
             _questionManager = questionManager;
             _userAnswerMapper = userAnswerMapper;
             _userAnswerManager = userAnswerManager;
             _userTestResultManager = userTestResultManager;
+            _userContextManager = userContextManager;
         }
 
-        public async Task<TestQuestion> GetNextTestQuestion(UserAnswerPayload userAnswerPayload, int testId, string userId)
+        public async Task<TestQuestion> GetNextTestQuestion(UserAnswerPayload userAnswerPayload, int testId)
         {
+            var userId = _userContextManager.CurrentUser.Id;
+
             if (userAnswerPayload == null)
                 return await HandleTestStart(testId, userId);
 
@@ -58,8 +63,9 @@ namespace Algorithmix.Api.Core
             return firstQuestion;
         }
 
-        public async Task<TestQuestion> GetPreviousTestQuestion(int currentQuestionId, string userId)
+        public async Task<TestQuestion> GetPreviousTestQuestion(int currentQuestionId)
         {
+            var userId = _userContextManager.CurrentUser.Id;
             var currentQuestion = await _questionManager.GetTestQuestion(currentQuestionId);
 
             if (currentQuestion.PreviousQuestionId == null)
