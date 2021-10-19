@@ -1,5 +1,6 @@
 ﻿using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Common.Extensions;
+using Algorithmix.Common.Helpers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
 using System;
@@ -16,6 +17,7 @@ namespace Algorithmix.Api.Core
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultService _userTestResultService;
         private readonly IUserContextManager _userContextManager;
+        private readonly QueryHelper _queryHelper;
 
         public UserTestResultManager(
             ApplicationUserManager userManager,
@@ -29,6 +31,7 @@ namespace Algorithmix.Api.Core
             _userAnswerManager = userAnswerManager;
             _userTestResultService = userTestResultService;
             _userContextManager = userContextManager;
+            _queryHelper = new QueryHelper();
         }
 
         public async Task<UserTestResult> CreateUserTestResult(int testId, string userId)
@@ -67,10 +70,10 @@ namespace Algorithmix.Api.Core
             return await PrepareUserTestResult(userTestResult);
         }
 
-        public async Task<IEnumerable<UserTestResult>> GetUserTestResults()
+        public async Task<IEnumerable<UserTestResult>> GetUserTestResults(UserTestResultQuery query)
         {
             var userTestResults = await _userTestResultService.GetUserTestResults();
-            return await PrepareUserTestResults(userTestResults);
+            return await PrepareUserTestResults(userTestResults, query);
         }
 
         public async Task<bool> Exists(int testId)
@@ -101,12 +104,35 @@ namespace Algorithmix.Api.Core
             return userTestResult;
         }
 
-        private async Task<IEnumerable<UserTestResult>> PrepareUserTestResults(IEnumerable<UserTestResult> userTestResults)
+        private async Task<IEnumerable<UserTestResult>> PrepareUserTestResults(IEnumerable<UserTestResult> userTestResults, UserTestResultQuery query)
         {
             var preparedUserTestResults = new List<UserTestResult>();
-            await userTestResults.ForEachAsync(async userTestResult => preparedUserTestResults.Add(await PrepareUserTestResult(userTestResult)));
 
-            return preparedUserTestResults;
+            foreach (var userTestResult in userTestResults)
+            {
+                var preparedUserTestResult = await PrepareUserTestResult(userTestResult);
+                var filters = new[]
+                {
+                    preparedUserTestResult.User.FirstName,
+                    preparedUserTestResult.User.LastName,
+                    $"{preparedUserTestResult.User.FirstName} {preparedUserTestResult.User.LastName}",
+                    $"{preparedUserTestResult.User.LastName} {preparedUserTestResult.User.FirstName}",
+                    preparedUserTestResult.User.Group.Name,
+                    preparedUserTestResult.Test.Name,
+                };
+
+                if (!_queryHelper.IsMatch(query.SearchText, filters))
+                    continue;
+
+                if (query.GroupId != -1 && query.GroupId != preparedUserTestResult.User.Group.Id)
+                    continue;
+
+                preparedUserTestResults.Add(preparedUserTestResult);
+            }
+
+            return query.Desc
+                ? preparedUserTestResults.OrderByDescending(utr => utr.PassingTime)
+                : preparedUserTestResults.OrderBy(utr => utr.PassingTime);
         }
     }
 }

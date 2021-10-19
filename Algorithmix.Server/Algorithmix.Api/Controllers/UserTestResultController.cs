@@ -1,5 +1,6 @@
 ﻿using Algorithmix.Api.Core;
 using Algorithmix.Common.Constants;
+using Algorithmix.Models.Tests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -20,9 +21,11 @@ namespace Algorithmix.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetUserTestResults()
+        public async Task<IActionResult> GetUserTestResults(string searchText = "", int groupId = -1, string sortBy = "passingTime", bool desc = true)
         {
-            var userTestResults = await _userTestResultManager.GetUserTestResults();
+            var query = new UserTestResultQuery(searchText, groupId, sortBy, desc);
+            var userTestResults = await _userTestResultManager.GetUserTestResults(query);
+
             return Ok(userTestResults);
         }
 
