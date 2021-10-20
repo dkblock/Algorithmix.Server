@@ -1,4 +1,4 @@
-﻿using Algorithmix.Common.Helpers;
+﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
 using Algorithmix.Services.TestDesign;
@@ -28,7 +28,8 @@ namespace Algorithmix.Api.Core.TestDesign
             ApplicationUserService userService,
             UserTestResultService userTestResultService,
             TestDataManager testDataManager,
-            IUserContextManager userContextManager)
+            IUserContextManager userContextManager,
+            QueryHelper queryHelper)
         {
             _algorithmService = algorithmService;
             _testService = testService;
@@ -38,7 +39,7 @@ namespace Algorithmix.Api.Core.TestDesign
             _userTestResultService = userTestResultService;
             _testDataManager = testDataManager;
             _userContextManager = userContextManager;
-            _queryHelper = new QueryHelper();
+            _queryHelper = queryHelper;
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)

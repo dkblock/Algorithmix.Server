@@ -1,4 +1,5 @@
-﻿using Algorithmix.Api.Core.TestDesign;
+﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Api.Core.TestDesign;
 using Algorithmix.Api.Core.TestPass;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,7 @@ namespace Algorithmix.Api.Core
             services.AddScoped<UserAnswerManager, UserAnswerManager>();
             services.AddScoped<IUserContextManager, UserContextManager>();
             services.AddScoped<UserTestResultManager, UserTestResultManager>();
+            services.AddScoped<QueryHelper, QueryHelper>();
         }
     }
 }

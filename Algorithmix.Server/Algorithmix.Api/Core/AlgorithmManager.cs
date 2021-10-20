@@ -1,4 +1,4 @@
-﻿using Algorithmix.Common.Helpers;
+﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
 using System.Collections.Generic;
@@ -12,11 +12,11 @@ namespace Algorithmix.Api.Core
         private readonly AlgorithmTimeComplexityService _algorithmTimeComplexityService;
         private readonly QueryHelper _queryHelper;
 
-        public AlgorithmManager(AlgorithmService algorithmService, AlgorithmTimeComplexityService algorithmTimeComplexityService)
+        public AlgorithmManager(AlgorithmService algorithmService, AlgorithmTimeComplexityService algorithmTimeComplexityService, QueryHelper queryHelper)
         {
             _algorithmService = algorithmService;
             _algorithmTimeComplexityService = algorithmTimeComplexityService;
-            _queryHelper = new QueryHelper();
+            _queryHelper = queryHelper;
         }
 
         public async Task<bool> Exists(string id)

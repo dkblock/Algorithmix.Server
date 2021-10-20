@@ -1,6 +1,6 @@
-﻿using Algorithmix.Api.Core.TestPass;
-using Algorithmix.Common.Extensions;
-using Algorithmix.Common.Helpers;
+﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Api.Core.TestPass;
+using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
 using System;
@@ -24,14 +24,15 @@ namespace Algorithmix.Api.Core
             PublishedTestManager testManager,
             UserAnswerManager userAnswerManager,
             UserTestResultService userTestResultService,
-            IUserContextManager userContextManager)
+            IUserContextManager userContextManager,
+            QueryHelper queryHelper)
         {
             _userManager = userManager;
             _testManager = testManager;
             _userAnswerManager = userAnswerManager;
             _userTestResultService = userTestResultService;
             _userContextManager = userContextManager;
-            _queryHelper = new QueryHelper();
+            _queryHelper = queryHelper;
         }
 
         public async Task<UserTestResult> CreateUserTestResult(int testId, string userId)
@@ -130,9 +131,9 @@ namespace Algorithmix.Api.Core
                 preparedUserTestResults.Add(preparedUserTestResult);
             }
 
-            return query.Desc
-                ? preparedUserTestResults.OrderByDescending(utr => utr.PassingTime)
-                : preparedUserTestResults.OrderBy(utr => utr.PassingTime);
+            return query.SortByDesc
+                ? preparedUserTestResults.OrderByDescending(_queryHelper.UserTestResultSortModel[query.SortBy])
+                : preparedUserTestResults.OrderBy(_queryHelper.UserTestResultSortModel[query.SortBy]);
         }
     }
 }

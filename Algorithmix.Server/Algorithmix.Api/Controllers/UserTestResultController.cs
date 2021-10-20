@@ -21,7 +21,11 @@ namespace Algorithmix.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetUserTestResults(string searchText = "", int groupId = -1, string sortBy = "passingTime", bool desc = true)
+        public async Task<IActionResult> GetUserTestResults(
+            string searchText = "", 
+            int groupId = -1, 
+            UserTestResultSortBy sortBy = UserTestResultSortBy.PassingTime, 
+            bool desc = true)
         {
             var query = new UserTestResultQuery(searchText, groupId, sortBy, desc);
             var userTestResults = await _userTestResultManager.GetUserTestResults(query);
