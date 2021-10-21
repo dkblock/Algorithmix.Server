@@ -54,5 +54,13 @@ namespace Algorithmix.Services.TestPass
         {
             await _answerRepository.DeleteTestAnswer(id);
         }
+
+        public async Task<TestAnswer> UpdateTestAnswer(TestAnswer testAnswer)
+        {
+            var answerEntity = _answerMapper.ToEntity(testAnswer);
+            var updatedAnswer = await _answerRepository.UpdateTestAnswer(answerEntity);
+
+            return _answerMapper.ToModel(updatedAnswer);
+        }
     }
 }

@@ -38,6 +38,11 @@ namespace Algorithmix.Api.Core.TestPass
             await _answerService.DeleteTestAnswer(id);
         }
 
+        public async Task UpdateTestAnswer(TestAnswer answer)
+        {
+            await _answerService.UpdateTestAnswer(answer);
+        }
+
         private async Task<TestAnswer> PrepareAnswer(TestAnswer answer)
         {
             answer.Question = await _questionService.GetTestQuestion(answer.Question.Id);

@@ -52,12 +52,14 @@ namespace Algorithmix.Api.Core
             return test;
         }
 
-        public async Task PublishTest(Test test)
+        public async Task PublishTest(Test test, bool clearTestResults)
         {
             var questions = test.Questions;
             var answers = questions.SelectMany(q => q.Answers);
 
-            await ClearTestResults(test, questions);
+            if (clearTestResults)
+                await ClearTestResults(test, questions);
+
             await UpdatePublishedTest(test);
             await UpdatePublishedQuestions(questions);
             await UpdatePublishedAnswers(answers);
@@ -75,9 +77,9 @@ namespace Algorithmix.Api.Core
         private async Task UpdatePublishedTest(Test test)
         {
             if (await _pubTestManager.Exists(test.Id))
-                await _pubTestManager.DeleteTest(test.Id);
-
-            await _pubTestManager.CreateTest(test);
+                await _pubTestManager.UpdateTest(test);
+            else
+                await _pubTestManager.CreateTest(test);
         }
 
         private async Task UpdatePublishedQuestions(IEnumerable<TestQuestion> questions)
@@ -85,9 +87,9 @@ namespace Algorithmix.Api.Core
             foreach (var question in questions)
             {
                 if (await _pubQuestionManager.Exists(question.Id, question.Test.Id))
-                    await _pubQuestionManager.DeleteTestQuestion(question.Id);
-
-                await _pubQuestionManager.CreateTestQuestion(question);
+                    await _pubQuestionManager.UpdateTestQuestion(question);
+                else
+                    await _pubQuestionManager.CreateTestQuestion(question);
             }
         }
 
@@ -96,9 +98,9 @@ namespace Algorithmix.Api.Core
             foreach (var answer in answers)
             {
                 if (await _pubAnswerManager.Exists(answer.Id, answer.Question.Id))
-                    await _pubAnswerManager.DeleteTestAnswer(answer.Id);
-
-                await _pubAnswerManager.CreateTestAnswer(answer);
+                    await _pubAnswerManager.UpdateTestAnswer(answer);
+                else
+                    await _pubAnswerManager.CreateTestAnswer(answer);
             }
         }
     }

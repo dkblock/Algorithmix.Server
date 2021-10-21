@@ -23,7 +23,7 @@ namespace Algorithmix.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> PublishTest(int testId)
+        public async Task<IActionResult> PublishTest(int testId, bool clearTestResults)
         {
             var test = await _testPublishManager.GetPreparedTest(testId);
             var validationResult = _testPublishValidator.Validate(test);
@@ -31,7 +31,7 @@ namespace Algorithmix.Api.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
 
-            await _testPublishManager.PublishTest(test);
+            await _testPublishManager.PublishTest(test, clearTestResults);
 
             return Ok();
         }

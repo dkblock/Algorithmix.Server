@@ -55,6 +55,11 @@ namespace Algorithmix.Api.Core.TestPass
             await _questionService.DeleteTestQuestion(id);
         }
 
+        public async Task UpdateTestQuestion(TestQuestion question)
+        {
+            await _questionService.UpdateTestQuestion(question);
+        }
+
         private async Task<TestQuestion> PrepareQuestion(TestQuestion question)
         {
             question.Test = await _testService.GetTest(question.Test.Id);

@@ -1,18 +1,32 @@
-﻿namespace Algorithmix.Models.Tests
+﻿using System;
+using System.Collections.Generic;
+
+namespace Algorithmix.Models.Tests
 {
     public class UserTestResultQuery
     {
-        public UserTestResultQuery(string searchText, int groupId, string sortBy, bool desc)
+        public UserTestResultQuery(string searchText, int groupId, UserTestResultSortBy sortBy, bool sortByDesc)
         {
             SearchText = searchText;
             GroupId = groupId;
             SortBy = sortBy;
-            Desc = desc;
+            SortByDesc = sortByDesc;
         }
 
         public string SearchText { get; set; }
         public int GroupId { get; set; }
-        public string SortBy { get; set; }
-        public bool Desc { get; set; }
+        public UserTestResultSortBy SortBy { get; set; }
+        public bool SortByDesc { get; set; }
+
+        
+    }
+
+    public enum UserTestResultSortBy
+    {
+        FullName,
+        GroupName,
+        TestName,
+        Result,
+        PassingTime,
     }
 }

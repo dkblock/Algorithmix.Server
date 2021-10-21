@@ -72,6 +72,11 @@ namespace Algorithmix.Api.Core.TestPass
             _testDataManager.DeleteTestQuestionImagesDirectory(id, true);
         }
 
+        public async Task UpdateTest(Test test)
+        {
+            await _testService.UpdateTest(test);
+        }
+
         private async Task<Test> PrepareTest(Test test)
         {
             var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(test.Id);
