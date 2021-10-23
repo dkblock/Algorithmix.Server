@@ -82,7 +82,7 @@ namespace Algorithmix.Api.Core
                 CreateTestQuestionImagesDirectory(testId, true);
 
             foreach (var file in Directory.GetFiles(sourceDirectory))
-                File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
+                File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)), true);
         }
 
         private string GetTestQuestionImagesDirectory(int testId, bool isPublished)

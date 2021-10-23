@@ -74,6 +74,12 @@ namespace Algorithmix.Api.Core
             return await PrepareUserAnswers(userAnswers);
         }
 
+        public async Task<IEnumerable<UserAnswer>> GetUserAnswers(int questionId)
+        {
+            var userAnswers = await _userAnswerService.GetUserAnswers(questionId);
+            return await PrepareUserAnswers(userAnswers);
+        }
+
         public async Task DeleteUserAnswers(IEnumerable<int> questionIds, string userId)
         {
             foreach (var questionId in questionIds)
