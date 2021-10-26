@@ -90,6 +90,10 @@ namespace Algorithmix.Api.Core
 
         public async Task DeleteUserTestResult(int testId, string userId)
         {
+            var userTestResult = await GetUserTestResult(testId, userId);
+            var questionIds = userTestResult.Test.Questions.Select(q => q.Id);
+
+            await _userAnswerManager.DeleteUserAnswers(questionIds, userId);
             await _userTestResultService.DeleteUserTestResult(testId, userId);
         }
 
