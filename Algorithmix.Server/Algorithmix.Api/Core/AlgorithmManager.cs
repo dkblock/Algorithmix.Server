@@ -1,7 +1,9 @@
 ﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
+using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core
@@ -11,12 +13,18 @@ namespace Algorithmix.Api.Core
         private readonly AlgorithmService _algorithmService;
         private readonly AlgorithmTimeComplexityService _algorithmTimeComplexityService;
         private readonly QueryHelper _queryHelper;
+        private readonly IWebHostEnvironment _env;
 
-        public AlgorithmManager(AlgorithmService algorithmService, AlgorithmTimeComplexityService algorithmTimeComplexityService, QueryHelper queryHelper)
+        public AlgorithmManager(
+            AlgorithmService algorithmService, 
+            AlgorithmTimeComplexityService algorithmTimeComplexityService, 
+            QueryHelper queryHelper,
+            IWebHostEnvironment env)
         {
             _algorithmService = algorithmService;
             _algorithmTimeComplexityService = algorithmTimeComplexityService;
             _queryHelper = queryHelper;
+            _env = env;
         }
 
         public async Task<bool> Exists(string id)
@@ -39,6 +47,8 @@ namespace Algorithmix.Api.Core
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)
         {
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);
+            algorithm.HasConstructor = Directory.Exists(Path.Combine(_env.WebRootPath, "algorithms", algorithm.Id, "constructor"));
+
             return algorithm;
         }
 
