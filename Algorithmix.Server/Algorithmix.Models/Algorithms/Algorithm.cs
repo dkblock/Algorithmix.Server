@@ -10,6 +10,7 @@ namespace Algorithmix.Models.Algorithms
         public string ImageUrl { get; set; }
         public int TimeComplexityId { get; set; }
         public bool HasConstructor { get; set; }
+        public bool HasDescription { get; set; }
         public AlgorithmTimeComplexity TimeComplexity { get; set; }
         public IEnumerable<Test> Tests { get; set; }
     }

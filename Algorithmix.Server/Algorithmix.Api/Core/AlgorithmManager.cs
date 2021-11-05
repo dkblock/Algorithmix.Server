@@ -27,6 +27,15 @@ namespace Algorithmix.Api.Core
             _env = env;
         }
 
+        public async Task<Algorithm> CreateAlgorithm(AlgorithmPayload algorithmPayload)
+        {
+            var timeComplexity = await _algorithmTimeComplexityService.CreateAlgorithmTimeComplexity(algorithmPayload.Id);
+            algorithmPayload.TimeComplexityId = timeComplexity.Id;
+
+            var createdAlgorithm = await _algorithmService.CreateAlgorithm(algorithmPayload);
+            return await PrepareAlgorithm(createdAlgorithm);
+        }
+
         public async Task<bool> Exists(string id)
         {
             return await _algorithmService.Exists(id);
@@ -44,10 +53,25 @@ namespace Algorithmix.Api.Core
             return await PrepareAlgorithms(algorithms, query);
         }
 
+        public async Task DeleteAlgorithm(string id)
+        {
+            var algorithm = await _algorithmService.GetAlgorithm(id);
+
+            await _algorithmTimeComplexityService.DeleteAlgorithmTimeComplexity(algorithm.TimeComplexityId);
+            await _algorithmService.DeleteAlgorithm(id);
+        }
+
+        public async Task<Algorithm> UpdateAlgorithm(string id, AlgorithmPayload algorithmPayload)
+        {
+            var updatedAlgorithm = await _algorithmService.UpdateAlgorithm(id, algorithmPayload);
+            return await PrepareAlgorithm(updatedAlgorithm);
+        }
+
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)
         {
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);
             algorithm.HasConstructor = Directory.Exists(Path.Combine(_env.WebRootPath, "algorithms", algorithm.Id, "constructor"));
+            algorithm.HasDescription = Directory.Exists(Path.Combine(_env.WebRootPath, "algorithms", algorithm.Id, "description"));
 
             return algorithm;
         }

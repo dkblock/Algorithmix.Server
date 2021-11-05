@@ -8,6 +8,16 @@ namespace Algorithmix.Mappers
 {
     public class AlgorithmMapper
     {
+        public AlgorithmEntity ToEntity(AlgorithmPayload algorithmPayload)
+        {
+            return new AlgorithmEntity
+            {
+                Id = algorithmPayload.Id,
+                Name = algorithmPayload.Name,
+                ImageUrl = algorithmPayload.ImageUrl
+            };
+        }
+
         public AlgorithmEntity ToEntity(Algorithm algorithm)
         {
             return new AlgorithmEntity

@@ -7,6 +7,24 @@ namespace Algorithmix.Mappers
 {
     public class AlgorithmTimeComplexityMapper
     {
+        public AlgorithmTimeComplexityEntity ToEntity(AlgorithmTimeComplexityPayload timeComplexityPayload, int? id = null)
+        {
+            return new AlgorithmTimeComplexityEntity
+            {
+                Id = id ?? 0,
+                AlgorithmId = timeComplexityPayload.AlgorithmId,
+                DeletionAverageTime = timeComplexityPayload.DeletionAverageTime,
+                DeletionWorstTime = timeComplexityPayload.DeletionWorstTime,
+                InsertionAverageTime = timeComplexityPayload.InsertionAverageTime,
+                InsertionWorstTime = timeComplexityPayload.InsertionWorstTime,
+                SearchingAverageTime = timeComplexityPayload.SearchingAverageTime,
+                SearchingWorstTime = timeComplexityPayload.SearchingWorstTime,
+                SortingAverageTime = timeComplexityPayload.SortingAverageTime,
+                SortingBestTime = timeComplexityPayload.SortingBestTime,
+                SortingWorstTime = timeComplexityPayload.SortingWorstTime
+            };
+        }
+
         public AlgorithmTimeComplexityEntity ToEntity(AlgorithmTimeComplexity timeComplexity)
         {
             return new AlgorithmTimeComplexityEntity

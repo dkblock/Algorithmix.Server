@@ -18,6 +18,14 @@ namespace Algorithmix.Services
             _algorithmRepository = algorithmRepository;
         }
 
+        public async Task<Algorithm> CreateAlgorithm(AlgorithmPayload algorithmPayload)
+        {
+            var algorithmEntity = _algorithmMapper.ToEntity(algorithmPayload);
+            var createdAlgorithm = await _algorithmRepository.CreateAlgorithm(algorithmEntity);
+
+            return _algorithmMapper.ToModel(createdAlgorithm);
+        }
+
         public async Task<bool> Exists(string algorithmId)
         {
             return await _algorithmRepository.GetAlgorithmById(algorithmId) != null;
@@ -45,6 +53,19 @@ namespace Algorithmix.Services
             var algorithms = _algorithmMapper.ToModelsCollection(algorithmEntities);
 
             return algorithms.OrderBy(a => a.TimeComplexityId);
+        }
+
+        public async Task DeleteAlgorithm(string id)
+        {
+            await _algorithmRepository.DeleteAlgorithm(id);
+        }
+
+        public async Task<Algorithm> UpdateAlgorithm(string id, AlgorithmPayload algorithmPayload)
+        {
+            var algorithmEntity = _algorithmMapper.ToEntity(algorithmPayload);
+            var updatedAlgorithm = await _algorithmRepository.UpdateAlgorithm(algorithmEntity);
+
+            return _algorithmMapper.ToModel(updatedAlgorithm);
         }
     }
 }

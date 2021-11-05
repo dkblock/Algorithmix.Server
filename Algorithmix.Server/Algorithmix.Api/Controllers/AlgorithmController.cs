@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core;
+using Algorithmix.Common.Constants;
 using Algorithmix.Models.Algorithms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,15 @@ namespace Algorithmix.Server.Controllers
             _algorithmManager = algorithmManager;
         }
 
+        [HttpPost]
+        [Route("")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> CreateAlgorithm([FromBody] AlgorithmPayload algorithmPayload)
+        {
+            var createdAlgorithm = await _algorithmManager.CreateAlgorithm(algorithmPayload);
+            return CreatedAtAction(nameof(GetAlgorithm), new { algorithmId = createdAlgorithm.Id }, createdAlgorithm);
+        }
+
         [HttpGet]
         [Route("")]
         [AllowAnonymous]
@@ -30,14 +40,14 @@ namespace Algorithmix.Server.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{algorithmId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAlgorithm(string id)
+        public async Task<IActionResult> GetAlgorithm(string algorithmId)
         {
-            if (!await _algorithmManager.Exists(id))
+            if (!await _algorithmManager.Exists(algorithmId))
                 return NotFound();
 
-            var algorithm = await _algorithmManager.GetAlgorithm(id);
+            var algorithm = await _algorithmManager.GetAlgorithm(algorithmId);
             return Ok(algorithm);
         }
     }
