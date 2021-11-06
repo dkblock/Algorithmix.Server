@@ -7,6 +7,7 @@ namespace Algorithmix.Api.Validation
         public static void AddValidators(this IServiceCollection services)
         {
             services.AddScoped<AccountValidator, AccountValidator>();
+            services.AddScoped<AlgorithmValidator, AlgorithmValidator>();
             services.AddScoped<GroupValidator, GroupValidator>();
             services.AddScoped<TestValidator, TestValidator>();
             services.AddScoped<TestAnswerValidator, TestAnswerValidator>();

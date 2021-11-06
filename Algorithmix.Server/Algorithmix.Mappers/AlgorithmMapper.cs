@@ -14,7 +14,8 @@ namespace Algorithmix.Mappers
             {
                 Id = algorithmPayload.Id,
                 Name = algorithmPayload.Name,
-                ImageUrl = algorithmPayload.ImageUrl
+                ImageUrl = algorithmPayload.ImageUrl,
+                TimeComplexityId = algorithmPayload.TimeComplexityId
             };
         }
 

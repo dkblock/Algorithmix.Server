@@ -15,6 +15,8 @@ namespace Algorithmix.Api.Core
         private readonly QueryHelper _queryHelper;
         private readonly IWebHostEnvironment _env;
 
+        private const string DefaultImageUrl = "images/algorithms/__algorithm-default__.png";
+
         public AlgorithmManager(
             AlgorithmService algorithmService, 
             AlgorithmTimeComplexityService algorithmTimeComplexityService, 
@@ -30,7 +32,9 @@ namespace Algorithmix.Api.Core
         public async Task<Algorithm> CreateAlgorithm(AlgorithmPayload algorithmPayload)
         {
             var timeComplexity = await _algorithmTimeComplexityService.CreateAlgorithmTimeComplexity(algorithmPayload.Id);
+
             algorithmPayload.TimeComplexityId = timeComplexity.Id;
+            algorithmPayload.ImageUrl = DefaultImageUrl;
 
             var createdAlgorithm = await _algorithmService.CreateAlgorithm(algorithmPayload);
             return await PrepareAlgorithm(createdAlgorithm);
@@ -55,9 +59,6 @@ namespace Algorithmix.Api.Core
 
         public async Task DeleteAlgorithm(string id)
         {
-            var algorithm = await _algorithmService.GetAlgorithm(id);
-
-            await _algorithmTimeComplexityService.DeleteAlgorithmTimeComplexity(algorithm.TimeComplexityId);
             await _algorithmService.DeleteAlgorithm(id);
         }
 
