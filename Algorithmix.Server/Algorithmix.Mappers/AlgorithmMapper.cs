@@ -12,7 +12,7 @@ namespace Algorithmix.Mappers
         {
             return new AlgorithmEntity
             {
-                Id = algorithmPayload.Id,
+                Id = algorithmPayload.Id.ToLower(),
                 Name = algorithmPayload.Name,
                 ImageUrl = algorithmPayload.ImageUrl,
                 TimeComplexityId = algorithmPayload.TimeComplexityId

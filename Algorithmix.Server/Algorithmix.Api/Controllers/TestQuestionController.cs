@@ -120,7 +120,7 @@ namespace Algorithmix.Api.Controllers
             if (image == null)
                 return NoContent();
 
-            var imagePath = await _testDataManager.CreateTestQuestionImage(testId, questionId, image);
+            var imagePath = _testDataManager.CreateTestQuestionImage(testId, questionId, image);
             var updatedQuestion = await _questionManager.UpdateTestQuestionImage(questionId, imagePath);
 
             return Ok(updatedQuestion);

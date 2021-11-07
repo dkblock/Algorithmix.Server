@@ -2,6 +2,7 @@
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,19 +11,20 @@ namespace Algorithmix.Api.Core
 {
     public class AlgorithmManager
     {
+        private readonly IAlgorithmDataManager _algorithmDataManager;
         private readonly AlgorithmService _algorithmService;
         private readonly AlgorithmTimeComplexityService _algorithmTimeComplexityService;
         private readonly QueryHelper _queryHelper;
         private readonly IWebHostEnvironment _env;
 
-        private const string DefaultImageUrl = "images/algorithms/__algorithm-default__.png";
-
         public AlgorithmManager(
-            AlgorithmService algorithmService, 
-            AlgorithmTimeComplexityService algorithmTimeComplexityService, 
+            IAlgorithmDataManager algorithmDataManager,
+            AlgorithmService algorithmService,
+            AlgorithmTimeComplexityService algorithmTimeComplexityService,
             QueryHelper queryHelper,
             IWebHostEnvironment env)
         {
+            _algorithmDataManager = algorithmDataManager;
             _algorithmService = algorithmService;
             _algorithmTimeComplexityService = algorithmTimeComplexityService;
             _queryHelper = queryHelper;
@@ -34,7 +36,7 @@ namespace Algorithmix.Api.Core
             var timeComplexity = await _algorithmTimeComplexityService.CreateAlgorithmTimeComplexity(algorithmPayload.Id);
 
             algorithmPayload.TimeComplexityId = timeComplexity.Id;
-            algorithmPayload.ImageUrl = DefaultImageUrl;
+            algorithmPayload.ImageUrl = _algorithmDataManager.DefaultAlgorithmImageUrl;
 
             var createdAlgorithm = await _algorithmService.CreateAlgorithm(algorithmPayload);
             return await PrepareAlgorithm(createdAlgorithm);
@@ -66,6 +68,22 @@ namespace Algorithmix.Api.Core
         {
             var updatedAlgorithm = await _algorithmService.UpdateAlgorithm(id, algorithmPayload);
             return await PrepareAlgorithm(updatedAlgorithm);
+        }
+
+        public async Task<Algorithm> UpdateAlgorithmImage(string algorithmId, IFormFile image)
+        {
+            var imagePath = _algorithmDataManager.CreateAlgorithmImage(algorithmId, image);
+            var updatedAlgorithm = await _algorithmService.UpdateAlgorithmImage(algorithmId, imagePath);
+
+            return await PrepareAlgorithm(updatedAlgorithm);
+        }
+
+        public async Task ClearAlgorithmImage(string algorithmId)
+        {
+            var algorithm = await _algorithmService.GetAlgorithm(algorithmId);
+            _algorithmDataManager.DeleteAlgorithmImage(algorithm.ImageUrl);
+
+            await _algorithmService.UpdateAlgorithmImage(algorithmId, _algorithmDataManager.DefaultAlgorithmImageUrl);
         }
 
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)

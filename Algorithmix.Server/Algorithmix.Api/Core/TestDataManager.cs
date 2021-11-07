@@ -1,94 +1,87 @@
 ﻿using Algorithmix.Common.Constants;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core
 {
     public class TestDataManager
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly IFileManager _fileManager;
         private readonly Random _random;
 
-        public TestDataManager(IWebHostEnvironment env)
+        public TestDataManager(IFileManager fileManager)
         {
-            _env = env;
+            _fileManager = fileManager;
             _random = new Random();
-        }
-
-        public FileStream GetImage(string src)
-        {
-            var path = Path.Combine(_env.WebRootPath, src);
-            return File.OpenRead(path);
-        }
-
-        public bool Exists(string src)
-        {
-            var path = Path.Combine(_env.WebRootPath, src);
-            return File.Exists(path);
         }
 
         public void CreateTestQuestionImagesDirectory(int testId, bool isPublished = false)
         {
-            var path = GetTestQuestionImagesDirectory(testId, isPublished);
-            Directory.CreateDirectory(path);
+            var dirPath = GetQuestionImagesDirectory(testId, isPublished);
+
+            if (!_fileManager.DirectoryExists(dirPath))
+                _fileManager.CreateDirectory(dirPath);
         }
 
         public void DeleteTestQuestionImagesDirectory(int testId, bool isPublished = false)
         {
-            var path = GetTestQuestionImagesDirectory(testId, isPublished);
+            var dirPath = GetQuestionImagesDirectory(testId, isPublished);
 
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
+            if (_fileManager.DirectoryExists(dirPath))
+                _fileManager.DeleteDirectory(dirPath);
         }
 
-        public async Task<string> CreateTestQuestionImage(int testId, int questionId, IFormFile image, bool isPublished = false)
+        public string CreateTestQuestionImage(int testId, int questionId, IFormFile image, bool isPublished = false)
         {
-            var ext = Path.GetExtension(image.FileName).ToLower();
-            var fileName = $"question{questionId}_{_random.Next(0, 10000)}{ext}";
-            var imagesDirectory = GetTestQuestionImagesDirectory(testId, isPublished);
+            var ext = _fileManager.GetFileExtension(image.FileName);
+            var fileName = $"question{questionId}_{_random.Next(0, 10000)}.{ext}";
+            var dirPath = GetQuestionImagesDirectory(testId, isPublished);
+            var filePath = _fileManager.CombinePaths(dirPath, fileName);
 
-            if (!Directory.Exists(imagesDirectory))
-                CreateTestQuestionImagesDirectory(testId);
+            if (!_fileManager.DirectoryExists(dirPath))
+                CreateTestQuestionImagesDirectory(testId, isPublished);
 
-            var absolutePath = Path.Combine(imagesDirectory, fileName);
-            var path = absolutePath.Replace($"{_env.WebRootPath}", "").Remove(0, 1);
+            if (_fileManager.FileExists(filePath))
+                _fileManager.DeleteFile(filePath);
 
-            using var stream = new FileStream(absolutePath, FileMode.Create);
-            await image.CopyToAsync(stream);
+            _fileManager.CreateFile(image, filePath);
 
-            return path;
+            return filePath;
         }
 
         public void DeleteTestQuestionImage(string imagePath)
         {
-            var path = Path.Combine(_env.WebRootPath, imagePath);
-
-            if (File.Exists(path))
-                File.Delete(path);
+            if (_fileManager.FileExists(imagePath))
+                _fileManager.DeleteFile(imagePath);
         }
 
         public void CopyTestQuestionImagesToPublishedTest(int testId)
         {
-            var sourceDirectory = GetTestQuestionImagesDirectory(testId, false);
-            var targetDirectory = GetTestQuestionImagesDirectory(testId, true);
+            var sourceDirectory = GetQuestionImagesDirectory(testId, false);
+            var destinationDirectory = GetQuestionImagesDirectory(testId, true);
 
-            if (!Directory.Exists(sourceDirectory))
+            if (!_fileManager.DirectoryExists(sourceDirectory))
                 return;
 
-            if (!Directory.Exists(targetDirectory))
+            if (!_fileManager.DirectoryExists(destinationDirectory))
                 CreateTestQuestionImagesDirectory(testId, true);
 
-            foreach (var file in Directory.GetFiles(sourceDirectory))
-                File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)), true);
+            var sourceFiles = _fileManager.GetDirectoryFiles(sourceDirectory);
+
+            foreach (var file in sourceFiles)
+            {
+                var fileName = _fileManager.GetFileName(file);
+                _fileManager.CopyFile(file, _fileManager.CombinePaths(destinationDirectory, fileName));
+            }
         }
 
-        private string GetTestQuestionImagesDirectory(int testId, bool isPublished)
+        private string GetQuestionImagesDirectory(int testId, bool isPublished)
         {
-            var testsDirectory = isPublished ? TestQuestionImageDirectories.PublishedTestImagesDirectory : TestQuestionImageDirectories.TestImagesDirectory;
-            return Path.Combine(_env.WebRootPath, "images", testsDirectory, $"test_{testId}");
+            var testsDirectory = isPublished
+                ? TestQuestionImageDirectories.PublishedTestImagesDirectory
+                : TestQuestionImageDirectories.TestImagesDirectory;
+
+            return _fileManager.CombinePaths("images", testsDirectory, $"test_{testId}");
         }
     }
 }

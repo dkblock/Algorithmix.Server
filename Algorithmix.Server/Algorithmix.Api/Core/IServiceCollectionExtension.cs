@@ -10,8 +10,10 @@ namespace Algorithmix.Api.Core
         public static void AddManagers(this IServiceCollection services)
         {
             services.AddScoped<AccountManager, AccountManager>();
-            services.AddScoped<ApplicationUserManager, ApplicationUserManager>();
+            services.AddScoped<IAlgorithmDataManager, AlgorithmDataManager>();
             services.AddScoped<AlgorithmManager, AlgorithmManager>();
+            services.AddScoped<ApplicationUserManager, ApplicationUserManager>();
+            services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<GroupManager, GroupManager>();
             services.AddScoped<PublishedTestAnswerManager, PublishedTestAnswerManager>();
             services.AddScoped<PublishedTestQuestionManager, PublishedTestQuestionManager>();

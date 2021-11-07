@@ -67,5 +67,14 @@ namespace Algorithmix.Services
 
             return _algorithmMapper.ToModel(updatedAlgorithm);
         }
+
+        public async Task<Algorithm> UpdateAlgorithmImage(string algorithmId, string imagePath)
+        {
+            var algorithmEntity = await _algorithmRepository.GetAlgorithmById(algorithmId);
+            algorithmEntity.ImageUrl = imagePath;
+            var updatedAlgorithm = await _algorithmRepository.UpdateAlgorithm(algorithmEntity);
+
+            return _algorithmMapper.ToModel(updatedAlgorithm);
+        }
     }
 }

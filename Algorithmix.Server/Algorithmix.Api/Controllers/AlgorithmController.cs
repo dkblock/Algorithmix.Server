@@ -4,6 +4,7 @@ using Algorithmix.Common.Constants;
 using Algorithmix.Models.Algorithms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Server.Controllers
@@ -27,7 +28,7 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> CreateAlgorithm([FromBody] AlgorithmPayload algorithmPayload)
         {
-            var validationResult = await _algorithmValidator.Validate(algorithmPayload);
+            var validationResult = await _algorithmValidator.Validate(algorithmPayload, true);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
@@ -68,6 +69,46 @@ namespace Algorithmix.Server.Controllers
                 return NotFound();
 
             await _algorithmManager.DeleteAlgorithm(algorithmId);
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{algorithmId}")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> UpdateAlgorithm(string algorithmId, [FromBody] AlgorithmPayload algorithmPayload)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var validationResult = await _algorithmValidator.Validate(algorithmPayload, false);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            var updatedAlgorithm = await _algorithmManager.UpdateAlgorithm(algorithmId, algorithmPayload);
+            return Ok(updatedAlgorithm);
+        }
+
+        [HttpPost]
+        [Route("{algorithmId}/image")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> UploadAlgorithmImage(string algorithmId)
+        {
+            var image = HttpContext.Request.Form.Files.FirstOrDefault();
+
+            if (image == null)
+                return NoContent();
+
+            var updatedAlgorithm = await _algorithmManager.UpdateAlgorithmImage(algorithmId, image);
+            return Ok(updatedAlgorithm);
+        }
+
+        [HttpDelete]
+        [Route("{algorithmId}/image")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ClearAlgorithmImage(string algorithmId)
+        {
+            await _algorithmManager.ClearAlgorithmImage(algorithmId);
             return NoContent();
         }
     }
