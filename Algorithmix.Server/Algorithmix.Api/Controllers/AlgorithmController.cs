@@ -3,6 +3,7 @@ using Algorithmix.Api.Validation;
 using Algorithmix.Common.Constants;
 using Algorithmix.Models.Algorithms;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace Algorithmix.Server.Controllers
 {
     [ApiController]
     [Route("api/algorithms")]
-    [Authorize]
     public class AlgorithmController : Controller
     {
         private readonly AlgorithmManager _algorithmManager;
@@ -28,7 +28,7 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> CreateAlgorithm([FromBody] AlgorithmPayload algorithmPayload)
         {
-            var validationResult = await _algorithmValidator.Validate(algorithmPayload, true);
+            var validationResult = await _algorithmValidator.ValidateAlgorithm(algorithmPayload, true);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
@@ -80,7 +80,7 @@ namespace Algorithmix.Server.Controllers
             if (!await _algorithmManager.Exists(algorithmId))
                 return NotFound();
 
-            var validationResult = await _algorithmValidator.Validate(algorithmPayload, false);
+            var validationResult = await _algorithmValidator.ValidateAlgorithm(algorithmPayload, false);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
@@ -90,10 +90,81 @@ namespace Algorithmix.Server.Controllers
         }
 
         [HttpPost]
+        [Route("{algorithmId}/description")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> UploadAlgorithmDescription(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+
+            if (file == null)
+                return NoContent();
+
+            var validationResult = _algorithmValidator.ValidateAlgorithmData(algorithmId, file);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            _algorithmManager.UpdateAlgorithmDescription(algorithmId, file);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{algorithmId}/description")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ClearAlgorithmDescription(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            _algorithmManager.DeleteAlgorithmDescription(algorithmId);
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("{algorithmId}/constructor")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> UploadAlgorithmConstructor(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+
+            if (file == null)
+                return NoContent();
+
+            var validationResult = _algorithmValidator.ValidateAlgorithmData(algorithmId, file);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            _algorithmManager.UpdateAlgorithmConstructor(algorithmId, file);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{algorithmId}/constructor")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ClearAlgorithmConstructor(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            _algorithmManager.DeleteAlgorithmConstructor(algorithmId);
+            return NoContent();
+        }
+
+        [HttpPost]
         [Route("{algorithmId}/image")]
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> UploadAlgorithmImage(string algorithmId)
         {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
             var image = HttpContext.Request.Form.Files.FirstOrDefault();
 
             if (image == null)
@@ -108,8 +179,23 @@ namespace Algorithmix.Server.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ClearAlgorithmImage(string algorithmId)
         {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
             await _algorithmManager.ClearAlgorithmImage(algorithmId);
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("{algorithmId}/data/template")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> DownloadAlgorithmDataTemplate(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var dataTemplate = _algorithmManager.GetAlgorithmDataTemplate(algorithmId);
+            return Ok(dataTemplate);
         }
     }
 }

@@ -61,7 +61,11 @@ namespace Algorithmix.Api.Core
 
         public async Task DeleteAlgorithm(string id)
         {
+            var algorithm = await _algorithmService.GetAlgorithm(id);
+
             await _algorithmService.DeleteAlgorithm(id);
+            _algorithmDataManager.DeleteAlgorithmDataFolder(id);
+            _algorithmDataManager.DeleteAlgorithmImage(algorithm.ImageUrl);
         }
 
         public async Task<Algorithm> UpdateAlgorithm(string id, AlgorithmPayload algorithmPayload)
@@ -70,20 +74,45 @@ namespace Algorithmix.Api.Core
             return await PrepareAlgorithm(updatedAlgorithm);
         }
 
-        public async Task<Algorithm> UpdateAlgorithmImage(string algorithmId, IFormFile image)
+        public void UpdateAlgorithmDescription(string id, IFormFile description)
         {
-            var imagePath = _algorithmDataManager.CreateAlgorithmImage(algorithmId, image);
-            var updatedAlgorithm = await _algorithmService.UpdateAlgorithmImage(algorithmId, imagePath);
+            _algorithmDataManager.CreateAlgorithmDescription(id, description);
+        }
+
+        public void DeleteAlgorithmDescription(string id)
+        {
+            _algorithmDataManager.DeleteAlgorithmDescription(id);
+        }
+
+        public void UpdateAlgorithmConstructor(string id, IFormFile constructor)
+        {
+            _algorithmDataManager.CreateAlgorithmConstructor(id, constructor);
+        }
+
+        public void DeleteAlgorithmConstructor(string id)
+        {
+            _algorithmDataManager.DeleteAlgorithmConstructor(id);
+        }
+
+        public async Task<Algorithm> UpdateAlgorithmImage(string id, IFormFile image)
+        {
+            var imagePath = _algorithmDataManager.CreateAlgorithmImage(id, image);
+            var updatedAlgorithm = await _algorithmService.UpdateAlgorithmImage(id, imagePath);
 
             return await PrepareAlgorithm(updatedAlgorithm);
         }
 
-        public async Task ClearAlgorithmImage(string algorithmId)
+        public async Task ClearAlgorithmImage(string id)
         {
-            var algorithm = await _algorithmService.GetAlgorithm(algorithmId);
+            var algorithm = await _algorithmService.GetAlgorithm(id);
             _algorithmDataManager.DeleteAlgorithmImage(algorithm.ImageUrl);
 
-            await _algorithmService.UpdateAlgorithmImage(algorithmId, _algorithmDataManager.DefaultAlgorithmImageUrl);
+            await _algorithmService.UpdateAlgorithmImage(id, _algorithmDataManager.DefaultAlgorithmImageUrl);
+        }
+
+        public FileStream GetAlgorithmDataTemplate(string id)
+        {
+            return _algorithmDataManager.GetAlgorithmDataTemplate(id);
         }
 
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)

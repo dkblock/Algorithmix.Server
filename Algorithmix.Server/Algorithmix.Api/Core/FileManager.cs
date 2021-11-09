@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.IO.Compression;
 
 namespace Algorithmix.Api.Core
 {
@@ -18,6 +19,9 @@ namespace Algorithmix.Api.Core
         bool DirectoryExists(string path);
         void DeleteDirectory(string path);
         string[] GetDirectoryFiles(string path);
+
+        void ExtractZipFileToDirectory(IFormFile file, string path);
+        void CopyFileWithReplaceInZipArchive(string path, string sourceFileName, string targetFileName);
 
         string CombinePaths(params string[] paths);
     }
@@ -52,7 +56,10 @@ namespace Algorithmix.Api.Core
 
         public void CopyFile(string sourceFilePath, string destinationFilePath)
         {
-            File.Copy(sourceFilePath, destinationFilePath, true);
+            var sourcePath = GetAbsolutePath(sourceFilePath);
+            var destinationPath = GetAbsolutePath(destinationFilePath);
+
+            File.Copy(sourcePath, destinationPath, true);
         }
 
         public string GetFileExtension(string path)
@@ -86,13 +93,38 @@ namespace Algorithmix.Api.Core
         public void DeleteDirectory(string path)
         {
             var dirPath = GetAbsolutePath(path);
-            Directory.Delete(dirPath);
+            Directory.Delete(dirPath, true);
         }
 
         public string[] GetDirectoryFiles(string path)
         {
             var dirPath = GetAbsolutePath(path);
             return Directory.GetFiles(dirPath);
+        }
+
+        public void ExtractZipFileToDirectory(IFormFile file, string path)
+        {
+            using var stream = file.OpenReadStream();
+            using var archive = new ZipArchive(stream);
+
+            var dirPath = GetAbsolutePath(path);
+            archive.ExtractToDirectory(dirPath, true);
+        }
+
+        public void CopyFileWithReplaceInZipArchive(string path, string sourceFileName, string targetFileName)
+        {
+            var filePath = GetAbsolutePath(path);
+            using var archive = new ZipArchive(File.Open(filePath, FileMode.Open, FileAccess.ReadWrite), ZipArchiveMode.Update);
+
+            var targetEntry = archive.CreateEntry(targetFileName);
+            var sourceEntry = archive.GetEntry(sourceFileName);
+
+            using var targetStream = targetEntry.Open();
+            using var sourceStream = sourceEntry.Open();
+
+            sourceStream.CopyTo(targetStream);
+            sourceStream.Dispose();
+            sourceEntry.Delete();
         }
 
         public string CombinePaths(params string[] paths)
