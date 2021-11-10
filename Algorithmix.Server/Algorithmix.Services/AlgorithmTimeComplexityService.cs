@@ -42,7 +42,7 @@ namespace Algorithmix.Services
 
         public async Task<AlgorithmTimeComplexity> UpdateAlgorithmTimeComplexity(int id, AlgorithmTimeComplexityPayload timeComplexityPayload)
         {
-            var timeComplexityEntity = _algorithmTimeComplexityMapper.ToEntity(timeComplexityPayload);
+            var timeComplexityEntity = _algorithmTimeComplexityMapper.ToEntity(timeComplexityPayload, id);
             var updatedTimeComplexity = await _algorithmTimeComplexityRepository.UpdateAlgorithmTimeComplexity(timeComplexityEntity);
 
             return _algorithmTimeComplexityMapper.ToModel(updatedTimeComplexity);

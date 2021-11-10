@@ -1,10 +1,12 @@
 ﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
-using Microsoft.AspNetCore.Hosting;
+using Algorithmix.Services.TestDesign;
+using Algorithmix.Services.TestPass;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core
@@ -14,21 +16,27 @@ namespace Algorithmix.Api.Core
         private readonly IAlgorithmDataManager _algorithmDataManager;
         private readonly AlgorithmService _algorithmService;
         private readonly AlgorithmTimeComplexityService _algorithmTimeComplexityService;
+        private readonly TestAlgorithmService _testAlgorithmService;
+        private readonly TestService _testService;
+        private readonly PublishedTestService _publishedTestService;
         private readonly QueryHelper _queryHelper;
-        private readonly IWebHostEnvironment _env;
 
         public AlgorithmManager(
             IAlgorithmDataManager algorithmDataManager,
             AlgorithmService algorithmService,
             AlgorithmTimeComplexityService algorithmTimeComplexityService,
-            QueryHelper queryHelper,
-            IWebHostEnvironment env)
+            TestAlgorithmService testAlgorithmService,
+            TestService testService,
+            PublishedTestService publishedTestService,
+            QueryHelper queryHelper)
         {
             _algorithmDataManager = algorithmDataManager;
             _algorithmService = algorithmService;
             _algorithmTimeComplexityService = algorithmTimeComplexityService;
+            _testAlgorithmService = testAlgorithmService;
+            _testService = testService;
+            _publishedTestService = publishedTestService;
             _queryHelper = queryHelper;
-            _env = env;
         }
 
         public async Task<Algorithm> CreateAlgorithm(AlgorithmPayload algorithmPayload)
@@ -62,6 +70,16 @@ namespace Algorithmix.Api.Core
         public async Task DeleteAlgorithm(string id)
         {
             var algorithm = await _algorithmService.GetAlgorithm(id);
+            var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(algorithm.Id);
+            var testIds = testAlgorithms.Select(ta => ta.TestId);
+
+            await _testAlgorithmService.DeleteTestAlgorithms(algorithm.Id);
+
+            foreach (var testId in testIds)
+            {
+                await _testService.DeleteTest(testId);
+                await _publishedTestService.DeleteTest(testId);
+            }
 
             await _algorithmService.DeleteAlgorithm(id);
             _algorithmDataManager.DeleteAlgorithmDataFolder(id);
@@ -72,6 +90,12 @@ namespace Algorithmix.Api.Core
         {
             var updatedAlgorithm = await _algorithmService.UpdateAlgorithm(id, algorithmPayload);
             return await PrepareAlgorithm(updatedAlgorithm);
+        }
+
+        public async Task<AlgorithmTimeComplexity> UpdateAlgorithmTimeComplexity(int id, AlgorithmTimeComplexityPayload timeComplexityPayload)
+        {
+            var updatedAlgorithmTimeComplexity = await _algorithmTimeComplexityService.UpdateAlgorithmTimeComplexity(id, timeComplexityPayload);
+            return updatedAlgorithmTimeComplexity;
         }
 
         public void UpdateAlgorithmDescription(string id, IFormFile description)
@@ -117,9 +141,13 @@ namespace Algorithmix.Api.Core
 
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)
         {
+            var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(algorithm.Id);
+            var testIds = testAlgorithms.Select(ta => ta.TestId);
+
+            algorithm.Tests = await _testService.GetTests(testIds);
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);
-            algorithm.HasConstructor = Directory.Exists(Path.Combine(_env.WebRootPath, "algorithms", algorithm.Id, "constructor"));
-            algorithm.HasDescription = Directory.Exists(Path.Combine(_env.WebRootPath, "algorithms", algorithm.Id, "description"));
+            algorithm.HasConstructor = _algorithmDataManager.ConstructorExists(algorithm.Id);
+            algorithm.HasDescription = _algorithmDataManager.DescriptionExists(algorithm.Id);
 
             return algorithm;
         }

@@ -33,9 +33,23 @@ namespace Algorithmix.Services
             return _testAlgorithmMapper.ToModelsCollection(testAlgorithmEntities);
         }
 
+        public async Task<IEnumerable<TestAlgorithm>> GetTestAlgorithms(string algorithmId)
+        {
+            var testAlgorithmEntities = await _testAlgorithmRepository.GetTestAlgorithms(ta => ta.AlgorithmId == algorithmId);
+            return _testAlgorithmMapper.ToModelsCollection(testAlgorithmEntities);
+        }
+
         public async Task DeleteTestAlgorithms(int testId)
         {
             var testAlgorithms = await GetTestAlgorithms(testId);
+
+            foreach (var testAlgorithm in testAlgorithms)
+                await _testAlgorithmRepository.DeleteTestAlgorithm(testAlgorithm.Id);
+        }
+
+        public async Task DeleteTestAlgorithms(string algorithmId)
+        {
+            var testAlgorithms = await GetTestAlgorithms(algorithmId);
 
             foreach (var testAlgorithm in testAlgorithms)
                 await _testAlgorithmRepository.DeleteTestAlgorithm(testAlgorithm.Id);

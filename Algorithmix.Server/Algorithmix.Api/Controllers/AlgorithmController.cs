@@ -89,6 +89,18 @@ namespace Algorithmix.Server.Controllers
             return Ok(updatedAlgorithm);
         }
 
+        [HttpPut]
+        [Route("{algorithmId}/time-complexity")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> UpdateAlgorithmTimeComplexity(string algorithmId, [FromBody] AlgorithmTimeComplexityPayload timeComplexityPayload)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var updatedAlgorithmTimeComplexity = await _algorithmManager.UpdateAlgorithmTimeComplexity(timeComplexityPayload.Id, timeComplexityPayload);
+            return Ok(updatedAlgorithmTimeComplexity);
+        }
+
         [HttpPost]
         [Route("{algorithmId}/description")]
         [Authorize(Roles = Roles.Administrator)]

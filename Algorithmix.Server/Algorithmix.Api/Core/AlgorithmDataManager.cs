@@ -13,6 +13,8 @@ namespace Algorithmix.Api.Core
         void DeleteAlgorithmImage(string imagePath);
         FileStream GetAlgorithmDataTemplate(string algorithmId);
         void DeleteAlgorithmDataFolder(string algorithmId);
+        bool DescriptionExists(string algorithmId);
+        bool ConstructorExists(string algorithmId);
         string DefaultAlgorithmImageUrl { get; }
     }
 
@@ -43,7 +45,9 @@ namespace Algorithmix.Api.Core
         public void DeleteAlgorithmDescription(string algorithmId)
         {
             var path = _fileManager.CombinePaths("algorithms", algorithmId, "description");
-            _fileManager.DeleteDirectory(path);
+
+            if (_fileManager.DirectoryExists(path))
+                _fileManager.DeleteDirectory(path);
         }
 
         public void CreateAlgorithmConstructor(string algorithmId, IFormFile constructor)
@@ -59,7 +63,9 @@ namespace Algorithmix.Api.Core
         public void DeleteAlgorithmConstructor(string algorithmId)
         {
             var path = _fileManager.CombinePaths("algorithms", algorithmId, "constructor");
-            _fileManager.DeleteDirectory(path);
+
+            if (_fileManager.DirectoryExists(path))
+                _fileManager.DeleteDirectory(path);
         }
 
         public string CreateAlgorithmImage(string algorithmId, IFormFile image)
@@ -103,7 +109,21 @@ namespace Algorithmix.Api.Core
         public void DeleteAlgorithmDataFolder(string algorithmId)
         {
             var path = _fileManager.CombinePaths("algorithms", algorithmId);
-            _fileManager.DeleteDirectory(path);
+
+            if (_fileManager.DirectoryExists(path))
+                _fileManager.DeleteDirectory(path);
+        }
+
+        public bool DescriptionExists(string algorithmId)
+        {
+            var path = _fileManager.CombinePaths("algorithms", algorithmId, "description");
+            return _fileManager.DirectoryExists(path);
+        }
+
+        public bool ConstructorExists(string algorithmId)
+        {
+            var path = _fileManager.CombinePaths("algorithms", algorithmId, "constructor");
+            return _fileManager.DirectoryExists(path);
         }
     }
 }

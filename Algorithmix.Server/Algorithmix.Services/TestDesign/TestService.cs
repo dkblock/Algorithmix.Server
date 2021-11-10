@@ -3,6 +3,7 @@ using Algorithmix.Models.Tests;
 using Algorithmix.Repository.TestDesign;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Services.TestDesign
@@ -35,6 +36,12 @@ namespace Algorithmix.Services.TestDesign
         {
             var testEntity = await _testRepository.GetTestById(id);
             return _testMapper.ToModel(testEntity);
+        }
+
+        public async Task<IEnumerable<Test>> GetTests(IEnumerable<int> ids)
+        {
+            var testEntities = await _testRepository.GetTests(t => ids.Contains(t.Id));
+            return _testMapper.ToModelsCollection(testEntities);
         }
 
         public async Task<IEnumerable<Test>> GetAllTests()
