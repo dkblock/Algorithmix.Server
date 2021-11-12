@@ -9,16 +9,17 @@ namespace Algorithmix.Server.Controllers
 {
     [ApiController]
     [Route("api/account")]
-    [Authorize]
     public class AccountController : Controller
     {
         private readonly AccountManager _accountManager;
         private readonly AccountValidator _accountValidator;
+        private readonly IUserContextManager _userContextManager;
 
-        public AccountController(AccountManager accountManager, AccountValidator accountValidator)
+        public AccountController(AccountManager accountManager, AccountValidator accountValidator, IUserContextManager userContextManager)
         {
             _accountManager = accountManager;
             _accountValidator = accountValidator;
+            _userContextManager = userContextManager;
         }
 
         [HttpGet]
@@ -35,7 +36,7 @@ namespace Algorithmix.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginPayload loginModel)
         {
-            var validationResult = await _accountValidator.Validate(loginModel);
+            var validationResult = await _accountValidator.ValidateOnLogin(loginModel);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
@@ -53,7 +54,7 @@ namespace Algorithmix.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterPayload registerModel)
         {
-            var validationResult = await _accountValidator.Validate(registerModel);
+            var validationResult = await _accountValidator.ValidateOnRegister(registerModel);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult);
@@ -64,6 +65,69 @@ namespace Algorithmix.Server.Controllers
                 return StatusCode(500);
 
             return Ok(authModel);
+        }
+
+        [HttpPost]
+        [Route("confirm-email")]
+        [Authorize]
+        public async Task<IActionResult> ConfirmEmail(string code)
+        {
+            var emailConfirmed = await _accountManager.ConfirmEmail(code);
+
+            if (!emailConfirmed)
+                return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordPayload changePasswordPayload)
+        {
+            var userId = _userContextManager.CurrentUser.Id;
+            var validationResult = await _accountValidator.ValidateOnChangePassword(userId, changePasswordPayload);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            var passwordChanged = await _accountManager.ChangePassword(changePasswordPayload);
+
+            if (!passwordChanged)
+                return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> ResetPasswordRequest([FromBody] ResetPasswordPayload resetPasswordPayload)
+        {
+            var validationResult = await _accountValidator.ValidateOnPasswordResetRequest(resetPasswordPayload);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            await _accountManager.ResetPasswordRequest(resetPasswordPayload.Email);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordPayload resetPasswordPayload)
+        {
+            var validationResult = _accountValidator.ValidateOnPasswordReset(resetPasswordPayload);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            var passwordChanged = await _accountManager.ResetPassword(resetPasswordPayload.UserId, resetPasswordPayload);
+
+            if (!passwordChanged)
+                return StatusCode(500);
+
+            return Ok();
         }
     }
 }

@@ -57,6 +57,31 @@ namespace Algorithmix.Api.Core
             return await _userService.UpdateUser(id, userPayload);
         }
 
+        public async Task<bool> ConfirmEmail(string id, string code)
+        {
+            return await _userService.ConfirmEmail(id, code);
+        }
+
+        public async Task<bool> ChangePassword(string id, ChangePasswordPayload changePasswordPayload)
+        {
+            return await _userService.ChangePassword(id, changePasswordPayload);
+        }
+
+        public async Task<bool> ResetPassword(string id, ResetPasswordPayload resetPasswordPayload)
+        {
+            return await _userService.ResetPassword(id, resetPasswordPayload);
+        }
+
+        public async Task<string> GenerateEmailConfirmationToken(string id)
+        {
+            return await _userService.GenerateEmailConfirmationToken(id);
+        }
+
+        public async Task<string> GeneratePasswordResetToken(string id)
+        {
+            return await _userService.GeneratePasswordResetToken(id);
+        }
+
         private async Task<ApplicationUser> PrepareUser(ApplicationUser user)
         {
             if (user == null)
