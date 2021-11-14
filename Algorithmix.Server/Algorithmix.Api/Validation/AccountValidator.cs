@@ -1,6 +1,7 @@
 ﻿using Algorithmix.Common.Extensions;
 using Algorithmix.Common.Validation;
 using Algorithmix.Models.Account;
+using Algorithmix.Models.Users;
 using Algorithmix.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,8 @@ namespace Algorithmix.Api.Validation
         {
             var validationErrors = new List<ValidationError>();
 
-            validationErrors.AddRange(await ValidateEmail(registerPayload));
-            validationErrors.AddRange(ValidateName(registerPayload));
+            validationErrors.AddRange(await ValidateEmail(registerPayload.Email));
+            validationErrors.AddRange(ValidateName(registerPayload.FirstName, registerPayload.LastName));
             validationErrors.AddRange(ValidatePasswords(
                     registerPayload.Password,
                     registerPayload.ConfirmPassword,
@@ -57,9 +58,24 @@ namespace Algorithmix.Api.Validation
             };
         }
 
+        public async Task<ValidationResult> ValidateOnUpdate(string userId, ApplicationUserPayload userPayload)
+        {
+            var validationErrors = new List<ValidationError>();
+
+            validationErrors.AddRange(await ValidateEmail(userPayload.Email, userId));
+            validationErrors.AddRange(ValidateName(userPayload.FirstName, userPayload.LastName));
+
+            return new ValidationResult
+            {
+                IsValid = !validationErrors.Any(),
+                ValidationErrors = validationErrors
+            };
+        }
+
         public async Task<ValidationResult> ValidateOnChangePassword(string userId, ChangePasswordPayload changePasswordPayload)
         {
             var validationErrors = new List<ValidationError>();
+            var user = await _userService.GetUserById(userId);
 
             if (!await _userService.IsEmailConfirmed(userId))
                 validationErrors.Add(new ValidationError
@@ -68,11 +84,18 @@ namespace Algorithmix.Api.Validation
                     Message = "Ваш e-mail не подтверждён"
                 });
 
-            if (!await _userService.IsPasswordValid(userId, changePasswordPayload.CurrentPassword))
+            if (!await _userService.IsPasswordValid(user.Email, changePasswordPayload.CurrentPassword))
                 validationErrors.Add(new ValidationError
                 {
                     Field = nameof(changePasswordPayload.CurrentPassword).ToCamelCase(),
                     Message = "Неверный пароль"
+                });
+
+            if (await _userService.IsPasswordValid(user.Email, changePasswordPayload.NewPassword))
+                validationErrors.Add(new ValidationError
+                {
+                    Field = nameof(changePasswordPayload.NewPassword).ToCamelCase(),
+                    Message = "Новый пароль должен отличаться от старого"
                 });
 
             validationErrors.AddRange(ValidatePasswords(
@@ -130,63 +153,65 @@ namespace Algorithmix.Api.Validation
             };
         }
 
-        private async Task<IEnumerable<ValidationError>> ValidateEmail(RegisterPayload registerPayload)
+        private async Task<IEnumerable<ValidationError>> ValidateEmail(string email, string userId = null)
         {
             var validationErrors = new List<ValidationError>();
 
-            if (string.IsNullOrEmpty(registerPayload.Email))
+            if (string.IsNullOrEmpty(email))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.Email).ToCamelCase(),
+                    Field = "email",
                     Message = "Введите Email"
                 });
 
-            if (!Regex.IsMatch(registerPayload.Email, EmailPattern))
+            if (!Regex.IsMatch(email, EmailPattern))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.Email).ToCamelCase(),
+                    Field = "email",
                     Message = "Неверный формат Email"
                 });
 
-            if (await _userService.GetUserByEmail(registerPayload.Email) != null)
+            var userByEmail = await _userService.GetUserByEmail(email);
+
+            if (userByEmail != null && userByEmail.Id != userId)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.Email).ToCamelCase(),
+                    Field = "email",
                     Message = "Пользователь с данным Email уже существует"
                 });
 
             return validationErrors;
         }
 
-        private IEnumerable<ValidationError> ValidateName(RegisterPayload registerPayload)
+        private IEnumerable<ValidationError> ValidateName(string firstName, string lastName)
         {
             var validationErrors = new List<ValidationError>();
 
-            if (string.IsNullOrEmpty(registerPayload.FirstName))
+            if (string.IsNullOrEmpty(firstName))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.FirstName).ToCamelCase(),
+                    Field = "firstName",
                     Message = "Введите имя"
                 });
 
-            if (registerPayload.FirstName.Length > 50)
+            if (firstName.Length > 50)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.FirstName).ToCamelCase(),
+                    Field = "firstName",
                     Message = "Длина не должна превышать 50 символов"
                 });
 
-            if (string.IsNullOrEmpty(registerPayload.LastName))
+            if (string.IsNullOrEmpty(lastName))
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.LastName).ToCamelCase(),
+                    Field = "lastName",
                     Message = "Введите фамилию"
                 });
 
-            if (registerPayload.LastName.Length > 50)
+            if (lastName.Length > 50)
                 validationErrors.Add(new ValidationError
                 {
-                    Field = nameof(registerPayload.LastName).ToCamelCase(),
+                    Field = "lastName",
                     Message = "Длина не должна превышать 50 символов"
                 });
 

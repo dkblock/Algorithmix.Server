@@ -26,11 +26,14 @@ namespace Algorithmix.Identity
             if (string.IsNullOrEmpty(newRole))
                 return;
 
-            if (newRole == Roles.Moderator)
-                await userManager.RemoveFromRolesAsync(user, new List<string> { Roles.Administrator });
+            var roles = await userManager.GetRolesAsync(user);
+            await userManager.RemoveFromRolesAsync(user, roles);
 
-            if (newRole == Roles.User)
-                await userManager.RemoveFromRolesAsync(user, new List<string> { Roles.Administrator, Roles.Moderator });
+            //if (newRole == Roles.Moderator)
+            //    await userManager.RemoveFromRolesAsync(user, new List<string> { Roles.Administrator });
+
+            //if (newRole == Roles.User)
+            //    await userManager.RemoveFromRolesAsync(user, new List<string> { Roles.Administrator, Roles.Moderator });
 
             await userManager.AddToRoleAsync(user, newRole);
         }

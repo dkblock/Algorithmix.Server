@@ -1,6 +1,7 @@
 ﻿using Algorithmix.Api.Core;
 using Algorithmix.Api.Validation;
 using Algorithmix.Models.Account;
+using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -25,9 +26,9 @@ namespace Algorithmix.Server.Controllers
         [HttpGet]
         [Route("auth")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromHeader] string authorization)
+        public async Task<IActionResult> Authenticate()
         {
-            var authModel = await _accountManager.Authenticate(authorization);
+            var authModel = await _accountManager.Authenticate();
             return Ok(authModel);
         }
 
@@ -67,12 +68,36 @@ namespace Algorithmix.Server.Controllers
             return Ok(authModel);
         }
 
+        [HttpPut]
+        [Route("")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserInformation([FromBody] ApplicationUserPayload userPayload)
+        {
+            var userId = _userContextManager.CurrentUser.Id;
+            var validationResult = await _accountValidator.ValidateOnUpdate(userId, userPayload);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult);
+
+            var updatedUserAccount = await _accountManager.UpdateUserInformation(userPayload);
+            return Ok(updatedUserAccount);
+        }
+
+        [HttpGet]
+        [Route("confirm-email")]
+        [Authorize]
+        public async Task<IActionResult> ConfirmEmailRequest()
+        {
+            await _accountManager.ConfirmEmailRequest();
+            return Ok();
+        }
+
         [HttpPost]
         [Route("confirm-email")]
         [Authorize]
-        public async Task<IActionResult> ConfirmEmail(string code)
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailPayload confirmEmailPayload)
         {
-            var emailConfirmed = await _accountManager.ConfirmEmail(code);
+            var emailConfirmed = await _accountManager.ConfirmEmail(confirmEmailPayload);
 
             if (!emailConfirmed)
                 return StatusCode(500);
@@ -80,7 +105,7 @@ namespace Algorithmix.Server.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("change-password")]
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordPayload changePasswordPayload)

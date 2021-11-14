@@ -88,11 +88,12 @@ namespace Algorithmix.Services
             var userEntity = await _userManager.FindByIdAsync(id);
             var updatedUserEntity = _userMapper.UpdateEntity(userEntity, userPayload);
 
-            await _userManager.ChangeRoleAsync(userEntity, userPayload.Role);
+            if (await _userManager.GetRoleAsync(userEntity) != userPayload.Role)
+                await _userManager.ChangeRoleAsync(userEntity, userPayload.Role);
+
             await _userManager.UpdateAsync(updatedUserEntity);
 
             var updatedUser = await _userManager.FindByIdAsync(id);
-
             return await PrepareUser(updatedUser);
         }
 

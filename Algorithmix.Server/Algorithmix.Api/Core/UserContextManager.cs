@@ -8,6 +8,8 @@ namespace Algorithmix.Api.Core
     public interface IUserContextManager
     {
         ApplicationUser CurrentUser { get; }
+        string AccessToken { get; }
+        string Authorization { get; }
     }
 
     public class UserContextManager : IUserContextManager
@@ -21,22 +23,33 @@ namespace Algorithmix.Api.Core
             _identityHelper = identityHelper;
         }
 
-        public ApplicationUser CurrentUser
+        public ApplicationUser CurrentUser => GetCurrentUser();
+        public string AccessToken => GetAccessToken();
+        public string Authorization => GetAuthorization();
+
+        private string GetAccessToken()
         {
-            get { return GetCurrentUser(); }
+            var authorization = GetAuthorization();
+            return _identityHelper.GetAccessToken(authorization);
         }
 
         private ApplicationUser GetCurrentUser()
         {
-            if (_httpContextAccessor == null)
-                return null;
-
-            _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization);
+            var authorization = GetAuthorization();
 
             if (authorization != "null")
-                return _identityHelper.GetUser(authorization.ToString());
+                return _identityHelper.GetUser(authorization);
 
             return null;
+        }
+
+        private string GetAuthorization()
+        {
+            if (_httpContextAccessor == null)
+                return "null";
+
+            _httpContextAccessor.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization);
+            return authorization.ToString();
         }
     }
 }

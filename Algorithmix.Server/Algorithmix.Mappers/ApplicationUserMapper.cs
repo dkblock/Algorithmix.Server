@@ -35,6 +35,7 @@ namespace Algorithmix.Mappers
                 Email = userEntity.Email,
                 FirstName = userEntity.FirstName,
                 LastName = userEntity.LastName,
+                EmailConfirmed = userEntity.EmailConfirmed,
                 Group = new Group { Id = userEntity.GroupId }
             };
         }
@@ -50,6 +51,7 @@ namespace Algorithmix.Mappers
 
         public ApplicationUserEntity UpdateEntity(ApplicationUserEntity userEntity, ApplicationUserPayload userPayload)
         {
+            userEntity.EmailConfirmed = userEntity.EmailConfirmed && userEntity.Email == userPayload.Email;
             userEntity.Email = userPayload.Email ?? userEntity.Email;
             userEntity.FirstName = userPayload.FirstName ?? userEntity.FirstName;
             userEntity.LastName = userPayload.LastName ?? userEntity.LastName;

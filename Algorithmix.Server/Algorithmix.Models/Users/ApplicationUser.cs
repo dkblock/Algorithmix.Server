@@ -9,6 +9,7 @@ namespace Algorithmix.Models.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }
+        public bool EmailConfirmed { get; set; }
         public Group Group { get; set; }
     }
 }
