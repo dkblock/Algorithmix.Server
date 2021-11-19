@@ -71,7 +71,7 @@ namespace Algorithmix.Api.Core
             return await PrepareUserTestResult(userTestResult);
         }
 
-        public async Task<IEnumerable<UserTestResult>> GetUserTestResults(UserTestResultQuery query)
+        public async Task<PageResponse<UserTestResult>> GetUserTestResults(UserTestResultQuery query)
         {
             var userTestResults = await _userTestResultService.GetUserTestResults();
             return await PrepareUserTestResults(userTestResults, query);
@@ -109,7 +109,7 @@ namespace Algorithmix.Api.Core
             return userTestResult;
         }
 
-        private async Task<IEnumerable<UserTestResult>> PrepareUserTestResults(IEnumerable<UserTestResult> userTestResults, UserTestResultQuery query)
+        private async Task<PageResponse<UserTestResult>> PrepareUserTestResults(IEnumerable<UserTestResult> userTestResults, UserTestResultQuery query)
         {
             var preparedUserTestResults = new List<UserTestResult>();
 
@@ -135,9 +135,17 @@ namespace Algorithmix.Api.Core
                 preparedUserTestResults.Add(preparedUserTestResult);
             }
 
-            return query.SortByDesc
+            var sortedUserTestResults = query.SortByDesc
                 ? preparedUserTestResults.OrderByDescending(_queryHelper.UserTestResultSortModel[query.SortBy])
                 : preparedUserTestResults.OrderBy(_queryHelper.UserTestResultSortModel[query.SortBy]);
+
+            var result = sortedUserTestResults.Skip(query.PageSize * (query.PageIndex - 1));
+
+            return new PageResponse<UserTestResult>
+            {
+                Page = result.Take(query.PageSize),
+                TotalCount = sortedUserTestResults.Count()
+            };
         }
     }
 }

@@ -48,9 +48,16 @@ namespace Algorithmix.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllGroups()
+        public async Task<IActionResult> GetGroups(
+            string searchText = "",
+            int pageIndex = 1,
+            int pageSize = 100,
+            GroupSortBy sortBy = GroupSortBy.Id,
+            bool desc = true)
         {
-            var groups = await _groupManager.GetAllGroups();
+            var query = new GroupQuery(searchText, pageIndex, pageSize, sortBy, desc);
+            var groups = await _groupManager.GetGroups(query);
+
             return Ok(groups);
         }
 

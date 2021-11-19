@@ -1,5 +1,5 @@
 ﻿using Algorithmix.Api.Core.Helpers;
-using Algorithmix.Common.Extensions;
+using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
 using Algorithmix.Services.TestPass;
@@ -60,7 +60,7 @@ namespace Algorithmix.Api.Core.TestPass
             return await PrepareTest(test);
         }
 
-        public async Task<IEnumerable<Test>> GetTests(TestQuery query)
+        public async Task<PageResponse<Test>> GetTests(TestQuery query)
         {
             var tests = await _testService.GetAllTests();
             return await PrepareTests(tests, query);
@@ -92,7 +92,7 @@ namespace Algorithmix.Api.Core.TestPass
             return test;
         }
 
-        private async Task<IEnumerable<Test>> PrepareTests(IEnumerable<Test> tests, TestQuery query)
+        private async Task<PageResponse<Test>> PrepareTests(IEnumerable<Test> tests, TestQuery query)
         {
             var preparedTests = new List<Test>();
 
@@ -108,7 +108,17 @@ namespace Algorithmix.Api.Core.TestPass
                 preparedTests.Add(preparedTest);
             }
 
-            return preparedTests.OrderByDescending(test => test.Id);
+            var sortedTests = query.SortByDesc
+                ? preparedTests.OrderByDescending(_queryHelper.TestSortModel[query.SortBy])
+                : preparedTests.OrderBy(_queryHelper.TestSortModel[query.SortBy]);
+
+            var result = sortedTests.Skip(query.PageSize * (query.PageIndex - 1));
+
+            return new PageResponse<Test>
+            {
+                Page = result.Take(query.PageSize),
+                TotalCount = sortedTests.Count()
+            };
         }
     }
 }

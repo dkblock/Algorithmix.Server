@@ -1,8 +1,8 @@
-﻿namespace Algorithmix.Models.Algorithms
+﻿namespace Algorithmix.Models.Groups
 {
-    public class AlgorithmQuery
+    public class GroupQuery
     {
-        public AlgorithmQuery(string searchText, int pageIndex, int pageSize, AlgorithmSortBy sortBy, bool sortByDesc)
+        public GroupQuery(string searchText, int pageIndex, int pageSize, GroupSortBy sortBy, bool sortByDesc)
         {
             SearchText = searchText;
             PageSize = pageSize;
@@ -14,17 +14,15 @@
         public string SearchText { get; set; }
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
-        public AlgorithmSortBy SortBy { get; set; }
+        public GroupSortBy SortBy { get; set; }
         public bool SortByDesc { get; set; }
     }
 
-    public enum AlgorithmSortBy
+    public enum GroupSortBy
     {
-        None,
         Id,
         Name,
-        HasDescription,
-        HasConstructor,
-        TestsCount
+        UsersCount,
+        IsAvailableForRegister
     }
 }

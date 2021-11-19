@@ -18,8 +18,8 @@ namespace Algorithmix.Server.Controllers
         private readonly TestValidator _testValidator;
 
         public TestController(
-            PublishedTestManager pubTestManager, 
-            TestManager testManager, 
+            PublishedTestManager pubTestManager,
+            TestManager testManager,
             TestValidator testValidator)
         {
             _pubTestManager = pubTestManager;
@@ -56,9 +56,14 @@ namespace Algorithmix.Server.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetTests(string searchText = "")
+        public async Task<IActionResult> GetTests(
+            string searchText = "",
+            int pageIndex = 1,
+            int pageSize = 20,
+            TestSortBy sortBy = TestSortBy.CreatedDate,
+            bool desc = true)
         {
-            var query = new TestQuery(searchText);
+            var query = new TestQuery(searchText, pageSize, pageIndex, sortBy, desc);
             var tests = await _testManager.GetTests(query);
 
             return Ok(tests);
@@ -66,12 +71,17 @@ namespace Algorithmix.Server.Controllers
 
         [HttpGet]
         [Route("published")]
-        public async Task<IActionResult> GetPublishedTests(string searchText = "")
+        public async Task<IActionResult> GetPublishedTests(
+            string searchText = "",
+            int pageIndex = 1,
+            int pageSize = 20,
+            TestSortBy sortBy = TestSortBy.CreatedDate,
+            bool desc = true)
         {
-            var query = new TestQuery(searchText);
-            var tests = await _pubTestManager.GetTests(query);
+            var query = new TestQuery(searchText, pageSize, pageIndex, sortBy, desc);
+            var testResponse = await _pubTestManager.GetTests(query);
 
-            return Ok(tests);
+            return Ok(testResponse);
         }
 
         [HttpDelete]

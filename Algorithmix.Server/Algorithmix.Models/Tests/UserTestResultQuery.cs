@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Algorithmix.Models.Tests
+﻿namespace Algorithmix.Models.Tests
 {
     public class UserTestResultQuery
     {
-        public UserTestResultQuery(string searchText, int groupId, UserTestResultSortBy sortBy, bool sortByDesc)
+        public UserTestResultQuery(string searchText, int groupId, int pageIndex, int pageSize, UserTestResultSortBy sortBy, bool sortByDesc)
         {
             SearchText = searchText;
             GroupId = groupId;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
             SortBy = sortBy;
             SortByDesc = sortByDesc;
         }
 
         public string SearchText { get; set; }
         public int GroupId { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
         public UserTestResultSortBy SortBy { get; set; }
-        public bool SortByDesc { get; set; }
-
-        
+        public bool SortByDesc { get; set; }        
     }
 
     public enum UserTestResultSortBy

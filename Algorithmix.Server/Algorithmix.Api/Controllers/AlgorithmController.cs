@@ -40,9 +40,14 @@ namespace Algorithmix.Server.Controllers
         [HttpGet]
         [Route("")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAlgorithms(string searchText = "")
+        public async Task<IActionResult> GetAlgorithms(
+            string searchText = "",
+            int pageIndex = 1,
+            int pageSize = 100,
+            AlgorithmSortBy sortBy = AlgorithmSortBy.None,
+            bool desc = false)
         {
-            var query = new AlgorithmQuery(searchText);
+            var query = new AlgorithmQuery(searchText, pageIndex, pageSize, sortBy, desc);
             var algorithms = await _algorithmManager.GetAlgorithms(query);
 
             return Ok(algorithms);

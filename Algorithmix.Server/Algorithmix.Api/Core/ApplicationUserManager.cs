@@ -1,8 +1,10 @@
-﻿using Algorithmix.Common.Extensions;
+﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Models;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
 using Algorithmix.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core
@@ -11,11 +13,13 @@ namespace Algorithmix.Api.Core
     {
         private readonly ApplicationUserService _userService;
         private readonly GroupService _groupService;
+        private readonly QueryHelper _queryHelper;
 
-        public ApplicationUserManager(ApplicationUserService userService, GroupService groupService)
+        public ApplicationUserManager(ApplicationUserService userService, GroupService groupService, QueryHelper queryHelper)
         {
             _userService = userService;
             _groupService = groupService;
+            _queryHelper = queryHelper;
         }
 
         public async Task<ApplicationUser> CreateUser(RegisterPayload registerPayload)
@@ -36,10 +40,10 @@ namespace Algorithmix.Api.Core
             return await PrepareUser(user);
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetUsers()
+        public async Task<PageResponse<ApplicationUser>> GetUsers(ApplicationUserQuery query)
         {
             var users = await _userService.GetUsers();
-            return await PrepareUsers(users);
+            return await PrepareUsers(users, query);
         }
 
         public async Task<bool> Exists(string id)
@@ -91,12 +95,48 @@ namespace Algorithmix.Api.Core
             return user;
         }
 
-        private async Task<IEnumerable<ApplicationUser>> PrepareUsers(IEnumerable<ApplicationUser> users)
+        private async Task<PageResponse<ApplicationUser>> PrepareUsers(IEnumerable<ApplicationUser> users, ApplicationUserQuery query)
         {
             var preparedUsers = new List<ApplicationUser>();
-            await users.ForEachAsync(async user => preparedUsers.Add(await PrepareUser(user)));
+            
+            foreach(var user in users)
+            {
+                var preparedUser = await PrepareUser(user);
 
-            return preparedUsers;
+                var filters = new[]
+                {
+                    preparedUser.Email,
+                    preparedUser.FirstName,
+                    preparedUser.LastName,
+                    $"{preparedUser.FirstName} {preparedUser.LastName}",
+                    $"{preparedUser.LastName} {preparedUser.FirstName}",
+                    preparedUser.Group.Name,
+                    preparedUser.Role
+                };
+
+                if (!_queryHelper.IsMatch(query.SearchText, filters))
+                    continue;
+
+                if (query.GroupId != -1 && query.GroupId != preparedUser.Group.Id)
+                    continue;
+
+                if (query.Role != "all" && query.Role != preparedUser.Role)
+                    continue;
+
+                preparedUsers.Add(preparedUser);
+            }
+
+            var sortedUsers = query.SortByDesc
+                ? preparedUsers.OrderByDescending(_queryHelper.ApplicationUserSortModel[query.SortBy])
+                : preparedUsers.OrderBy(_queryHelper.ApplicationUserSortModel[query.SortBy]);
+
+            var result = sortedUsers.Skip(query.PageSize * (query.PageIndex - 1));
+
+            return new PageResponse<ApplicationUser>
+            {
+                Page = result.Take(query.PageSize),
+                TotalCount = sortedUsers.Count()
+            };
         }
     }
 }

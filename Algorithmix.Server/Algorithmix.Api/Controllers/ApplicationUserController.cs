@@ -22,9 +22,18 @@ namespace Algorithmix.Server.Controllers
         [HttpGet]
         [Route("")]
         [Authorize(Roles = Roles.Executive)]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(
+            string searchText = "",
+            int groupId = -1,
+            string role = "all",
+            int pageIndex = 1,
+            int pageSize = 20,
+            ApplicationUserSortBy sortBy = ApplicationUserSortBy.GroupId,
+            bool desc = true)
         {
-            var users = await _userManager.GetUsers();
+            var query = new ApplicationUserQuery(searchText, groupId, role, pageIndex, pageSize, sortBy, desc);
+            var users = await _userManager.GetUsers(query);
+
             return Ok(users);
         }
 

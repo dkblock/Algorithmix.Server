@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Models;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
 using Algorithmix.Services.TestDesign;
@@ -61,7 +62,7 @@ namespace Algorithmix.Api.Core
             return await PrepareAlgorithm(algorithm);
         }
 
-        public async Task<IEnumerable<Algorithm>> GetAlgorithms(AlgorithmQuery query)
+        public async Task<PageResponse<Algorithm>> GetAlgorithms(AlgorithmQuery query)
         {
             var algorithms = await _algorithmService.GetAllAlgorithms();
             return await PrepareAlgorithms(algorithms, query);
@@ -152,7 +153,7 @@ namespace Algorithmix.Api.Core
             return algorithm;
         }
 
-        private async Task<IEnumerable<Algorithm>> PrepareAlgorithms(IEnumerable<Algorithm> algorithms, AlgorithmQuery query)
+        private async Task<PageResponse<Algorithm>> PrepareAlgorithms(IEnumerable<Algorithm> algorithms, AlgorithmQuery query)
         {
             var preparedAlgorithms = new List<Algorithm>();
 
@@ -166,7 +167,17 @@ namespace Algorithmix.Api.Core
                 preparedAlgorithms.Add(preparedAlgorithm);
             }
 
-            return preparedAlgorithms;
+            var sortedAlgorithms = query.SortByDesc
+                ? preparedAlgorithms.OrderByDescending(_queryHelper.AlgorithmSortModel[query.SortBy])
+                : preparedAlgorithms.OrderBy(_queryHelper.AlgorithmSortModel[query.SortBy]);
+
+            var result = sortedAlgorithms.Skip(query.PageSize * (query.PageIndex - 1));
+
+            return new PageResponse<Algorithm>
+            {
+                Page = result.Take(query.PageSize),
+                TotalCount = sortedAlgorithms.Count()
+            };
         }
     }
 }

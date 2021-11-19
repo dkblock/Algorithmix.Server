@@ -24,10 +24,12 @@ namespace Algorithmix.Api.Controllers
         public async Task<IActionResult> GetUserTestResults(
             string searchText = "", 
             int groupId = -1, 
+            int pageIndex = 1,
+            int pageSize = 20,
             UserTestResultSortBy sortBy = UserTestResultSortBy.PassingTime, 
             bool desc = true)
         {
-            var query = new UserTestResultQuery(searchText, groupId, sortBy, desc);
+            var query = new UserTestResultQuery(searchText, groupId, pageIndex, pageSize, sortBy, desc);
             var userTestResults = await _userTestResultManager.GetUserTestResults(query);
 
             return Ok(userTestResults);
