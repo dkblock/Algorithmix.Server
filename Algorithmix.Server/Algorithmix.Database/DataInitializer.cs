@@ -14,8 +14,8 @@ namespace Algorithmix.Database
             await InitializeRoles(roleManager);
             await InitializeGroups(context);
 
-             //Only on initial launch
-             await InitializeAdministratorAccount(userManager);
+             // Only on initial launch
+             // await InitializeAdministratorAccount(userManager);
         }
 
         private static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)

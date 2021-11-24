@@ -50,7 +50,6 @@ namespace Algorithmix.Server
                 builder.WithOrigins(siteUrl);
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
-                builder.AllowCredentials();
             });
 
             app.UseHttpsRedirection();
