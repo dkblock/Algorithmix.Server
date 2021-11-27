@@ -55,14 +55,15 @@ namespace Algorithmix.Api.Core
         public async Task PublishTest(Test test, bool clearTestResults)
         {
             var questions = test.Questions;
+            var questionIds = questions.Select(q => q.Id);
             var answers = questions.SelectMany(q => q.Answers);
 
             if (clearTestResults)
                 await ClearTestResults(test, questions);
 
             await UpdatePublishedTest(test);
-            await UpdatePublishedQuestions(questions);
-            await UpdatePublishedAnswers(answers);
+            await UpdatePublishedQuestions(questions, test.Id);
+            await UpdatePublishedAnswers(answers, questionIds);
             _testDataManager.CopyTestQuestionImagesToPublishedTest(test.Id);
 
             await _testManager.PublishTest(test.Id);
@@ -72,6 +73,8 @@ namespace Algorithmix.Api.Core
         {
             await questions.ForEachAsync(async q => await _userAnswerService.DeleteUserAnswers(q.Id));
             await _userTestResultService.DeleteUserTestResults(test.Id);
+
+            test.AverageResult = 0;
         }
 
         private async Task UpdatePublishedTest(Test test)
@@ -82,8 +85,16 @@ namespace Algorithmix.Api.Core
                 await _pubTestManager.CreateTest(test);
         }
 
-        private async Task UpdatePublishedQuestions(IEnumerable<TestQuestion> questions)
+        private async Task UpdatePublishedQuestions(IEnumerable<TestQuestion> questions, int testId)
         {
+            var existedQuestions = await _pubQuestionManager.GetTestQuestions(testId);
+
+            foreach (var question in existedQuestions)
+            {
+                if (!questions.Any(q => q.Id == question.Id))
+                    await _pubQuestionManager.DeleteTestQuestion(question.Id);
+            }
+
             foreach (var question in questions)
             {
                 if (await _pubQuestionManager.Exists(question.Id, question.Test.Id))
@@ -93,8 +104,19 @@ namespace Algorithmix.Api.Core
             }
         }
 
-        private async Task UpdatePublishedAnswers(IEnumerable<TestAnswer> answers)
+        private async Task UpdatePublishedAnswers(IEnumerable<TestAnswer> answers, IEnumerable<int> questionIds)
         {
+            foreach (var questionId in questionIds)
+            {
+                var existedAnswers = await _pubAnswerManager.GetTestAnswers(questionId);
+
+                foreach (var answer in existedAnswers)
+                {
+                    if (!answers.Any(a => a.Id == answer.Id))
+                        await _pubAnswerManager.DeleteTestAnswer(answer.Id);
+                }
+            }
+
             foreach (var answer in answers)
             {
                 if (await _pubAnswerManager.Exists(answer.Id, answer.Question.Id))

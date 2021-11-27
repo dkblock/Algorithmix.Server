@@ -16,7 +16,7 @@ namespace Algorithmix.Api.Core
         private readonly EmailManager _emailManager;
         private readonly IUserContextManager _userContextManager;
 
-        private readonly string _siteUrl;
+        private readonly string _clientUrl;
 
         public AccountManager(
             ApplicationUserManager userManager,
@@ -32,7 +32,7 @@ namespace Algorithmix.Api.Core
             _emailManager = emailManager;
             _userContextManager = userContextManager;
 
-            _siteUrl = configuration["SiteURL"];
+            _clientUrl = configuration["ClientUrl"];
         }
 
         public async Task<UserAccount> Authenticate()
@@ -124,12 +124,12 @@ namespace Algorithmix.Api.Core
 
         private string GetEmailConfirmationUrl(string userId, string code)
         {
-            return $"{_siteUrl}/account/confirm-email?userId={userId}&code={code}";
+            return $"{_clientUrl}/account/confirm-email?userId={userId}&code={code}";
         }
 
         private string GetPasswordResetUrl(string userId, string code)
         {
-            return $"{_siteUrl}/account/reset-password?userId={userId}&code={code}";
+            return $"{_clientUrl}/account/reset-password?userId={userId}&code={code}";
         }
     }
 }

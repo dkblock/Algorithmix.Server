@@ -106,12 +106,15 @@ namespace Algorithmix.Services.TestDesign
             if (answerEntity.IsCorrect && questionType == TestQuestionTypes.SingleAnswerQuestion)
             {
                 var answers = await _answerRepository.GetTestAnswers(a => a.QuestionId == answerEntity.QuestionId);
-                var oldCorrectAnswer = answers.Single(a => a.IsCorrect);
-
-                if (oldCorrectAnswer.Id != id)
+                var oldCorrectAnswers = answers.Where(a => a.IsCorrect);
+                
+                foreach(var oldCorrectAnswer in oldCorrectAnswers)
                 {
-                    oldCorrectAnswer.IsCorrect = false;
-                    await _answerRepository.UpdateTestAnswer(oldCorrectAnswer);
+                    if (oldCorrectAnswer.Id != id)
+                    {
+                        oldCorrectAnswer.IsCorrect = false;
+                        await _answerRepository.UpdateTestAnswer(oldCorrectAnswer);
+                    }
                 }
             }
 

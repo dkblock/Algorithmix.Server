@@ -38,7 +38,7 @@ namespace Algorithmix.Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var siteUrl = Configuration.GetValue<string>("SiteURL");
+            var clientUrl = Configuration.GetValue<string>("ClientUrl");
 
             if (env.IsDevelopment())
             {
@@ -47,7 +47,7 @@ namespace Algorithmix.Server
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins(siteUrl);
+                builder.WithOrigins(clientUrl);
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
             });
