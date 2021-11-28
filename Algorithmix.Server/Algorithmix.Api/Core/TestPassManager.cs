@@ -58,7 +58,8 @@ namespace Algorithmix.Api.Core
             var firstQuestion = await _questionManager.GetTestQuestion(test.Questions.First().Id);
             var questionIds = test.Questions.Select(q => q.Id);
 
-            await _userAnswerManager.DeleteUserAnswers(questionIds, userId);
+            if (!await _userTestResultManager.Exists(testId, userId))
+                await _userAnswerManager.DeleteUserAnswers(questionIds, userId);
 
             return firstQuestion;
         }

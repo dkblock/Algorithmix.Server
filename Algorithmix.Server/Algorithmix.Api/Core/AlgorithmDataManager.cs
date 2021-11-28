@@ -7,10 +7,15 @@ namespace Algorithmix.Api.Core
     {
         void CreateAlgorithmDescription(string algorithmId, IFormFile description);
         void DeleteAlgorithmDescription(string algorithmId);
+        FileStream DownloadAlgorithmDescription(string algorithmId);
+
         void CreateAlgorithmConstructor(string algorithmId, IFormFile description);
         void DeleteAlgorithmConstructor(string algorithmId);
+        FileStream DownloadAlgorithmConstructor(string algorithmId);
+
         string CreateAlgorithmImage(string algorithmId, IFormFile image);
         void DeleteAlgorithmImage(string imagePath);
+
         FileStream GetAlgorithmDataTemplate(string algorithmId);
         void DeleteAlgorithmDataFolder(string algorithmId);
         bool DescriptionExists(string algorithmId);
@@ -34,12 +39,15 @@ namespace Algorithmix.Api.Core
 
         public void CreateAlgorithmDescription(string algorithmId, IFormFile description)
         {
+            DeleteAlgorithmDescription(algorithmId);
+
             var path = _fileManager.CombinePaths("algorithms", algorithmId, "description");
 
             if (!_fileManager.DirectoryExists(path))
                 _fileManager.CreateDirectory(path);
 
             _fileManager.ExtractZipFileToDirectory(description, path);
+            _fileManager.CreateFile(description, _fileManager.CombinePaths(path, $"{algorithmId}.zip"));
         }
 
         public void DeleteAlgorithmDescription(string algorithmId)
@@ -50,14 +58,23 @@ namespace Algorithmix.Api.Core
                 _fileManager.DeleteDirectory(path);
         }
 
+        public FileStream DownloadAlgorithmDescription(string algorithmId)
+        {
+            var path = _fileManager.CombinePaths("algorithms", algorithmId, "description", $"{algorithmId}.zip");
+            return _fileManager.GetFile(path);
+        }
+
         public void CreateAlgorithmConstructor(string algorithmId, IFormFile constructor)
         {
+            DeleteAlgorithmConstructor(algorithmId);
+
             var path = _fileManager.CombinePaths("algorithms", algorithmId, "constructor");
 
             if (!_fileManager.DirectoryExists(path))
                 _fileManager.CreateDirectory(path);
 
             _fileManager.ExtractZipFileToDirectory(constructor, path);
+            _fileManager.CreateFile(constructor, _fileManager.CombinePaths(path, $"{algorithmId}.zip"));
         }
 
         public void DeleteAlgorithmConstructor(string algorithmId)
@@ -66,6 +83,12 @@ namespace Algorithmix.Api.Core
 
             if (_fileManager.DirectoryExists(path))
                 _fileManager.DeleteDirectory(path);
+        }
+
+        public FileStream DownloadAlgorithmConstructor(string algorithmId)
+        {
+            var path = _fileManager.CombinePaths("algorithms", algorithmId, "constructor", $"{algorithmId}.zip");
+            return _fileManager.GetFile(path);
         }
 
         public string CreateAlgorithmImage(string algorithmId, IFormFile image)

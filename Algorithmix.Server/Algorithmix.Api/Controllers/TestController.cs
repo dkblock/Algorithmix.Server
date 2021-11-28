@@ -50,7 +50,18 @@ namespace Algorithmix.Server.Controllers
                 return NotFound();
 
             var test = await _testManager.GetTest(testId);
+            return Ok(test);
+        }
 
+        [HttpGet]
+        [Route("published/{testId}")]
+        [Authorize]
+        public async Task<IActionResult> GetPublishedTest(int testId)
+        {
+            if (!await _pubTestManager.Exists(testId))
+                return NotFound();
+
+            var test = await _pubTestManager.GetTest(testId);
             return Ok(test);
         }
 

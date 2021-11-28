@@ -109,6 +109,11 @@ namespace Algorithmix.Api.Core
             _algorithmDataManager.DeleteAlgorithmDescription(id);
         }
 
+        public FileStream DownloadAlgorithmDescription(string id)
+        {
+            return _algorithmDataManager.DownloadAlgorithmDescription(id);
+        }
+
         public void UpdateAlgorithmConstructor(string id, IFormFile constructor)
         {
             _algorithmDataManager.CreateAlgorithmConstructor(id, constructor);
@@ -117,6 +122,11 @@ namespace Algorithmix.Api.Core
         public void DeleteAlgorithmConstructor(string id)
         {
             _algorithmDataManager.DeleteAlgorithmConstructor(id);
+        }
+
+        public FileStream DownloadAlgorithmConstructor(string id)
+        {
+            return _algorithmDataManager.DownloadAlgorithmConstructor(id);
         }
 
         public async Task<Algorithm> UpdateAlgorithmImage(string id, IFormFile image)

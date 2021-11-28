@@ -59,6 +59,7 @@ namespace Algorithmix.Api.Core.Helpers
                 { TestSortBy.Name, x => x.Name },
                 { TestSortBy.Status, x => x.UserResult?.IsPassed },
                 { TestSortBy.IsPublished, x => x.IsPublished },
+                { TestSortBy.AverageResult, x => x.AverageResult },
                 { TestSortBy.CreatedBy, x => $"{x.CreatedBy.LastName} {x.CreatedBy.FirstName}" },
                 { TestSortBy.CreatedDate, x => x.CreatedDate },
                 { TestSortBy.UpdatedDate, x => x.UpdatedDate },

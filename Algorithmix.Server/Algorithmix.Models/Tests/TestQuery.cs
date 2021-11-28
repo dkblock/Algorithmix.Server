@@ -23,6 +23,7 @@
         Name,
         Status,
         IsPublished,
+        AverageResult,
         CreatedBy,
         CreatedDate,
         UpdatedDate,

@@ -140,6 +140,18 @@ namespace Algorithmix.Server.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("{algorithmId}/description")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> DownloadAlgorithmDescription(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var description = _algorithmManager.DownloadAlgorithmDescription(algorithmId);
+            return Ok(description);
+        }
+
         [HttpPost]
         [Route("{algorithmId}/constructor")]
         [Authorize(Roles = Roles.Administrator)]
@@ -172,6 +184,18 @@ namespace Algorithmix.Server.Controllers
 
             _algorithmManager.DeleteAlgorithmConstructor(algorithmId);
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("{algorithmId}/constructor")]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> DownloadAlgorithmConstructor(string algorithmId)
+        {
+            if (!await _algorithmManager.Exists(algorithmId))
+                return NotFound();
+
+            var constructor = _algorithmManager.DownloadAlgorithmConstructor(algorithmId);
+            return Ok(constructor);
         }
 
         [HttpPost]
