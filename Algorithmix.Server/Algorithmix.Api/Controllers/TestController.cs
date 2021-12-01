@@ -43,13 +43,17 @@ namespace Algorithmix.Server.Controllers
 
         [HttpGet]
         [Route("{testId}")]
-        [Authorize]
+        [Authorize(Roles = Roles.Executive)]
         public async Task<IActionResult> GetTest(int testId)
         {
             if (!await _testManager.Exists(testId))
                 return NotFound();
 
             var test = await _testManager.GetTest(testId);
+
+            if (!test.UserHasAccess)
+                return Forbid();
+
             return Ok(test);
         }
 
@@ -69,12 +73,13 @@ namespace Algorithmix.Server.Controllers
         [Route("")]
         public async Task<IActionResult> GetTests(
             string searchText = "",
+            bool onlyAccessible = false,
             int pageIndex = 1,
             int pageSize = 20,
             TestSortBy sortBy = TestSortBy.CreatedDate,
             bool desc = true)
         {
-            var query = new TestQuery(searchText, pageSize, pageIndex, sortBy, desc);
+            var query = new TestQuery(searchText, onlyAccessible, pageSize, pageIndex, sortBy, desc);
             var tests = await _testManager.GetTests(query);
 
             return Ok(tests);
@@ -89,7 +94,7 @@ namespace Algorithmix.Server.Controllers
             TestSortBy sortBy = TestSortBy.CreatedDate,
             bool desc = true)
         {
-            var query = new TestQuery(searchText, pageSize, pageIndex, sortBy, desc);
+            var query = new TestQuery(searchText, false, pageSize, pageIndex, sortBy, desc);
             var testResponse = await _pubTestManager.GetTests(query);
 
             return Ok(testResponse);
@@ -102,6 +107,11 @@ namespace Algorithmix.Server.Controllers
         {
             if (!await _testManager.Exists(testId))
                 return NotFound();
+
+            var test = await _testManager.GetTest(testId);
+
+            if (!test.UserHasAccess)
+                return Forbid();
 
             if (await _pubTestManager.Exists(testId))
                 await _pubTestManager.DeleteTest(testId);
@@ -118,6 +128,11 @@ namespace Algorithmix.Server.Controllers
         {
             if (!await _testManager.Exists(testId))
                 return NotFound();
+
+            var test = await _testManager.GetTest(testId);
+
+            if (!test.UserHasAccess)
+                return Forbid();
 
             var validationResult = await _testValidator.Validate(testPayload);
 

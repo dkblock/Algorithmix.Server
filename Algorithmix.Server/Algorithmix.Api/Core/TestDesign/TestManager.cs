@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Common.Constants;
 using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
@@ -95,6 +96,8 @@ namespace Algorithmix.Api.Core.TestDesign
 
         private async Task<Test> PrepareTest(Test test)
         {
+            var currentUser = _userContextManager.CurrentUser;
+
             var userTestResults = await _userTestResultService.GetUserTestResults(test.Id);
             var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(test.Id);
 
@@ -103,6 +106,7 @@ namespace Algorithmix.Api.Core.TestDesign
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.PassesCount = userTestResults.Count();
             test.AverageResult = userTestResults.Any() ? (int)userTestResults.Average(utr => utr.Result) : 0;
+            test.UserHasAccess = test.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator;
 
             return test;
         }
@@ -115,9 +119,19 @@ namespace Algorithmix.Api.Core.TestDesign
             {
                 var preparedTest = await PrepareTest(test);
 
-                var filters = new[] { test.Name }.Union(test.Algorithms.Select(a => a.Name));
+                var filters = new List<string>
+                {
+                    preparedTest.Name,
+                    preparedTest.CreatedBy.FirstName,
+                    preparedTest.CreatedBy.LastName,
+                    $"{preparedTest.CreatedBy.FirstName} {preparedTest.CreatedBy.LastName}",
+                    $"{preparedTest.CreatedBy.LastName} {preparedTest.CreatedBy.FirstName}",
+                };
 
-                if (!_queryHelper.IsMatch(query.SearchText, filters.ToArray()))
+                if (!_queryHelper.IsMatch(query.SearchText, filters.Union(test.Algorithms.Select(a => a.Name)).ToArray()))
+                    continue;
+
+                if (query.OnlyAccessible && !preparedTest.UserHasAccess)
                     continue;
 
                 preparedTests.Add(preparedTest);

@@ -3,6 +3,7 @@ using Algorithmix.Api.Core.TestPass;
 using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
+using Algorithmix.Services.TestPass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Algorithmix.Api.Core
     {
         private readonly ApplicationUserManager _userManager;
         private readonly PublishedTestManager _testManager;
+        private readonly PublishedTestService _testService;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultService _userTestResultService;
         private readonly IUserContextManager _userContextManager;
@@ -22,6 +24,7 @@ namespace Algorithmix.Api.Core
         public UserTestResultManager(
             ApplicationUserManager userManager,
             PublishedTestManager testManager,
+            PublishedTestService testService,
             UserAnswerManager userAnswerManager,
             UserTestResultService userTestResultService,
             IUserContextManager userContextManager,
@@ -29,6 +32,7 @@ namespace Algorithmix.Api.Core
         {
             _userManager = userManager;
             _testManager = testManager;
+            _testService = testService;
             _userAnswerManager = userAnswerManager;
             _userTestResultService = userTestResultService;
             _userContextManager = userContextManager;
@@ -109,13 +113,21 @@ namespace Algorithmix.Api.Core
             return userTestResult;
         }
 
+        private async Task<UserTestResult> PrepareUserTestResultForPage(UserTestResult userTestResult)
+        {
+            userTestResult.Test = await _testService.GetTest(userTestResult.Test.Id);
+            userTestResult.User = await _userManager.GetUserById(userTestResult.User.Id);
+
+            return userTestResult;
+        }
+
         private async Task<PageResponse<UserTestResult>> PrepareUserTestResults(IEnumerable<UserTestResult> userTestResults, UserTestResultQuery query)
         {
             var preparedUserTestResults = new List<UserTestResult>();
 
             foreach (var userTestResult in userTestResults)
             {
-                var preparedUserTestResult = await PrepareUserTestResult(userTestResult);
+                var preparedUserTestResult = await PrepareUserTestResultForPage(userTestResult);
                 var filters = new[]
                 {
                     preparedUserTestResult.User.FirstName,

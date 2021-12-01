@@ -4,7 +4,6 @@ using Algorithmix.Models.Tests;
 using Algorithmix.Models.Users;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Algorithmix.Api.Core.Helpers
 {
@@ -30,9 +29,9 @@ namespace Algorithmix.Api.Core.Helpers
                 { AlgorithmSortBy.None, x => x.TimeComplexity.Id },
                 { AlgorithmSortBy.Id, x => x.Id },
                 { AlgorithmSortBy.Name, x => x.Name },
+                { AlgorithmSortBy.CreatedBy, x => $"{x.CreatedBy.LastName} {x.CreatedBy.FirstName}" },
                 { AlgorithmSortBy.HasDescription, x => x.HasDescription },
                 { AlgorithmSortBy.HasConstructor, x => x.HasConstructor },
-                { AlgorithmSortBy.TestsCount, x => x.Tests.Count() },
             };
 
         public IDictionary<ApplicationUserSortBy, Func<ApplicationUser, object>> ApplicationUserSortModel =>

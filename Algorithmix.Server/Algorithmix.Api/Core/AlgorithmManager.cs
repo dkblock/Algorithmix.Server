@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Common.Constants;
 using Algorithmix.Models;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
@@ -17,26 +18,32 @@ namespace Algorithmix.Api.Core
         private readonly IAlgorithmDataManager _algorithmDataManager;
         private readonly AlgorithmService _algorithmService;
         private readonly AlgorithmTimeComplexityService _algorithmTimeComplexityService;
+        private readonly ApplicationUserService _userService;
         private readonly TestAlgorithmService _testAlgorithmService;
         private readonly TestService _testService;
         private readonly PublishedTestService _publishedTestService;
+        private readonly IUserContextManager _userContextManager;
         private readonly QueryHelper _queryHelper;
 
         public AlgorithmManager(
             IAlgorithmDataManager algorithmDataManager,
             AlgorithmService algorithmService,
             AlgorithmTimeComplexityService algorithmTimeComplexityService,
+            ApplicationUserService userService,
             TestAlgorithmService testAlgorithmService,
             TestService testService,
             PublishedTestService publishedTestService,
+            IUserContextManager userContextManager,
             QueryHelper queryHelper)
         {
             _algorithmDataManager = algorithmDataManager;
             _algorithmService = algorithmService;
             _algorithmTimeComplexityService = algorithmTimeComplexityService;
+            _userService = userService;
             _testAlgorithmService = testAlgorithmService;
             _testService = testService;
             _publishedTestService = publishedTestService;
+            _userContextManager = userContextManager;
             _queryHelper = queryHelper;
         }
 
@@ -46,6 +53,7 @@ namespace Algorithmix.Api.Core
 
             algorithmPayload.TimeComplexityId = timeComplexity.Id;
             algorithmPayload.ImageUrl = _algorithmDataManager.DefaultAlgorithmImageUrl;
+            algorithmPayload.UserId = _userContextManager.CurrentUser.Id;
 
             var createdAlgorithm = await _algorithmService.CreateAlgorithm(algorithmPayload);
             return await PrepareAlgorithm(createdAlgorithm);
@@ -152,13 +160,13 @@ namespace Algorithmix.Api.Core
 
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)
         {
-            var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(algorithm.Id);
-            var testIds = testAlgorithms.Select(ta => ta.TestId);
+            var currentUser = _userContextManager.CurrentUser;
 
-            algorithm.Tests = await _testService.GetTests(testIds);
+            algorithm.CreatedBy = await _userService.GetUserById(algorithm.CreatedBy.Id);
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);
             algorithm.HasConstructor = _algorithmDataManager.ConstructorExists(algorithm.Id);
             algorithm.HasDescription = _algorithmDataManager.DescriptionExists(algorithm.Id);
+            algorithm.UserHasAccess = algorithm.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator;
 
             return algorithm;
         }
@@ -171,7 +179,20 @@ namespace Algorithmix.Api.Core
             {
                 var preparedAlgorithm = await PrepareAlgorithm(algorithm);
 
-                if (!_queryHelper.IsMatch(query.SearchText, new[] { algorithm.Id, algorithm.Name }))
+                var filters = new[]
+                {
+                    preparedAlgorithm.Id,
+                    preparedAlgorithm.Name,
+                    preparedAlgorithm.CreatedBy.FirstName,
+                    preparedAlgorithm.CreatedBy.LastName,
+                    $"{preparedAlgorithm.CreatedBy.FirstName} {preparedAlgorithm.CreatedBy.LastName}",
+                    $"{preparedAlgorithm.CreatedBy.LastName} {preparedAlgorithm.CreatedBy.FirstName}",
+                };
+
+                if (!_queryHelper.IsMatch(query.SearchText, filters))
+                    continue;
+
+                if (query.OnlyAccessible && !preparedAlgorithm.UserHasAccess)
                     continue;
 
                 preparedAlgorithms.Add(preparedAlgorithm);

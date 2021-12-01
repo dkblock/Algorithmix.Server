@@ -2,9 +2,10 @@
 {
     public class TestQuery
     {
-        public TestQuery(string searchText, int pageSize, int pageIndex, TestSortBy sortBy, bool sortByDesc)
+        public TestQuery(string searchText, bool onlyAccessible, int pageSize, int pageIndex, TestSortBy sortBy, bool sortByDesc)
         {
             SearchText = searchText;
+            OnlyAccessible = onlyAccessible;
             PageSize = pageSize;
             PageIndex = pageIndex;
             SortBy = sortBy;
@@ -12,6 +13,7 @@
         }
 
         public string SearchText { get; set; }
+        public bool OnlyAccessible { get; set; }
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
         public TestSortBy SortBy { get; set; }

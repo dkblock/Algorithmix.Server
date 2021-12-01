@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Models.Tests;
+using Algorithmix.Models.Users;
 using System.Collections.Generic;
 
 namespace Algorithmix.Models.Algorithms
@@ -11,7 +12,8 @@ namespace Algorithmix.Models.Algorithms
         public int TimeComplexityId { get; set; }
         public bool HasConstructor { get; set; }
         public bool HasDescription { get; set; }
+        public bool UserHasAccess { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
         public AlgorithmTimeComplexity TimeComplexity { get; set; }
-        public IEnumerable<Test> Tests { get; set; }
     }
 }

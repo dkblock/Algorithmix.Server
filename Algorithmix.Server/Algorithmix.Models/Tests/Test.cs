@@ -14,6 +14,7 @@ namespace Algorithmix.Models.Tests
         public int PassesCount { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public bool UserHasAccess { get; set; }
         public ApplicationUser CreatedBy { get; set; }
         public IEnumerable<Algorithm> Algorithms { get; set; }
         public IEnumerable<TestQuestion> Questions { get; set; }

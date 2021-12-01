@@ -1,6 +1,6 @@
 ﻿using Algorithmix.Entities;
 using Algorithmix.Models.Algorithms;
-using Algorithmix.Models.Tests;
+using Algorithmix.Models.Users;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +15,7 @@ namespace Algorithmix.Mappers
                 Id = algorithmPayload.Id.ToLower(),
                 Name = algorithmPayload.Name,
                 ImageUrl = algorithmPayload.ImageUrl,
+                CreatedBy = algorithmPayload.UserId,
                 TimeComplexityId = algorithmPayload.TimeComplexityId
             };
         }
@@ -26,6 +27,7 @@ namespace Algorithmix.Mappers
                 Id = algorithm.Id,
                 Name = algorithm.Name,
                 ImageUrl = algorithm.ImageUrl,
+                CreatedBy = algorithm.CreatedBy.Id,
                 TimeComplexityId = algorithm.TimeComplexityId
             };
         }
@@ -38,8 +40,8 @@ namespace Algorithmix.Mappers
                 Name = algorithmEntity.Name,
                 ImageUrl = algorithmEntity.ImageUrl,
                 TimeComplexityId = algorithmEntity.TimeComplexityId,
+                CreatedBy = new ApplicationUser { Id = algorithmEntity.CreatedBy },
                 TimeComplexity = new AlgorithmTimeComplexity(),
-                Tests = new List<Test>()
             };
         }
 
