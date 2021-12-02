@@ -166,7 +166,7 @@ namespace Algorithmix.Api.Core
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);
             algorithm.HasConstructor = _algorithmDataManager.ConstructorExists(algorithm.Id);
             algorithm.HasDescription = _algorithmDataManager.DescriptionExists(algorithm.Id);
-            algorithm.UserHasAccess = algorithm.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator;
+            algorithm.UserHasAccess = currentUser != null && ( algorithm.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator);
 
             return algorithm;
         }

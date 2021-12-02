@@ -106,7 +106,8 @@ namespace Algorithmix.Api.Core.TestDesign
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.PassesCount = userTestResults.Count();
             test.AverageResult = userTestResults.Any() ? (int)userTestResults.Average(utr => utr.Result) : 0;
-            test.UserHasAccess = test.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator;
+            test.UserHasAccess = currentUser != null
+                && (test.CreatedBy.Id == currentUser.Id || currentUser.Role == Roles.Administrator);
 
             return test;
         }
