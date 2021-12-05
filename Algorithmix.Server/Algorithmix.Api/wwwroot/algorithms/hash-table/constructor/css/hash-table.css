@@ -6,7 +6,7 @@
 .blockHashTable {
     display: flex;
     flex-direction: row;
-    margin-top: 75px;
+    justify-content: space-evenly;
     margin-bottom: 25px;
 }
 
@@ -57,6 +57,9 @@
 }
 
 .col_cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
 }
 
@@ -86,4 +89,12 @@
 
 #keys {
     margin: auto;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.btnHash {
+    margin-top: 50vh;
 }

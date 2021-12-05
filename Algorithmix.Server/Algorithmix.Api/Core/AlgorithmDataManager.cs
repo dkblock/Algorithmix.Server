@@ -27,7 +27,7 @@ namespace Algorithmix.Api.Core
     {
         private readonly IFileManager _fileManager;
 
-        private const string AlgorithmImagesDirectoryPath = "images\\algorithms";
+        private const string AlgorithmImagesDirectoryPath = "images/algorithms";
         private const string DefaultAlgorithmImage = "__algorithm-default__.png";
 
         public AlgorithmDataManager(IFileManager fileManager)

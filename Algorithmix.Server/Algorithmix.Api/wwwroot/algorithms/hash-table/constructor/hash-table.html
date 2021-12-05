@@ -1,8 +1,16 @@
-<link rel="stylesheet" href="./hash-table.css" />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Хеш-таблица</title>
+    <link rel="stylesheet" href="./css/hash-table.css"/>
+</head>
+<body>
+
 <div>
-    <h1 class="title main-form-title">Хеш-таблица</h1>
     <div class="blockHashTable">
-        <div class="col-md-4 col_cont">
+        <div class="col-md-4 col_cont w-25">
             <h4>Ключ</h4>
             <div class="col_block">
                 <div id="keys" class="label">
@@ -10,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col_cont">
+        <div class="col-md-4 col_cont w-25">
             <h4>Хеш-функция</h4>
             <div id="blockforarrows" class="col_block">
                 <div id="hashfunction" class="label">
@@ -18,21 +26,33 @@
                 </div>
             </div>
         </div>
-        <div id="hashtable" class="col-md-4 col_cont">
+        <div id="hashtable" class="col-md-4 col_cont w-25">
             <h4>Хеш-таблица</h4>
         </div>
+        <div class="w-25">
+            <button id="btnHash" class="btnHash button button-primary">Запустить</button>
+        </div>
     </div>
-    <button id="btnHash" class="btnHash button button-primary">Запустить</button>
-
     <div class="h2description">
         Краткое описание
     </div>
     <div class="description">
-        Случайно генерируются слова <i>k</i>, от которых будем считать <b>хеш-функцию</b> и вносить в <b>хеш-таблицу</b>. Входную строку посимвольно переводим в коды (<i>Unicode</i>) и конкатенируем. Далее 
-        считается <i>хеш-функция</i> (применяется метод решения коллизий двойным хешированием: <nobr><i>H(k) = (h<sub>1</sub>(k) + i*h<sub>2</sub>(k)) mod m</i></nobr>, где первый хеш берется по модулю 
-        длины таблицы, а второй по модулю длины таблицы - 1). При успешной вставке в таблицу ячейки окрашиваются в&nbsp;<div class="square" style="background-color: rgba(68, 200, 0, 0.3); border: 1px solid rgb(68, 200, 0);">
-        </div>&nbsp;цвет, при коллизии &ndash; в&nbsp;<div class="square" style="background-color: rgba(255, 0, 0, 0.3); border: 1px solid rgb(255, 0, 0)"></div>&nbsp;, <i>i</i> увеличивается на 1 и происходит 
+        Случайно генерируются слова <i>k</i>, от которых будем считать <b>хеш-функцию</b> и вносить в <b>хеш-таблицу</b>.
+        Входную строку посимвольно переводим в коды (<i>Unicode</i>) и конкатенируем. Далее
+        считается <i>хеш-функция</i> (применяется метод решения коллизий двойным хешированием:
+        <nobr><i>H(k) = (h<sub>1</sub>(k) + i*h<sub>2</sub>(k)) mod m</i></nobr>
+        , где первый хеш берется по модулю
+        длины таблицы, а второй по модулю длины таблицы - 1). При успешной вставке в таблицу ячейки окрашиваются в&nbsp;<div
+            class="square" style="background-color: rgba(68, 200, 0, 0.3); border: 1px solid rgb(68, 200, 0);">
+    </div>&nbsp;цвет, при коллизии &ndash; в&nbsp;<div class="square"
+                                                       style="background-color: rgba(255, 0, 0, 0.3); border: 1px solid rgb(255, 0, 0)"></div>&nbsp;,
+        <i>i</i> увеличивается на 1 и происходит
         вычисление очередной <i>хеш-функции</i>.
     </div>
 </div>
-<script src="./hash-table.js"></script>
+
+<script src="./js/hash-table.js"></script>
+</body>
+</html>
+
+

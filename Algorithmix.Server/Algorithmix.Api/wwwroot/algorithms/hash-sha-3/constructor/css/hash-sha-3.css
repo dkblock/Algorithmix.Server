@@ -4,8 +4,17 @@
 }
 
 .blockHashFunction {
-    margin-top: 75px;
+    display: flex;
+    justify-content: space-evenly;
     margin-bottom: 25px;
+}
+
+.col-md-2 {
+    width: 15%;
+}
+
+.col-md-10 {
+    width: 85%;
 }
 
 .label {
@@ -23,7 +32,7 @@
     font-size: 22px;
     font-weight: bold;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .description {
@@ -38,7 +47,6 @@
     width: 15px;
     height: 15px;
 }
-
 .col_cont {
     display: flex;
     align-items: center;
@@ -52,21 +60,10 @@
 }
 
 .col_block {
-    text-align: left;
     display: flex;
     align-items: center;
-    text-align: center;
-    margin-top: 20px;
     width: 100%;
-}
-
-.col_block1 {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
-    height: 120px;
-    margin-top: 20px;
+    height: 350px;
 }
 
 .head {
@@ -76,21 +73,12 @@
 }
 
 #keys {
-    color: #ef5285;
-    display: flex;
-    align-items: center;
+    color: #A9BB46;
+    margin: auto;
 }
 
-#pre_values {
-    color: #60c5ba;
-    height: 70px;
-    margin-top: 20px;
+#hashsha3 {
+    color: #4DB1C2;
+    word-break: break-all;
+    text-align: left;
 }
-
-#hashdiv, #hashmult {
-    color: #f9c00c;
-    height: 90px;
-    margin-top: 20px;
-}
-
-

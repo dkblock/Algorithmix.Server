@@ -1,0 +1,223 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Хеш-функция</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="description">
+    <div class="description-section">
+        <span class="description-section-title">Определение</span>
+        <hr/>
+        <div class="description-paragraph">
+            <b>Хеш-функция</b> – легко вычислимая функция, преобразующая исходное сообщения произвольной длины в
+            сообщение фиксированной длины, для которого
+            не существует эффективного алгоритма поиска коллизий. Хеш-функция должна обладать следующими свойствами:
+            <ul>
+                <li>для данного значения <i>H(x)</i> невозможно найти значение аргумента <i>x</i>. Такие хеш-функции
+                    называют <b>стойкими в смысле обращения</b> или <b>стойкими в
+                        сильном смысле</b>;
+                </li>
+                <li>для данного аргумента <i>x</i> невозможно найти другой аргумент <i>y</i> такой, что <i>H(x) =
+                    H(y)</i>. Такие хеш-функции называют <b>стойкими в смысле вычисления
+                    коллизий</b> или <b>стойкими в слабом смысле</b>.
+                </li>
+            </ul>
+            <i>Качественная хеш-функция</i> удовлетворяет (приближенно) предположению простого равномерного хеширования:
+            для каждого ключа равновероятно помещение в любую из <i>m</i>
+            ячеек независимо от хеширования остальных ключей. Говоря математическим языком, зафиксируем распределение
+            вероятности <i>P</i> на множестве <i>U</i>. Будем предполагать,
+            что ключи выбираются из <i>U</i> независимо друг от друга, и каждый распределён в соответствии с <i>P</i>.
+            Тогда равномерное хеширование означает, что
+            <div class="struct">
+                <div class="item_struct">
+                    <div class="upper_struct">&sum;</div>
+                    <div class="lower_struct">k: H(k) = j</div>
+                </div>
+                P(k) =
+                <div class="item_struct">
+                    <div>1</div>
+                    <div class="lower_struct1">m</div>
+                </div>
+                для j = 0, 1, ... , m - 1.
+            </div>
+            К сожалению, распределение <i>P</i> обычно неизвестно, поэтому проверить это невозможно.
+        </div>
+        <div class="description-paragraph">
+            Для большинства хеш-функций совокупность ключей представляется множеством целых неотрицательных чисел <i>N =
+            {0,1,2,...}</i>. Если же ключи не являются целыми неотрицательными
+            числами, то можно найти способ их интерпретации.
+        </div>
+        <div class="description-paragraph">
+            Рассмотрим три основных способа построения хеш-функций: <b>деление с остатком</b>, <b>умножение</b> и <b>универсальное
+            хеширование</b>.
+        </div>
+    </div>
+    <div class="description-section">
+        <span class="description-section-title">Метод деления</span>
+        <hr/>
+        <div class="description-paragraph-row">
+            <div class="w-75">
+                <div class="description-paragraph">
+                    <div class="description-paragraph">
+                        Построение <i>хеш-функции</i> <b>методом деления</b> состоит в отображении ключа <i>k</i> в одну
+                        из <i>m</i> ячеек путем получения остатка от деления <i>k</i> на <i>m</i>,
+                        то есть хеш-функция имеет вид:
+                        <div class="struct struct1"><i>H(k) = k (mod m)</i>.</div>
+                        Главное преимущество этого метода хеширования в том, что оно выполняется достаточно быстро.
+                    </div>
+                    <div class="description-paragraph">
+                        При использовании деления следует избегать некоторых значений <i>m</i>. Например, <i>m</i>
+                        не должно быть степенью 2, поскольку если <i>m = 2<sup>p</sup></i>, то
+                        <i>H(k)</i> представляет собой <i>p</i> младших битов числа <i>k</i>.
+                    </div>
+                    <div class="description-paragraph">
+                        Зачастую, хорошие результаты можно получить, если выбирать в качестве значения <i>m</i>
+                        простое число, достаточно далекое от степени 2.
+                    </div>
+                </div>
+            </div>
+            <div class="w-25">
+                <div class="description-image-container">
+                    <img class="description-image" src="images/hash-function-div.png" alt="hash-function-div"/>
+                    <span class="description-image-title">Хеш-функция деления с остатком</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="description-section">
+        <span class="description-section-title">Метод умножения</span>
+        <hr/>
+        <div class="description-paragraph-row">
+            <div class="w-75">
+                <div class="description-paragraph">
+                    Построение хеш-функции <b>методом умножения</b> состоит в следующем. Пусть количество хеш-значений
+                    равно <i>m</i>. Зафиксируем константу <i>A</i> в интервале <i>0 < A < 1</i>,
+                    и положим
+                    <div class="struct struct1">H(k) =&nbsp;<div class="simb_struct">⌊</div>
+                        m(kA (mod 1))
+                        <div class="simb_struct">⌋</div>&nbsp;,
+                    </div>
+                    где <i>kA (mod 1)</i> – дробная часть <i>kA</i>,
+                    а символы ⌊ и ⌋ – округление к меньшему.
+                </div>
+                <div class="description-paragraph">
+                    Преимущество метода умножения заключается в том, что значение <i>m</i> перестает быть критичным.
+                    Обычно величина <i>m</i> из соображений удобства реализации функции выбирается равной степени
+                    2 (<i>m = 2<sup>p</sup></i> для некоторого натурального <i>p</i>).
+                </div>
+                <div class="description-paragraph">
+                    Пусть строка с размером <i>w</i> бит и <i>k</i> помещаются в одно слово. Ограничим возможные
+                    значения константы <i>А</i> дробями вида
+                    <nobr><i>s / 2
+                        <suup>w</suup>
+                    </i></nobr>
+                    ,
+                    где <i>s</i> – целое число из диапазона
+                    <nobr><i>0 < s < 2<sup>w</sup></i></nobr>
+                    . Тогда мы сначала умножаем <i>k</i> на w-битовое целое число
+                    <nobr><i>s = А • 2<sup>w</sup></i></nobr>
+                    . Результат
+                    представляет собой 2w-битовое число
+                    <nobr>r<sub>1</sub>2<sup>w</sup> + r<sub>0</sub></nobr>
+                    , где г<sub>1</sub> – старшее слово произведения, а r<sub>0</sub> – младшее. Старшие <i>p</i> бит
+                    числа
+                    r<sub>0</sub> представляют собой искомое p-битовое хеш-значение (рис. ниже).
+                </div>
+                <div class="description-paragraph">
+                    Описанный метод работает с любыми значениями константы <i>A</i>, но одни значения дают лучшие
+                    результаты по сравнению с другими. Оптимальный выбор зависит от характеристик хешируемых данных.
+                    Д. Кнут предложил использовать дающее неплохие результаты значение
+                    <nobr><i>A ≈ (√5 - 1) / 2</i></nobr>
+                    .
+                </div>
+            </div>
+            <div class="w-25">
+                <div class="description-image-container">
+                    <img class="description-image" src="images/hash-function-mult.png" alt="hash-function-mult"/>
+                    <span class="description-image-title">Хеш-функция умножения</span>
+                </div>
+                <div class="description-image-container">
+                    <img class="description-image" src="images/hash-function-mult-bild.png"
+                         alt="hash-function-mult-bild.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="description-section">
+        <span class="description-section-title">Универсальное хеширование</span>
+        <hr/>
+        <div class="description-paragraph-row">
+            <div class="w-75">
+                <div class="description-paragraph">
+                    Идея <b>универсального хеширования</b> состоит в том, что хеш-функция выбирается случайным образом,
+                    не зависящим от того, какие именно данные хешируются. Зная
+                    функцию H недоброжелатель может специально подобрать такие данные для хеширования, что все <i>n</i>
+                    ключей будут соответствовать одной позиции в таблице, в результате чего время поиска будет равно
+                    <i>O(n)</i>. Универсальное хеширование решает этот вопрос.
+                </div>
+                <div class="description-paragraph">
+                    Если мы будем выбирать хеш-функцию во время выполнения программы случайным образом из некоторого
+                    множества, то при повторном вызове с теми же входными данными алгоритм будет работать по-другому.
+                    Как и в случае с алгоритмом быстрой сортировки рандомизация гарантирует, что нельзя придумать
+                    входных данных, на которых алгоритм всегда бы работал медленно.
+                </div>
+                <div class="description-paragraph">
+                    Пусть <i>ℌ</i>&nbsp; — конечное семейство функций, отображающих данное множество <i>U</i> (множество
+                    всевозможных ключей) во множество <i>{0, 1, ... , m - 1}</i> (множество хеш-значений). Это семейство
+                    называется <b>универсальным</b>, если для любых двух ключей <i>x</i>, <i>y</i> ∊ <i>U</i> число
+                    функций <i>H</i> ∊ <i>ℌ</i>&nbsp;, для которых <i>H(x) = H(y)</i> равно |<i>ℌ </i>| / <i>m</i>. То
+                    есть при
+                    случайном выборе хеш-функции вероятность коллизии между двумя данными ключами должна равняться
+                    вероятности совпадения двух случайно выбранных хеш-значений (которая равна 1 / <i>m</i>).
+                </div>
+                <div class="description-paragraph">
+                    Будем считать, что каждый ключ представляет собой последовательность <i>r + 1</i> байтов. Для каждой
+                    последовательности
+                    <nobr><i>a =&nbsp;</i>〈<i>a<sub>0</sub>, a<sub>1</sub>, ... , a<sub>r</sub></i>
+                        〉
+                    </nobr>
+                    , элементы которой являются вычетами по модулю <i>m</i>, рассмотрим функцию <i>H<sub>a</sub></i>,
+                    заданную формулой
+                    <div class="struct struct1">H<sub>a</sub>(x) =
+                        <div class="item_struct">
+                            <div class="upper_struct1">r</div>
+                            <div class="middle_struct">&sum;</div>
+                            <div class="lower_struct">i = 0</div>
+                        </div>
+                        a<sub>i</sub>&nbsp;x<sub>i</sub>&nbsp;(mod m) ,
+                    </div>
+                    где ключ <i>x</i> есть
+                    последовательность байтов
+                    <nobr>〈<i>x<sub>0</sub>, x<sub>1</sub>, ... , x<sub>r</sub></i>〉</nobr>
+                    . <br/>Положим
+                    <div class="struct struct1">ℌ &nbsp;=
+                        <div class="item_struct">
+                            <div class="upper_struct2">⋃
+                            </div>
+                            <div class="lower_struct2">a</div>
+                        </div>
+                        H<sub>a</sub>&nbsp;.
+                    </div>
+                    Множество <i>ℌ</i>&nbsp; содержит <i>m<sup>r + 1</sup></i> элементов.
+                </div>
+            </div>
+            <div class="w-25">
+                <div class="description-image-container">
+                    <img class="description-image" src="images/hash-function-univer.png" alt="hash-function-univer"/>
+                    <span class="description-image-title">Универсальное хеширование. <i>ℌ</i>&nbsp; — искомое множество хеш-функций.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+

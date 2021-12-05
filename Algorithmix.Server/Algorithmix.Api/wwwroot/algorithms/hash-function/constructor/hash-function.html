@@ -1,6 +1,14 @@
-<link rel="stylesheet" href="./hash-function.css" />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Хеш-функция</title>
+    <link rel="stylesheet" href="./css/hash-function.css"/>
+</head>
+<body>
+
 <div>
-    <h1 class="title main-form-title">Хеш-функции</h1>
     <div class="blockHashFunction">
         <div class="col_cont">
             <h4>Ключ</h4>
@@ -37,8 +45,18 @@
         Краткое описание
     </div>
     <div class="description">
-        Случайно генерируются слова <i>k</i>, от которых будем считать <b>хеш-функции</b>. Входную строку посимвольно переводим в коды (<i>Unicode</i>) и конкатенируем. Вычисляем хеш-функции методом 
-        деления (<nobr><i>H(k) = k (mod m)</i></nobr>) и умножения (<nobr><i>H(k) = ⌊ m(kA (mod 1))⌋</i> </nobr>). В результате получаются два <i>хеш-значения</i> по модулю <i>m</i>.
+        Случайно генерируются слова <i>k</i>, от которых будем считать <b>хеш-функции</b>. Входную строку посимвольно
+        переводим в коды (<i>Unicode</i>) и конкатенируем. Вычисляем хеш-функции методом
+        деления (
+        <nobr><i>H(k) = k (mod m)</i></nobr>
+        ) и умножения (
+        <nobr><i>H(k) = ⌊ m(kA (mod 1))⌋</i></nobr>
+        ). В результате получаются два <i>хеш-значения</i> по модулю <i>m</i>.
     </div>
 </div>
-<script src="./hash-function.js"></script>
+
+<script src="./js/hash-function.js"></script>
+</body>
+</html>
+
+

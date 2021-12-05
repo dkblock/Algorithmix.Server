@@ -45,7 +45,7 @@ function generateTable() {
         Table.appendChild(row);
         const arrow = document.createElement("img");
         arrow.classList.add("arrow");
-        arrow.src = "/images/constructor/arrow.png";
+        arrow.src = "./images/arrow.png";
         arrow.style.transform = `translateX(${dist_width}px) translateY(${dist_height + i * 35}px)`;
         arrow.style.visibility = "hidden";
         arrow.id = "a" + i;

@@ -1,36 +1,49 @@
-<link rel="stylesheet" href="hash-sha-3.css" />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Хеш-таблица</title>
+    <link rel="stylesheet" href="./css/hash-sha-3.css"/>
+</head>
+<body>
+
 <div>
-  <h1 class="title main-form-title">SHA-3</h1>
-  <div class="blockHashFunction">
-    <div class="col-md-2 col_cont">
-      <h4>Ключ</h4>
-      <div class="col_block">
-        <div id="keys" class="label">
+    <div class="blockHashFunction">
+        <div class="col-md-2 col_cont">
+            <h4>Ключ</h4>
+            <div class="col_block">
+                <div id="keys" class="label">
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-10 col_cont">
-      <h4>Вычисление SHA-3</h4>
-      <div class="col_block">
-        <div id="hashsha3" class="label">
+        <div class="col-md-10 col_cont">
+            <h4>Вычисление SHA-3</h4>
+            <div class="col_block">
+                <div id="hashsha3" class="label">
 
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <button id="btnHash" class="btnHash button button-primary">Запустить</button>
+    <button id="btnHash" class="btnHash button button-primary">Запустить</button>
 
-  <div class="h2description">
-    Краткое описание
-  </div>
-  <div class="description">
-    Случайно генерируются слова <i>k</i>, от которых будем считать <i>хеш-функции</i> <b>SHA-3</b>. <i>Размер
-    состояния</i> равняется 1600, количество <i>раундов</i> – 24, а <i>w = 64</i>.
-    Генерируются хеши разных размеров. Для примера используются <i>SHA3-224 (r = 1152, c = 448)</i>, <i>SHA3-256 (r =
-    1088, c = 512)</i>, <i>SHA3-384 (r = 832, c = 768)</i> и <i>SHA3-512
-    (r = 576, c = 1024)</i>, которые, как можно заметить, отличаются параметрами <i>r</i> и <i>c</i>. Цифры в названии
-    алгоритма (224, 256, 384, 512) означают сколько первых бит возращается
-    в результате выполнения алгоритма (соответственно 28 байт, 32 байта, 48 байт и 64 байта).
-  </div>
+    <div class="h2description">
+        Краткое описание
+    </div>
+    <div class="description">
+        Случайно генерируются слова <i>k</i>, от которых будем считать <i>хеш-функции</i> <b>SHA-3</b>. <i>Размер
+        состояния</i> равняется 1600, количество <i>раундов</i> – 24, а <i>w = 64</i>.
+        Генерируются хеши разных размеров. Для примера используются <i>SHA3-224 (r = 1152, c = 448)</i>, <i>SHA3-256 (r =
+        1088, c = 512)</i>, <i>SHA3-384 (r = 832, c = 768)</i> и <i>SHA3-512
+        (r = 576, c = 1024)</i>, которые, как можно заметить, отличаются параметрами <i>r</i> и <i>c</i>. Цифры в названии
+        алгоритма (224, 256, 384, 512) означают сколько первых бит возращается
+        в результате выполнения алгоритма (соответственно 28 байт, 32 байта, 48 байт и 64 байта).
+    </div>
 </div>
-<script src="hash-sha-3.js"></script>
+
+<script src="./js/hash-sha-3.js"></script>
+</body>
+</html>
+
+
