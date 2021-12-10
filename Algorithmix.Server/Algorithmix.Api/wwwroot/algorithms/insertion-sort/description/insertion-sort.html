@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сортировка вставками</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Сортировка вставками</b> — алгоритм сортировки, в котором элементы входной последовательности просматриваются по одному,
+      и каждый новый поступивший элемент размещается в подходящее место среди ранее упорядоченных элементов.
+    </div>
+    <div class="description-paragraph mb-8">
+      Алгоритм часто используется при изучение компьютерных наук и обычно, является одним из первых алгоритмов сортировки, с которым знакомят учеников.
+       Он интуитивно понятен и прост в реализации, но он очень медленный для больших массивов и поэтому редко используется для сортировки реальных данных,
+      в основном только для небольших массивов информации
+    </div>
+    <div class="description-paragraph mb-8">
+      Сортировка вставками является устойчивым алгоритмом, который действительно хорошо работает только для почти отсортированных или небольших массивов.
+      Сортировка вставками может использоваться на практике из-за ее эффективности для небольших (~ 10 элементов) наборов данных.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Алгоритм</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-75">
+        <div class="description-paragraph">
+          <ol>
+            <li>Массив разбивается на «отсортированный» подмассив и «несортированный» подмассив. В начале отсортированный подмассив содержит только первый элемент нашего исходного массива.</li>
+            <li>Первый элемент в несортированном массиве оценивается так, что мы можем вставить его на свое место в отсортированном подмассиве.</li>
+            <li>Вставка выполняется путем перемещения всех элементов которые больше, чем новый элемент, на одну позицию вправо.</li>
+            <li>Пункты 1, 2, 3 повторяются, пока весь наш массив не будет отсортирован.&nbsp;</li>
+          </ol>
+        </div>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="./images/example.png" alt="insertion-sort-example" />
+          <span class="description-image-title">Простой пример сортировки вставками</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Реализация</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <div class="javascript"><ol><li class="li1"><div class="de1"><span class="kw2">function</span> insertionSort<span class="br0">&#40;</span>arr<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span>let j <span class="sy0">=</span> <span class="nu0">1</span><span class="sy0">;</span> j <span class="sy0">&lt;</span> array.<span class="me1">length</span><span class="sy0">;</span> j<span class="sy0">++</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; let current <span class="sy0">=</span> array<span class="br0">&#91;</span>j<span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; let i <span class="sy0">=</span> j<span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span><span class="br0">&#40;</span>i <span class="sy0">&gt;</span> <span class="sy0">-</span><span class="nu0">1</span><span class="br0">&#41;</span> <span class="sy0">&amp;&amp;</span> <span class="br0">&#40;</span>array<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">&gt;</span> current<span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; array<span class="br0">&#91;</span>i<span class="sy0">+</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">=</span> array<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i<span class="sy0">--;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; array<span class="br0">&#91;</span>i<span class="sy0">+</span><span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">=</span> current<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        </ol></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+
+

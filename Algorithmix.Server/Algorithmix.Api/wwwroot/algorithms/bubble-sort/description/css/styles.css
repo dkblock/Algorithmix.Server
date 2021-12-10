@@ -1,0 +1,142 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+hr {
+    padding: 0;
+    height: 0;
+    border: none;
+    border-top: 2px dashed #ddd;
+    width: 100%;
+}
+
+ul, ol {
+    margin: 0;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.mb-8 {
+    margin-bottom: 8px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-32 {
+    margin-bottom: 32px;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.description-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 48px;
+}
+
+.description-section:last-child {
+    margin-bottom: 0;
+}
+
+.description-section-title {
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0;
+}
+
+.description-paragraph {
+    line-height: 1.75;
+    width: 100%;
+}
+
+.description-paragraph-row {
+    display: flex;
+    width: 100%;
+    gap: 24px;
+}
+
+.description-paragraph-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 32px;
+    margin-bottom: 8px;
+}
+
+.description-table {
+    margin-bottom: 25px;
+}
+
+.description-image {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.description-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.description-image-container:last-child {
+    margin-bottom: 0;
+}
+
+.description-image-title {
+    font-weight: 500;
+}
+
+.javascript {padding-left: 14px;}
+.javascript .de1, .javascript .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;color: #000020;}
+.javascript  {font-family:monospace;color: #006; border: 1px solid #d0d0d0; background-color: #f0f0f0;}
+.javascript a:link {color: #000060;}
+.javascript a:hover {background-color: #f0f000;}
+.javascript .imp {font-weight: bold; color: red;}
+.javascript li, .javascript .li1 {font-weight: normal; vertical-align:top;font: normal normal 130% 'Courier New', Courier, monospace; color: #003030;}
+.javascript .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.javascript .li2 {font-weight: bold; vertical-align:top;font-weight: bold; color: #006060;}
+.javascript .kw1 {color: #000066; font-weight: bold;}
+.javascript .kw2 {color: #003366; font-weight: bold;}
+.javascript .kw3 {color: #000066;}
+.javascript .co1 {color: #006600; font-style: italic;}
+.javascript .co2 {color: #009966; font-style: italic;}
+.javascript .coMULTI {color: #006600; font-style: italic;}
+.javascript .es0 {color: #000099; font-weight: bold;}
+.javascript .br0 {color: #009900;}
+.javascript .sy0 {color: #339933;}
+.javascript .st0 {color: #3366CC;}
+.javascript .nu0 {color: #CC0000;}
+.javascript .me1 {color: #660066;}
+.javascript span.xtra { display:block; }
+
+
+code {
+    padding: 20px;
+    display: block;
+    font-size: 1rem;
+}

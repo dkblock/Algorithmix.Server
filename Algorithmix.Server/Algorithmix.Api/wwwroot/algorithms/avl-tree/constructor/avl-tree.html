@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/css/bootstrap-slider.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="./css/avl-tree.css">
+    <title>AVL-дерево</title>
+</head>
+
+<body>
+<div class="bst-toolbar bg-light">
+    <form class="bst-item" id="insertNode" onSubmit="return handleInsert()">
+        <input id="insertInput" type="number" class="form-control" autofocus>
+        <button class="btn btn-default" type="submit">Вставить</button>
+    </form>
+    <form class="bst-item" id="deleteNode" onSubmit="return handleDelete()">
+        <input id="deleteInput" type="number" class="form-control">
+        <button class="btn btn-default" type="submit">Удалить</button>
+    </form>
+    <form class="bst-item" id="searchNode" onSubmit="return handleSearch()">
+        <input id="searchInput" type="number" class="form-control">
+        <button class="btn btn-default" type="submit">Поиск</button>
+    </form>
+    <form class="bst-item" id="fillTree" onSubmit="return handleFill()">
+        <input id="fillInput" type="number" class="form-control">
+        <button class="btn btn-default" type="submit">Заполнить</button>
+    </form>
+    <form class="bst-item" id="animationSpeedForm" role="form">
+        <input type="range" id="animationSpeed" data-slider-id="animationSpeedSlider"
+               data-slider-min="0" data-slider-max="1" data-slider-step="0.01"
+               data-slider-value="0.5"/>
+        <label for="AnimationSpeed">Скорость</label>
+    </form>
+    <form class="bst-item" id="clearTree" onSubmit="return handleClear()">
+        <button class="btn btn-default" type="submit">Сбросить</button>
+    </form>
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" id="svg" shape-rendering="auto"></svg>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/bootstrap-slider.min.js"
+        charset="utf-8"></script>
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script src="./js/tree-operations.js"></script>
+<script src="./js/tree-rotations.js"></script>
+<script src="./js/tree-draw.js"></script>
+
+</body>

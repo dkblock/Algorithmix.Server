@@ -27,7 +27,6 @@ namespace Algorithmix.Api.Core
     {
         private readonly IFileManager _fileManager;
 
-        private const string AlgorithmImagesDirectoryPath = "images/algorithms";
         private const string DefaultAlgorithmImage = "__algorithm-default__.png";
 
         public AlgorithmDataManager(IFileManager fileManager)
@@ -35,7 +34,7 @@ namespace Algorithmix.Api.Core
             _fileManager = fileManager;
         }
 
-        public string DefaultAlgorithmImageUrl => _fileManager.CombinePaths(AlgorithmImagesDirectoryPath, DefaultAlgorithmImage);
+        public string DefaultAlgorithmImageUrl => _fileManager.CombinePaths("images", "algorithms", DefaultAlgorithmImage);
 
         public void CreateAlgorithmDescription(string algorithmId, IFormFile description)
         {
@@ -95,7 +94,7 @@ namespace Algorithmix.Api.Core
         {
             var ext = _fileManager.GetFileExtension(image.FileName);
             var fileName = $"{algorithmId}.{ext}";
-            var filePath = _fileManager.CombinePaths(AlgorithmImagesDirectoryPath, fileName);
+            var filePath = _fileManager.CombinePaths("images", "algorithms", fileName);
 
             _fileManager.CreateFile(image, filePath);
 

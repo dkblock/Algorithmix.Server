@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сортировка слиянием</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Сортировка слиянием</b> — эффективный алгоритм сортировки общего
+      назначения. Его основным преимуществом является надежное время
+      выполнения алгоритма и его эффективность при сортировке больших
+      массивов. В отличие от быстрой сортировки, он не зависит от каких-либо
+      неудачных решений, которые приводят к плохому времени выполнения.
+    </div>
+    <div class="description-paragraph mb-8">
+      Алгоритм сортировки слиянием был предложен праотцом современных
+      компьютеров – Джоном фон Нейманом. Сам метод является устойчивым, т.
+      е. он не меняет одинаковые по значению элементы в списке
+    </div>
+    <div class="description-paragraph mb-8">
+      Одним из основных недостатков является дополнительная память,
+      которую сортировка слиянием использует для хранения временных копий
+      массивов перед их объединением.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Алгоритм</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-75">
+        <div class="description-paragraph">
+          <ol>
+            <li>Массив рекурсивно разбивается пополам, и каждая из половин делиться
+              до тех пор, пока размер очередного подмассива не станет равным
+              единице.</li>
+            <li>Далее выполняется операция алгоритма, называемая слиянием. Два
+              единичных массива сливаются в общий результирующий массив, при
+              этом из каждого выбирается меньший элемент (сортировка по
+              возрастанию) и записывается в свободную левую ячейку
+              результирующего массива. После чего из двух результирующих
+              массивов собирается третий общий отсортированный массив, и так
+              далее. В случае если один из массивов закончиться, элементы другого
+              дописываются в собираемый массив.</li>
+            <li>В конце операции слияния, элементы перезаписываются из
+              результирующего массива в исходный.&nbsp;</li>
+          </ol>
+        </div>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="./images/example.png" alt="merge-sort-example" />
+          <span class="description-image-title">Пример сортировки слиянием</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Реализация</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <div class="javascript"><ol><li class="li1"><div class="de1"><span class="kw2">function</span> merge_sort<span class="br0">&#40;</span>arr<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>arr.<span class="me1">length</span> <span class="sy0">&lt;</span> <span class="nu0">2</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">return</span> arr<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw2">var</span> middle <span class="sy0">=</span> parseInt<span class="br0">&#40;</span>arr.<span class="me1">length</span><span class="sy0">/</span><span class="nu0">2</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw2">var</span> left <span class="sy0">=</span> arr.<span class="me1">slice</span><span class="br0">&#40;</span><span class="nu0">0</span><span class="sy0">,</span>middle<span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw2">var</span> right <span class="sy0">=</span> arr.<span class="me1">slice</span><span class="br0">&#40;</span>middle<span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; </div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">return</span> merge<span class="br0">&#40;</span>merge_sort<span class="br0">&#40;</span>left<span class="br0">&#41;</span><span class="sy0">,</span>merge_sort<span class="br0">&#40;</span>right<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1"><span class="kw2">function</span> merge<span class="br0">&#40;</span>left<span class="sy0">,</span>right<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw2">var</span> result <span class="sy0">=</span> <span class="br0">&#91;</span><span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw2">var</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">,</span> j <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>i <span class="sy0">&lt;</span> left.<span class="me1">length</span> <span class="sy0">&amp;&amp;</span> j <span class="sy0">&lt;</span> right.<span class="me1">length</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>left<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">&gt;</span> right<span class="br0">&#91;</span>j<span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; result.<span class="me1">push</span><span class="br0">&#40;</span>right<span class="br0">&#91;</span>j<span class="sy0">++</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span><span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; result.<span class="me1">push</span><span class="br0">&#40;</span>left<span class="br0">&#91;</span>i<span class="sy0">++</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>i <span class="sy0">&lt;</span> left.<span class="me1">length</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; result.<span class="me1">push</span><span class="br0">&#40;</span>left<span class="br0">&#91;</span>i<span class="sy0">++</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>j <span class="sy0">&lt;</span> right.<span class="me1">length</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; result.<span class="me1">push</span><span class="br0">&#40;</span>right<span class="br0">&#91;</span>j<span class="sy0">++</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; </div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">return</span> result<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        </ol></div>
+    </div>
+  </div>
+</div>
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+
+

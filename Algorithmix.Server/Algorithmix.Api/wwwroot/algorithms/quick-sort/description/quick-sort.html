@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Быстрая сортировка</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Быстрая сортировка</b> — является существенно улучшенным вариантом алгоритма сортировки с помощью прямого обмена
+      (его варианты известны как «Пузырьковая сортировка» и «Шейкерная сортировка»), известного в том числе своей низкой эффективностью.
+      Принципиальное отличие состоит в том, что в первую очередь производятся перестановки на наибольшем возможном расстоянии и после каждого прохода элементы делятся
+      на две независимые группы (таким образом улучшение самого неэффективного прямого метода сортировки дало в результате один из наиболее эффективных улучшенных методов).
+    </div>
+    <div class="description-paragraph mb-8">
+      Алгоритм является одним из самых быстрых известных универсальных алгоритмов сортировки массивов, но из-за наличия ряда
+      недостатков на практике обычно используется с некоторыми доработками.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Алгоритм</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-75">
+        <div class="description-paragraph">
+          <ol>
+            <li>Вводятся указатели first и last для обозначения начального и конечного
+              элементов последовательности, а также опорный элемент mid.</li>
+            <li>Вычисляется значение опорного элемента (first+last)/2, и заноситься в
+              переменную mid.</li>
+            <li>Указатель first смещается с шагом в 1 элемент к концу массива до тех
+              пор, пока Mas[first] > mid. А указатель last смещается от конца массива к
+              его началу, пока Mas[last] < mid.</li>
+            <li>Каждые два найденных элемента меняются местами.</li>
+            <li>Пункты 3 и 4 выполняются до тех пор, пока first < last.&nbsp;</li>
+          </ol>
+        </div>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="./images/example.png" alt="merge-sort-example" />
+          <span class="description-image-title">Пример быстрой сортировки</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Реализация</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <div class="javascript"><ol><li class="li1"><div class="de1"><span class="kw2">function</span> QuickSort<span class="br0">&#40;</span>arr<span class="sy0">,</span> left <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">,</span> right <span class="sy0">=</span> arr.<span class="me1">length</span> <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;let len <span class="sy0">=</span> arr.<span class="me1">length</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;let index<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">&#40;</span>len <span class="sy0">&gt;</span> <span class="nu0">1</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; index <span class="sy0">=</span> partition<span class="br0">&#40;</span>arr<span class="sy0">,</span> left<span class="sy0">,</span> right<span class="br0">&#41;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>left <span class="sy0">&lt;</span> index <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;QuickSort<span class="br0">&#40;</span>arr<span class="sy0">,</span> left<span class="sy0">,</span> index <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">&#41;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>index <span class="sy0">&lt;</span> right<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;QuickSort<span class="br0">&#40;</span>arr<span class="sy0">,</span> index<span class="sy0">,</span> right<span class="br0">&#41;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="kw1">return</span> arr</div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1"><span class="kw2">function</span> partition<span class="br0">&#40;</span>arr<span class="sy0">,</span> left<span class="sy0">,</span> right<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;let middle <span class="sy0">=</span> Math.<span class="me1">floor</span><span class="br0">&#40;</span><span class="br0">&#40;</span>right <span class="sy0">ez_plus</span> left<span class="br0">&#41;</span> <span class="sy0">/</span> <span class="nu0">2</span><span class="br0">&#41;</span><span class="sy0">,</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; pivot <span class="sy0">=</span> arr<span class="br0">&#91;</span>middle<span class="br0">&#93;</span><span class="sy0">,</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; i <span class="sy0">=</span> left<span class="sy0">,</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; j <span class="sy0">=</span> right &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="kw1">while</span> <span class="br0">&#40;</span>i <span class="sy0">&lt;=</span> j<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">&lt;</span> pivot<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;i<span class="sy0">++</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="br0">&#40;</span>arr<span class="br0">&#91;</span>j<span class="br0">&#93;</span> <span class="sy0">&gt;</span> pivot<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;j<span class="sy0">--</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>i <span class="sy0">&lt;=</span> j<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="br0">&#91;</span>arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">,</span> arr<span class="br0">&#91;</span>j<span class="br0">&#93;</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="br0">&#91;</span>arr<span class="br0">&#91;</span>j<span class="br0">&#93;</span><span class="sy0">,</span> arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="br0">&#93;</span> &nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;i<span class="sy0">++</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;j<span class="sy0">--</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp;<span class="kw1">return</span> i</div></li>
+        <li class="li1"><div class="de1">&nbsp;</div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        </ol></div>
+    </div>
+  </div>
+</div>
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+
+

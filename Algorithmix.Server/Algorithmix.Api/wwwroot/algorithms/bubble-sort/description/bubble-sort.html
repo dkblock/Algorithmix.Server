@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сортировка пузырьком</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Сортировка пузырьком</b> — Сортиро́вка простыми обменами, сортировка пузырьком — простой алгоритм сортировки.
+      Для понимания и реализации этот алгоритм — простейший, но эффективен он лишь для небольших массивов.
+    </div>
+    <div class="description-paragraph mb-8">
+      Алгоритм считается учебным и практически не применяется вне учебной литературы, вместо него на практике применяются более эффективные алгоритмы сортировки.
+      В то же время метод сортировки обменами лежит в основе некоторых более совершенных алгоритмов, таких как шейкерная сортировка, пирамидальная сортировка и быстрая сортировка.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Алгоритм</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-75">
+        <div class="description-paragraph">
+          <ol>
+            <li>Берём самый первый элемент массива и сравниваем его со вторым. Если первый больше второго — меняем их местами с первым, если нет — ничего не делаем.</li>
+            <li>Затем берём второй элемент массива и сравниваем его со следующим — третьим. Если второй больше третьего — меняем их местами, если нет — ничего не делаем.</li>
+            <li>Проходим так до предпоследнего элемента, сравниваем его с последним и ставим наибольший из них в конец массива. Всё, мы нашли самое большое число в массиве и поставили его на своё место.</li>
+            <li>Возвращаемся в начало алгоритма и делаем всё снова точно так же, начиная с первого и второго элемента. Только теперь даём себе задание не проверять последний элемент — мы знаем, что теперь в конце массива самый большой элемент.&nbsp;</li>
+            <li>Когда закончим очередной проход — уменьшаем значение финальной позиции, до которой проверяем, и снова начинаем сначала.</li>
+            <li>Так делаем до тех пор, пока у нас не останется один элемент.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Реализация</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <div class="javascript"><ol><li class="li1"><div class="de1"><span class="kw2">function</span> bubbleSort<span class="br0">&#40;</span>arr<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span>let j <span class="sy0">=</span> arr.<span class="me1">length</span> <span class="sy0">-</span> <span class="nu0">1</span><span class="sy0">;</span> j <span class="sy0">&gt;</span> <span class="nu0">0</span><span class="sy0">;</span> j<span class="sy0">--</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span>let i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> j<span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">&gt;</span> arr<span class="br0">&#91;</span>i <span class="sy0">+</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; let temp <span class="sy0">=</span> arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; arr<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">=</span> arr<span class="br0">&#91;</span>i <span class="sy0">+</span> <span class="nu0">1</span><span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; arr<span class="br0">&#91;</span>i <span class="sy0">+</span> <span class="nu0">1</span><span class="br0">&#93;</span> <span class="sy0">=</span> temp<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        </ol></div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+

@@ -27,7 +27,7 @@ treeNode.prototype.locY = 50;
 treeNode.prototype.depth = 0;
 treeNode.prototype.inRightBranch = true;
 treeNode.prototype.xOffset = 1;
-treeNode.prototype.size = 15;
+treeNode.prototype.size = 20;
 treeNode.prototype.fillStyle = '#b2cfff';
 treeNode.prototype.fillStyleText = '#000';
 
@@ -73,6 +73,7 @@ const treeManager = {
             const parentNode = treeManager.findParentFromValue(rootNode, value);
             node.depth = parentNode.depth + 1;
             node.parent = parentNode;
+            node.balance = 0;
             treeManager.addToParent(node);
         }
 
@@ -140,6 +141,20 @@ const treeManager = {
         }
 
         fixCollisions(node);
+    },
+
+    balanceAfterAdd: (targetNode, targetBalance) => {
+        let node = targetNode;
+        let balance = targetBalance;
+
+        while (node != null) {
+            node.balance += balance;
+            balance = node.balance;
+
+            if (balance === 0) {
+                return;
+            }
+        }
     },
 
     searchForNode: (value) => {
@@ -570,9 +585,10 @@ $('#animationSpeed').slider({
 
 const zoomHandler = d3.behavior.zoom().scaleExtent([0.5, 10]).on('zoom', view.draw);
 const svg = d3.select('#svg')
-    .call(zoomHandler)
-    .append('g')
-    .append('g');
+console.log(d3.behavior.zoom())
+    // .call(zoomHandler)
+    // .append('g')
+    // .append('g');
 
 const formFunctions = {
     addNodeForm: view.addNode,

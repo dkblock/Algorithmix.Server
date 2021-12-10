@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сортировка выбором</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Сортировка выбором</b> — так же один из самых простых в реализации алгоритм сортировки. Как и в большинстве других подобных алгоритмов, в его основе лежит операция сравнения.
+      Сравнивая каждый элемент с каждым, и в случае необходимости производя обмен, метод приводит последовательность к необходимому упорядоченному виду.
+    </div>
+    <div class="description-paragraph mb-8">
+      Сортировка массивов методом выбора, пожалуй, одна из самых простых для понимания, хотя и одна из самых медленных.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Алгоритм</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-75">
+        <div class="description-paragraph">
+          <ol>
+            <li>Начиная с элемента под индексом 0, ищем в массиве наименьшее значение.</li>
+            <li>Найденное значение меняем местами с нулевым элементом.</li>
+            <li>Повторяем шаги №1 и №2 уже для следующего индекса в массиве (отсортированный элемент больше не трогаем).&nbsp;</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Реализация</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <div class="javascript"><ol><li class="li1"><div class="de1"><span class="kw2">function</span> selectionSort<span class="br0">&#40;</span>inputArr<span class="br0">&#41;</span> <span class="br0">&#123;</span> </div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; let n <span class="sy0">=</span> inputArr.<span class="me1">length</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span>let i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> i <span class="sy0">&lt;</span> n<span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; let min <span class="sy0">=</span> i<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">for</span> <span class="br0">&#40;</span>let j <span class="sy0">=</span> i<span class="sy0">;</span> j <span class="sy0">&lt;</span> n<span class="sy0">;</span> j<span class="sy0">++</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>inputArr<span class="br0">&#91;</span>j<span class="br0">&#93;</span> <span class="sy0">&lt;</span> inputArr<span class="br0">&#91;</span>min<span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; min<span class="sy0">=</span>j<span class="sy0">;</span> </div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">if</span> <span class="br0">&#40;</span>min <span class="sy0">!=</span> i<span class="br0">&#41;</span> <span class="br0">&#123;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;let tmp <span class="sy0">=</span> inputArr<span class="br0">&#91;</span>i<span class="br0">&#93;</span><span class="sy0">;</span> </div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;inputArr<span class="br0">&#91;</span>i<span class="br0">&#93;</span> <span class="sy0">=</span> inputArr<span class="br0">&#91;</span>min<span class="br0">&#93;</span><span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;inputArr<span class="br0">&#91;</span>min<span class="br0">&#93;</span> <span class="sy0">=</span> tmp<span class="sy0">;</span> &nbsp; &nbsp; &nbsp;</div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="br0">&#125;</span></div></li>
+        <li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">return</span> inputArr<span class="sy0">;</span></div></li>
+        <li class="li1"><div class="de1"><span class="br0">&#125;</span></div></li>
+        </ol></div>
+    </div>
+  </div>
+</div>
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+
+
