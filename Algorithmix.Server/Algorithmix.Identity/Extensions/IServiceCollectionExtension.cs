@@ -1,5 +1,7 @@
 ﻿using Algorithmix.Database;
 using Algorithmix.Entities;
+using Algorithmix.Identity.Core;
+using Algorithmix.Identity.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Algorithmix.Identity
+namespace Algorithmix.Identity.Extensions
 {
     public static class IServiceCollectionExtension
     {
@@ -41,15 +43,16 @@ namespace Algorithmix.Identity
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(secret),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
             });
 
             services.AddScoped<AuthenticationService, AuthenticationService>();
-            services.AddScoped<IdentityHelper, IdentityHelper>();
+            services.AddScoped<IUserContextHandler, UserContextHandler>();
         }
     }
 }

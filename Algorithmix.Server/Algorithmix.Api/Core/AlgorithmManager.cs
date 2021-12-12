@@ -1,5 +1,6 @@
 ﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Common.Constants;
+using Algorithmix.Identity.Core;
 using Algorithmix.Models;
 using Algorithmix.Models.Algorithms;
 using Algorithmix.Services;
@@ -22,7 +23,7 @@ namespace Algorithmix.Api.Core
         private readonly TestAlgorithmService _testAlgorithmService;
         private readonly TestService _testService;
         private readonly PublishedTestService _publishedTestService;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
         private readonly QueryHelper _queryHelper;
 
         public AlgorithmManager(
@@ -33,7 +34,7 @@ namespace Algorithmix.Api.Core
             TestAlgorithmService testAlgorithmService,
             TestService testService,
             PublishedTestService publishedTestService,
-            IUserContextManager userContextManager,
+            IUserContextHandler userContextHandler,
             QueryHelper queryHelper)
         {
             _algorithmDataManager = algorithmDataManager;
@@ -43,7 +44,7 @@ namespace Algorithmix.Api.Core
             _testAlgorithmService = testAlgorithmService;
             _testService = testService;
             _publishedTestService = publishedTestService;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
             _queryHelper = queryHelper;
         }
 
@@ -53,7 +54,7 @@ namespace Algorithmix.Api.Core
 
             algorithmPayload.TimeComplexityId = timeComplexity.Id;
             algorithmPayload.ImageUrl = _algorithmDataManager.DefaultAlgorithmImageUrl;
-            algorithmPayload.UserId = _userContextManager.CurrentUser.Id;
+            algorithmPayload.UserId = _userContextHandler.CurrentUser.Id;
 
             var createdAlgorithm = await _algorithmService.CreateAlgorithm(algorithmPayload);
             return await PrepareAlgorithm(createdAlgorithm);
@@ -160,7 +161,7 @@ namespace Algorithmix.Api.Core
 
         private async Task<Algorithm> PrepareAlgorithm(Algorithm algorithm)
         {
-            var currentUser = _userContextManager.CurrentUser;
+            var currentUser = _userContextHandler.CurrentUser;
 
             algorithm.CreatedBy = await _userService.GetUserById(algorithm.CreatedBy.Id);
             algorithm.TimeComplexity = await _algorithmTimeComplexityService.GetAlgorithmTimeComplexity(algorithm.TimeComplexityId);

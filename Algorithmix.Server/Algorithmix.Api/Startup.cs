@@ -1,7 +1,7 @@
 using Algorithmix.Api.Core;
 using Algorithmix.Api.Validation;
 using Algorithmix.Database;
-using Algorithmix.Identity;
+using Algorithmix.Identity.Extensions;
 using Algorithmix.Mappers;
 using Algorithmix.Repository;
 using Algorithmix.Services;
@@ -50,6 +50,7 @@ namespace Algorithmix.Server
                 builder.WithOrigins(clientUrl);
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
+                builder.AllowCredentials();
             });
 
             app.UseHttpsRedirection();
@@ -58,6 +59,7 @@ namespace Algorithmix.Server
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseIdentityMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,5 +1,6 @@
 ﻿using Algorithmix.Api.Core;
 using Algorithmix.Api.Validation;
+using Algorithmix.Identity.Core;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +15,13 @@ namespace Algorithmix.Server.Controllers
     {
         private readonly AccountManager _accountManager;
         private readonly AccountValidator _accountValidator;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
 
-        public AccountController(AccountManager accountManager, AccountValidator accountValidator, IUserContextManager userContextManager)
+        public AccountController(AccountManager accountManager, AccountValidator accountValidator, IUserContextHandler userContextHandler)
         {
             _accountManager = accountManager;
             _accountValidator = accountValidator;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
         }
 
         [HttpGet]
@@ -29,6 +30,10 @@ namespace Algorithmix.Server.Controllers
         public async Task<IActionResult> Authenticate()
         {
             var authModel = await _accountManager.Authenticate();
+
+            if (authModel == null)
+                return BadRequest();
+
             return Ok(authModel);
         }
 
@@ -73,7 +78,7 @@ namespace Algorithmix.Server.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUserInformation([FromBody] ApplicationUserPayload userPayload)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             var validationResult = await _accountValidator.ValidateOnUpdate(userId, userPayload);
 
             if (!validationResult.IsValid)
@@ -110,7 +115,7 @@ namespace Algorithmix.Server.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordPayload changePasswordPayload)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             var validationResult = await _accountValidator.ValidateOnChangePassword(userId, changePasswordPayload);
 
             if (!validationResult.IsValid)

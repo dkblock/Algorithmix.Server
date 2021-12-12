@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core.TestPass;
+using Algorithmix.Identity.Core;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Tests;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Algorithmix.Api.Core
         private readonly UserAnswerMapper _userAnswerMapper;
         private readonly UserAnswerManager _userAnswerManager;
         private readonly UserTestResultManager _userTestResultManager;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
 
         public TestPassManager(
             PublishedTestManager testManager,
@@ -22,19 +23,19 @@ namespace Algorithmix.Api.Core
             UserAnswerMapper userAnswerMapper,
             UserAnswerManager userAnswerManager,
             UserTestResultManager userTestResultManager,
-            IUserContextManager userContextManager)
+            IUserContextHandler userContextHandler)
         {
             _testManager = testManager;
             _questionManager = questionManager;
             _userAnswerMapper = userAnswerMapper;
             _userAnswerManager = userAnswerManager;
             _userTestResultManager = userTestResultManager;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
         }
 
         public async Task<TestQuestion> GetNextTestQuestion(UserAnswerPayload userAnswerPayload, int testId)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
 
             if (userAnswerPayload == null)
                 return await HandleTestStart(testId, userId);
@@ -66,7 +67,7 @@ namespace Algorithmix.Api.Core
 
         public async Task<TestQuestion> GetPreviousTestQuestion(int currentQuestionId)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             var currentQuestion = await _questionManager.GetTestQuestion(currentQuestionId);
 
             if (currentQuestion.PreviousQuestionId == null)

@@ -1,7 +1,7 @@
 ﻿using Algorithmix.Common.Constants;
 using Algorithmix.Common.Extensions;
 using Algorithmix.Entities;
-using Algorithmix.Identity;
+using Algorithmix.Identity.Extensions;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;

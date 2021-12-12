@@ -1,5 +1,6 @@
 ﻿using Algorithmix.Api.Core.Helpers;
 using Algorithmix.Common.Constants;
+using Algorithmix.Identity.Core;
 using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
@@ -19,7 +20,7 @@ namespace Algorithmix.Api.Core.TestDesign
         private readonly ApplicationUserService _userService;
         private readonly UserTestResultService _userTestResultService;
         private readonly TestDataManager _testDataManager;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
         private readonly QueryHelper _queryHelper;
 
         public TestManager(
@@ -30,7 +31,7 @@ namespace Algorithmix.Api.Core.TestDesign
             ApplicationUserService userService,
             UserTestResultService userTestResultService,
             TestDataManager testDataManager,
-            IUserContextManager userContextManager,
+            IUserContextHandler userContextHandler,
             QueryHelper queryHelper)
         {
             _algorithmService = algorithmService;
@@ -40,13 +41,13 @@ namespace Algorithmix.Api.Core.TestDesign
             _userService = userService;
             _userTestResultService = userTestResultService;
             _testDataManager = testDataManager;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
             _queryHelper = queryHelper;
         }
 
         public async Task<Test> CreateTest(TestPayload testPayload)
         {
-            testPayload.UserId = _userContextManager.CurrentUser.Id;
+            testPayload.UserId = _userContextHandler.CurrentUser.Id;
 
             var createdTest = await _testService.CreateTest(testPayload);
             await _testAlgorithmService.CreateTestAlgorithms(createdTest.Id, testPayload.AlgorithmIds);
@@ -81,7 +82,7 @@ namespace Algorithmix.Api.Core.TestDesign
 
         public async Task<Test> UpdateTest(int id, TestPayload testPayload)
         {
-            testPayload.UserId = _userContextManager.CurrentUser.Id;
+            testPayload.UserId = _userContextHandler.CurrentUser.Id;
 
             var updatedTest = await _testService.UpdateTest(id, testPayload);
             await _testAlgorithmService.UpdateTestAlgorithms(id, testPayload.AlgorithmIds);
@@ -96,7 +97,7 @@ namespace Algorithmix.Api.Core.TestDesign
 
         private async Task<Test> PrepareTest(Test test)
         {
-            var currentUser = _userContextManager.CurrentUser;
+            var currentUser = _userContextHandler.CurrentUser;
 
             var userTestResults = await _userTestResultService.GetUserTestResults(test.Id);
             var testAlgorithms = await _testAlgorithmService.GetTestAlgorithms(test.Id);

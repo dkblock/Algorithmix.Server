@@ -27,7 +27,6 @@ namespace Algorithmix.Api.Core
             services.AddScoped<TestPublishManager, TestPublishManager>();
             services.AddScoped<ITestStatsManager, TestStatsManager>();
             services.AddScoped<UserAnswerManager, UserAnswerManager>();
-            services.AddScoped<IUserContextManager, UserContextManager>();
             services.AddScoped<UserTestResultManager, UserTestResultManager>();
             services.AddScoped<QueryHelper, QueryHelper>();
         }

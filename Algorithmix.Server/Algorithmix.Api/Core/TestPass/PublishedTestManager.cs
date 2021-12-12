@@ -1,4 +1,5 @@
 ﻿using Algorithmix.Api.Core.Helpers;
+using Algorithmix.Identity.Core;
 using Algorithmix.Models;
 using Algorithmix.Models.Tests;
 using Algorithmix.Services;
@@ -18,7 +19,7 @@ namespace Algorithmix.Api.Core.TestPass
         private readonly UserTestResultService _userTestResultService;
         private readonly TestDataManager _testDataManager;
         private readonly TestAlgorithmService _testAlgorithmService;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
         private readonly QueryHelper _queryHelper;
 
         public PublishedTestManager(
@@ -28,7 +29,7 @@ namespace Algorithmix.Api.Core.TestPass
             PublishedTestQuestionService questionService,
             ApplicationUserService userService,
             UserTestResultService userTestResultService,
-            IUserContextManager userContextManager,
+            IUserContextHandler userContextHandler,
             TestDataManager testDataManager,
             QueryHelper queryHelper)
         {
@@ -39,7 +40,7 @@ namespace Algorithmix.Api.Core.TestPass
             _userTestResultService = userTestResultService;
             _testDataManager = testDataManager;
             _testAlgorithmService = testAlgorithmService;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
             _queryHelper = queryHelper;
         }
 
@@ -86,8 +87,8 @@ namespace Algorithmix.Api.Core.TestPass
             test.Questions = await _questionService.GetTestQuestions(test.Id);
             test.AverageResult = await _userTestResultService.GetAverageUserTestResult(test.Id);
 
-            if (_userContextManager.CurrentUser != null && await _userTestResultService.Exists(test.Id, _userContextManager.CurrentUser.Id))
-                test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, _userContextManager.CurrentUser.Id);
+            if (_userContextHandler.CurrentUser != null && await _userTestResultService.Exists(test.Id, _userContextHandler.CurrentUser.Id))
+                test.UserResult = await _userTestResultService.GetUserTestResult(test.Id, _userContextHandler.CurrentUser.Id);
 
             return test;
         }

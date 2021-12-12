@@ -11,7 +11,9 @@
     "DefaultConnection": "CONN_STRING"
   },
   "Identity": {
-    "Secret": "SECRET"
+    "Secret": "secret-key",
+    "AccessTokenLifetimeInMinutes": 20,
+    "RefreshTokenLifetimeInDays":  30
   },
   "ClientUrl": "CLIENT_URL",
   "Email": {

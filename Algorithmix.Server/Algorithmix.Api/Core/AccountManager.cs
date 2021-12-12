@@ -1,4 +1,4 @@
-﻿using Algorithmix.Identity;
+﻿using Algorithmix.Identity.Core;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
@@ -14,7 +14,7 @@ namespace Algorithmix.Api.Core
         private readonly ApplicationUserMapper _userMapper;
         private readonly AuthenticationService _authService;
         private readonly EmailManager _emailManager;
-        private readonly IUserContextManager _userContextManager;
+        private readonly IUserContextHandler _userContextHandler;
 
         private readonly string _clientUrl;
 
@@ -23,32 +23,30 @@ namespace Algorithmix.Api.Core
             ApplicationUserMapper userMapper,
             AuthenticationService authService,
             EmailManager emailManager,
-            IUserContextManager userContextManager,
+            IUserContextHandler userContextHandler,
             IConfiguration configuration)
         {
             _userManager = userManager;
             _userMapper = userMapper;
             _authService = authService;
             _emailManager = emailManager;
-            _userContextManager = userContextManager;
+            _userContextHandler = userContextHandler;
 
             _clientUrl = configuration["ClientUrl"];
         }
 
         public async Task<UserAccount> Authenticate()
         {
-            var authorization = _userContextManager.Authorization;
-            var authModel = _authService.CheckAuth(authorization);
-            var user = await _userManager.GetUserById(authModel.CurrentUser.Id);
+            if (_userContextHandler.AccessToken == null || _userContextHandler.CurrentUser == null)
+                return null;
 
-            return _userMapper.ToModel(user, authModel.AccessToken);
+            var user = await _userManager.GetUserById(_userContextHandler.CurrentUser.Id);
+            return _userMapper.ToModel(user, _userContextHandler.AccessToken);
         }
 
         public async Task<UserAccount> Register(RegisterPayload registerPayload)
         {
             var user = await _userManager.CreateUser(registerPayload);
-            var accessToken = _authService.Authenticate(user);
-
             var code = await _userManager.GenerateEmailConfirmationToken(user.Id);
             var callbackUrl = GetEmailConfirmationUrl(user.Id, HttpUtility.UrlEncode(code));
 
@@ -58,32 +56,32 @@ namespace Algorithmix.Api.Core
                 $"Чтобы подтвердить свой адрес электронной почты, <a href='{callbackUrl}'>перейдите по этой ссылке</a>.<br/>" +
                 "Если вы получили данное письмо по ошибке, пожалуйста, сообщите об этом отправителю и удалите это сообщение.");
 
-            return _userMapper.ToModel(user, accessToken);
+            var authUser = _authService.Authenticate(user);
+            _userContextHandler.AttachUser(authUser);
+
+            return authUser;
         }
 
         public async Task<UserAccount> Login(LoginPayload loginPayload)
         {
             var user = await _userManager.GetUserByEmail(loginPayload.Email);
-            var accessToken = _authService.Authenticate(user);
+            var authUser = _authService.Authenticate(user);
+            _userContextHandler.AttachUser(authUser);
 
-            return _userMapper.ToModel(user, accessToken);
+            return authUser;
         }
 
         public async Task<UserAccount> UpdateUserInformation(ApplicationUserPayload userPayload)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             var updatedUser = await _userManager.UpdateUser(userId, userPayload);
 
-            return new UserAccount
-            {
-                CurrentUser = updatedUser,
-                AccessToken = _userContextManager.AccessToken
-            };
+            return _userMapper.ToModel(updatedUser, _userContextHandler.AccessToken);
         }
 
         public async Task ConfirmEmailRequest()
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             var user = await _userManager.GetUserById(userId);
             var code = await _userManager.GenerateEmailConfirmationToken(user.Id);
             var callbackUrl = GetEmailConfirmationUrl(user.Id, HttpUtility.UrlEncode(code));
@@ -101,7 +99,7 @@ namespace Algorithmix.Api.Core
 
         public async Task<bool> ChangePassword(ChangePasswordPayload changePasswordPayload)
         {
-            var userId = _userContextManager.CurrentUser.Id;
+            var userId = _userContextHandler.CurrentUser.Id;
             return await _userManager.ChangePassword(userId, changePasswordPayload);
         }
 
