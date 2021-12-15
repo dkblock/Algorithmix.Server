@@ -21,36 +21,17 @@ namespace Algorithmix.Identity.Middleware
             _identitySettings = identitySettings.Value;
         }
 
-        public async Task Invoke(HttpContext context, IUserContextHandler userContextHandler)
+        public async Task Invoke(HttpContext context, AuthenticationService authService, IUserContextHandler userContextHandler)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            AttachUserToContext(token, userContextHandler);
-            await _next(context);
-        }
+            var validatedToken = authService.ValidateToken(token);
 
-        private void AttachUserToContext(string token, IUserContextHandler userContextHandler)
-        {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var secret = Encoding.ASCII.GetBytes(_identitySettings.Secret);
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(secret),
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                userContextHandler.AttachUser(jwtToken);
-            }
-            catch (Exception e)
-            {
+            if (validatedToken != null)
+                userContextHandler.AttachUser(validatedToken);
+            else
                 userContextHandler.DetachUser();
-            }
+
+            await _next(context);
         }
     }
 }

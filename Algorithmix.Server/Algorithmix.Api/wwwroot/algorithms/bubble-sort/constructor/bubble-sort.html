@@ -5,31 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Сортировка пузырьком</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/css/bootstrap-slider.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/bubble-sort.css"/>
 </head>
 <body>
-<div>
-    <div class="blockSort"></div>
-    <button class="btnSort button button-primary" id="btnSort">Отсортировать</button>
-    <div class="h2description">
-        Краткое описание сортировки
+    <div>
+        <div class="bst-toolbar bg-light">
+            <div class="bst-item">
+                <button type="submit" id="btnGenerate" class="bst-item btn btn-default">Сгенерировать</button>
+            </div>
+            <div class="bst-item">
+                <input type="text" class="form-control" id="NumbersInput" data-toggle="popover"
+                       data-trigger="hover">
+                <button type="submit" id="btnAdd" class="btn btn-default">Заполнить</button>
+            </div>
+            <div class="bst-item">
+                <button type="submit" disabled="disabled" id="btnSort" class="btn btn-default">Отсортировать</button>
+            </div>
+            <form class="bst-item" id="animationSpeedForm" role="form">
+                <input type="range" id="animationSpeed" data-slider-id="animationSpeedSlider"
+                       data-slider-min="0" data-slider-max="1" data-slider-step="0.01"
+                       data-slider-value="0.5"/>
+                <label for="AnimationSpeed">Скорость</label>
+            </form>
+            <div class="bst-item">
+                <button type="submit" class="btn btn-default" onclick="resetPage()">Сбросить</button>
+            </div>
+        </div>
+        <div class="blockSort"></div>
     </div>
-    <div class="description">
-        Обходим массив от начала до конца, попутно меняя местами неотсортированные соседние элементы (
-        <div class="circle" style="background-color: #FF0000;"></div>
-        - красный).
-        В результате первого прохода на последнее место «всплывёт» максимальный элемент (
-        <div class="circle" style="background-color: #00DD21;"></div>
-        - зеленый).
-        Теперь снова обходим неотсортированную часть массива (от первого элемента до предпоследнего) и меняем по пути
-        неотсортированных соседей.
-        Второй по величине элемент окажется на предпоследнем месте (
-        <div class="circle" style="background-color: #00DD21;"></div>
-        - зеленый). Продолжая дальше,
-        будем обходить всё уменьшающуюся неотсортированную часть массива,
-        передвигая найденные максимумы в конец.
-    </div>
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/bootstrap-slider.min.js" charset="utf-8"></script>
 <script src="./js/bubble-sort.js"></script>
+<script>
+    function resetPage() {
+      location.reload();
+    }
+</script>
 </body>
 </html>

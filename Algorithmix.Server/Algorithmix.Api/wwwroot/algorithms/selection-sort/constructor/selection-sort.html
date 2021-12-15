@@ -5,31 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Сортировка выбором</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/css/bootstrap-slider.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/selection-sort.css"/>
 </head>
 <body>
 <div>
-    <div class="blockSort"></div>
-    <button id="btnSort" class="btnSort button button-primary">Отсортировать</button>
-
-    <div class="h2description">
-        Краткое описание сортировки
-    </div>
-    <div class="description">
-        Берём первый элемент неотсортированного массива. Затем перебираем все элементы (
-        <div class="circle" style="background-color:  #FFD800;"></div>
-        - желтый)
-        находим минимальный элемент последовательности и запоминаем его номер (
-        <div class="circle" style="background-color: #FF0000;"></div>
-        - красный).
-        Если номер первого элемента (
-        <div class="circle" style="background-color: #FF0000;"></div>
-        - красный) неотсортированного массива и номер найденного элемента не совпадают, тогда два этих элемента
-        обмениваются значениями,
-        увеличиваем i на 1 и продолжаем сортировку оставшейся части массива, а именно с элемента с номером 2 по N, так
-        как элемент A[1] уже занимает свою позицию;
+    <div>
+        <div class="bst-toolbar bg-light">
+            <div class="bst-item">
+                <button type="submit" id="btnGenerate" class="bst-item btn btn-default">Сгенерировать</button>
+            </div>
+            <div class="bst-item">
+                <input type="text" class="form-control" id="NumbersInput" data-toggle="popover"
+                       data-trigger="hover">
+                <button type="submit" id="btnAdd" class="btn btn-default">Заполнить</button>
+            </div>
+            <div class="bst-item">
+                <button type="submit" disabled="disabled" id="btnSort" class="btn btn-default">Отсортировать</button>
+            </div>
+            <form class="bst-item" id="animationSpeedForm" role="form">
+                <input type="range" id="animationSpeed" data-slider-id="animationSpeedSlider"
+                       data-slider-min="0" data-slider-max="1" data-slider-step="0.01"
+                       data-slider-value="0.5"/>
+                <label for="AnimationSpeed">Скорость</label>
+            </form>
+            <div class="bst-item">
+                <button type="submit" class="btn btn-default" onclick="resetPage()">Сбросить</button>
+            </div>
+        </div>
+        <div class="blockSort"></div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.0/bootstrap-slider.min.js"
+        charset="utf-8"></script>
 <script src="./js/selection-sort.js"></script>
+<script>
+    function resetPage() {
+      location.reload();
+    }
+</script>
 </body>
 </html>

@@ -13,15 +13,16 @@ namespace Algorithmix.Identity.Core
     public class AuthenticationService
     {
         private readonly JwtSecurityTokenHandler _tokenHandler;
-
-        private readonly byte[] _secret;
+        private readonly SymmetricSecurityKey _secret;
+        private readonly string _signingAlgorithm;
         private readonly int _accessTokenLifetime;
         private readonly int _refreshTokenLifetime;
 
         public AuthenticationService(IOptions<IdentitySettings> identitySettings)
         {
             _tokenHandler = new JwtSecurityTokenHandler();
-            _secret = Encoding.ASCII.GetBytes(identitySettings.Value.Secret);
+            _secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(identitySettings.Value.Secret));
+            _signingAlgorithm = SecurityAlgorithms.HmacSha256Signature;
             _accessTokenLifetime = identitySettings.Value.AccessTokenLifetimeInMinutes;
             _refreshTokenLifetime = identitySettings.Value.RefreshTokenLifetimeInDays;
         }
@@ -37,6 +38,28 @@ namespace Algorithmix.Identity.Core
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
             };
+        }
+
+        public JwtSecurityToken ValidateToken(string token)
+        {
+            try
+            {
+                _tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    IssuerSigningKey = _secret,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                return (JwtSecurityToken)validatedToken;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private string GenerateAccessToken(ApplicationUser user)
@@ -60,7 +83,7 @@ namespace Algorithmix.Identity.Core
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = tokenLifetime,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(_secret, _signingAlgorithm)
             };
 
             var token = _tokenHandler.CreateToken(tokenDescriptor);
