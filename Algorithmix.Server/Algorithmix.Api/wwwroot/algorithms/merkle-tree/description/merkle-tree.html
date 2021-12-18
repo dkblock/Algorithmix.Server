@@ -1,0 +1,660 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дерево Меркла</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="description">
+  <div class="description-section">
+    <span class="description-section-title">Определение</span>
+    <hr />
+    <div class="description-paragraph mb-8">
+      <b>Дерево Меркла</b> — называют полное двоичное дерево, в листовые вершины которого помещены хеши от блоков
+      данных, а внутренние вершины содержат хеши от сложения значений в дочерних вершинах.
+      Корневой узел дерева содержит хеш от всего набора данных, то есть хеш-дерево является 
+      однонаправленной хеш-функцией. Дерево Меркла применяется для эффективного хранения транзакций 
+      в блокчейне криптовалют (например, в Bitcoin, Ethereum). Оно позволяет получить «отпечаток» всех
+      транзакций в блоке, а также эффективно верифицировать транзакции
+    </div>
+    <div class="description-paragraph mb-8">
+      Благодаря дереву Меркла блокчейн может быть эффективным и прозрачным одновременно.
+      Концепция дерева была запатентована профессором Ральфом Мерклом ещё в 1979 году.
+      Сейчас же оно помогает решить проблемы в больших децентрализованных сетях.
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Построение</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-70">
+        <div class="description-paragraph">
+          <p>Заполнение значений в узлах дерева идет снизу вверх. Сперва к каждому блоку данных применяется хеширование<span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle Hash_{00}=hash(L_{1})}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>00</mn>
+                    </mrow>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <msub>
+                    <mi>L</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <mo stretchy="false">)</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle Hash_{00}=hash(L_{1})}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/bf431ecffb9bd6828697b961c1b8d91989924814" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:20.142ex; height:2.843ex;" alt="{\displaystyle Hash_{00}=hash(L_{1})}"></span>, <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle Hash_{01}=hash(L_{2})}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>01</mn>
+                    </mrow>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <msub>
+                    <mi>L</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                  <mo stretchy="false">)</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle Hash_{01}=hash(L_{2})}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6ea12d0281a47e4ccee9b43481dd1b03cf78189c" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:20.142ex; height:2.843ex;" alt="{\displaystyle Hash_{01}=hash(L_{2})}"></span> и так далее. Полученные значения записываются в листья дерева. Блоки, находящиеся уровнем выше, заполняются как хеши от суммы их детей, <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle Hash_{0}=hash(Hash_{00}+Hash_{01})}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>0</mn>
+                    </mrow>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>00</mn>
+                    </mrow>
+                  </msub>
+                  <mo>+</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>01</mn>
+                    </mrow>
+                  </msub>
+                  <mo stretchy="false">)</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle Hash_{0}=hash(Hash_{00}+Hash_{01})}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3b2f65bfc190df3797efc59e079bd10269c86d00" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:34.722ex; height:2.843ex;" alt="{\displaystyle Hash_{0}=hash(Hash_{00}+Hash_{01})}"></span>, где <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle +}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mo>+</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle +}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/fe6ef363cd19902d1a7a71fb1c8b21e8ede52406" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.505ex; width:1.808ex; height:2.176ex;" alt="+"></span> обычно означает конкатенацию. Эта операция повторяется, пока не будет получено верхнее значение&nbsp;— <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle TopHash}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>T</mi>
+                  <mi>o</mi>
+                  <mi>p</mi>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle TopHash}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/76b6d44d92575b4cd996f6ba312907fa3141afbb" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:9.656ex; height:2.509ex;" alt="{\displaystyle TopHash}"></span> или <code>merkle_root</code><sup id="cite_ref-:4_1-1" class="reference"></sup>.
+          </p>
+        </div>
+        <div class="description-paragraph">
+          <p>В биткойне в качестве хеш-функции используется двойное SHA-256, то есть <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle hash(x)=\operatorname {SHA256} (\operatorname {SHA256} (x))}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <mi>x</mi>
+                  <mo stretchy="false">)</mo>
+                  <mo>=</mo>
+                  <mi>SHA256</mi>
+                  <mo>⁡<!-- ⁡ --></mo>
+                  <mo stretchy="false">(</mo>
+                  <mi>SHA256</mi>
+                  <mo>⁡<!-- ⁡ --></mo>
+                  <mo stretchy="false">(</mo>
+                  <mi>x</mi>
+                  <mo stretchy="false">)</mo>
+                  <mo stretchy="false">)</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle hash(x)=\operatorname {SHA256} (\operatorname {SHA256} (x))}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ec6257784f09a8d321d699bad4359b22a45a2c52" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:32.716ex; height:2.843ex;" alt="{\displaystyle hash(x)=\operatorname {SHA256} (\operatorname {SHA256} (x))}"></span><sup id="cite_ref-:4_1-2" class="reference"></sup>. Впрочем, хеш-функция может быть любой, например Tiger Tree Hash (TTH), используемый в файлообменных p2p-сетях, является деревом Меркла с хеш-функцией Tiger<sup id="cite_ref-:2_2-0" class="reference"></sup>.
+          </p>
+        </div>
+        <div class="description-paragraph">
+          Если количество блоков на каком-то уровне дерева оказывается нечетным, то один блок дублируется или переносится
+          без изменений на следующий уровень, как это происходит при вычислении Tiger Tree Hash.
+        </div>
+      </div>
+      <div class="w-30">
+        <div class="description-image-container">
+          <img class="description-image" src="./images/example.png" alt="avl-tree-example" />
+          <span class="description-image-title">Пример бинарного хэш дерева</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <span class="description-section-title">Эффективность</span>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="w-70">
+        <div class="description-paragraph mb-8">
+          <p>Хеш-деревья имеют преимущество перед хеш-цепочками или хеш-функциями. При использовании хеш-деревьев гораздо менее затратным является доказательство принадлежности определённого блока данных к множеству. Поскольку различными блоками часто являются независимые данные, такие как транзакции или части файлов, то нас интересует возможность проверить только один блок, не пересчитывая хеши для остальных узлов дерева. Пусть интересующий нас блок - это <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle L_{3}}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <msub>
+                    <mi>L</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>3</mn>
+                    </mrow>
+                  </msub>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle L_{3}}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/23c881465e19ffb2fc3c562245e73dc1144cd830" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:2.637ex; height:2.509ex;" alt="L_{3}"></span> (см. рис.). Тогда доказательством его существования и валидности будут корневой хеш, а также верхние хеши других веток (<span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle {auth_{L}}_{4}=Hash_{11}}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <msub>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mi>a</mi>
+                      <mi>u</mi>
+                      <mi>t</mi>
+                      <msub>
+                        <mi>h</mi>
+                        <mrow class="MJX-TeXAtom-ORD">
+                          <mi>L</mi>
+                        </mrow>
+                      </msub>
+                    </mrow>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>4</mn>
+                    </mrow>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>11</mn>
+                    </mrow>
+                  </msub>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle {auth_{L}}_{4}=Hash_{11}}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ffbf104ce8759791b33d4139e4b12fe2c7f6a03b" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:17.841ex; height:2.509ex;" alt="{\displaystyle {auth_{L}}_{4}=Hash_{11}}"></span> и <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle {auth_{L}}_{2}=Hash_{0}}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <msub>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mi>a</mi>
+                      <mi>u</mi>
+                      <mi>t</mi>
+                      <msub>
+                        <mi>h</mi>
+                        <mrow class="MJX-TeXAtom-ORD">
+                          <mi>L</mi>
+                        </mrow>
+                      </msub>
+                    </mrow>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                  <mo>=</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>0</mn>
+                    </mrow>
+                  </msub>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle {auth_{L}}_{2}=Hash_{0}}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/291cabbcf3ba80ed8de0471acbf518197acfb3a6" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:17.019ex; height:2.509ex;" alt="{\displaystyle {auth_{L}}_{2}=Hash_{0}}"></span>)<sup id="cite_ref-:4_1-4" class="reference"></sup><sup id="cite_ref-:1_3-0" class="reference"></sup>. В данном случае проверка не пройдена, если <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle TopHash\neq hash(Hash_{0}+hash(hash(L_{3})+Hash_{11}))}">
+            <semantics>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mstyle displaystyle="true" scriptlevel="0">
+                  <mi>T</mi>
+                  <mi>o</mi>
+                  <mi>p</mi>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo>≠<!-- ≠ --></mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>0</mn>
+                    </mrow>
+                  </msub>
+                  <mo>+</mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <mi>h</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <mi>h</mi>
+                  <mo stretchy="false">(</mo>
+                  <msub>
+                    <mi>L</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>3</mn>
+                    </mrow>
+                  </msub>
+                  <mo stretchy="false">)</mo>
+                  <mo>+</mo>
+                  <mi>H</mi>
+                  <mi>a</mi>
+                  <mi>s</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>11</mn>
+                    </mrow>
+                  </msub>
+                  <mo stretchy="false">)</mo>
+                  <mo stretchy="false">)</mo>
+                </mstyle>
+              </mrow>
+              <annotation encoding="application/x-tex">{\displaystyle TopHash\neq hash(Hash_{0}+hash(hash(L_{3})+Hash_{11}))}</annotation>
+            </semantics>
+          </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3acdc70c915bf75f02e4f5aa9909ba87ad523379" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:55.871ex; height:2.843ex;" alt="{\displaystyle TopHash\neq hash(Hash_{0}+hash(hash(L_{3})+Hash_{11}))}"></span>.
+          </p>
+        </div>
+        <div class="description-paragraph mb-8">
+          В общем случае можно записать
+        </div>
+        <div class="description-paragraph mb-8">
+          <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/63557ee4dccc21ac9987aeedf96fd7f50ead6f6f" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:43.831ex; height:2.843ex;" alt="{\displaystyle signature(L)=(L\ |\ {auth_{L}}_{1},\dots ,{auth_{L}}_{K-1})}">
+        </div>
+      </div>
+      <div class="w-30">
+        <div class="description-image-container">
+          <img class="description-image" src="./images/proof.png"/>
+          <span class="description-image-title">Доказательство существования в хеш-дереве</span>
+        </div>
+      </div>
+    </div>
+    <div class="description-paragraph mb-8">
+      <p>а проверку осуществить как <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle TopHash==Hash_{K}}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>T</mi>
+              <mi>o</mi>
+              <mi>p</mi>
+              <mi>H</mi>
+              <mi>a</mi>
+              <mi>s</mi>
+              <mi>h</mi>
+              <mo>==</mo>
+              <mi>H</mi>
+              <mi>a</mi>
+              <mi>s</mi>
+              <msub>
+                <mi>h</mi>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mi>K</mi>
+                </mrow>
+              </msub>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle TopHash==Hash_{K}}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a2f550370518e9414920cf56ed5fa6a83b449e66" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:21.979ex; height:2.509ex;" alt="{\displaystyle TopHash==Hash_{K}}"></span>, где
+      </p><p><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle Hash_{k}={\begin{cases}hash(L),&amp;{\mbox{if }}k=1,\\hash(Hash_{k-1}+{auth_{L}}_{k-1}),&amp;{\mbox{if }}2\leq k\leq K\end{cases}}}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>H</mi>
+              <mi>a</mi>
+              <mi>s</mi>
+              <msub>
+                <mi>h</mi>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mi>k</mi>
+                </mrow>
+              </msub>
+              <mo>=</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow>
+                  <mo>{</mo>
+                  <mtable columnalign="left left" rowspacing=".2em" columnspacing="1em" displaystyle="false">
+                    <mtr>
+                      <mtd>
+                        <mi>h</mi>
+                        <mi>a</mi>
+                        <mi>s</mi>
+                        <mi>h</mi>
+                        <mo stretchy="false">(</mo>
+                        <mi>L</mi>
+                        <mo stretchy="false">)</mo>
+                        <mo>,</mo>
+                      </mtd>
+                      <mtd>
+                        <mrow class="MJX-TeXAtom-ORD">
+                          <mstyle displaystyle="false" scriptlevel="0">
+                            <mtext>if&nbsp;</mtext>
+                          </mstyle>
+                        </mrow>
+                        <mi>k</mi>
+                        <mo>=</mo>
+                        <mn>1</mn>
+                        <mo>,</mo>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
+                        <mi>h</mi>
+                        <mi>a</mi>
+                        <mi>s</mi>
+                        <mi>h</mi>
+                        <mo stretchy="false">(</mo>
+                        <mi>H</mi>
+                        <mi>a</mi>
+                        <mi>s</mi>
+                        <msub>
+                          <mi>h</mi>
+                          <mrow class="MJX-TeXAtom-ORD">
+                            <mi>k</mi>
+                            <mo>−<!-- − --></mo>
+                            <mn>1</mn>
+                          </mrow>
+                        </msub>
+                        <mo>+</mo>
+                        <msub>
+                          <mrow class="MJX-TeXAtom-ORD">
+                            <mi>a</mi>
+                            <mi>u</mi>
+                            <mi>t</mi>
+                            <msub>
+                              <mi>h</mi>
+                              <mrow class="MJX-TeXAtom-ORD">
+                                <mi>L</mi>
+                              </mrow>
+                            </msub>
+                          </mrow>
+                          <mrow class="MJX-TeXAtom-ORD">
+                            <mi>k</mi>
+                            <mo>−<!-- − --></mo>
+                            <mn>1</mn>
+                          </mrow>
+                        </msub>
+                        <mo stretchy="false">)</mo>
+                        <mo>,</mo>
+                      </mtd>
+                      <mtd>
+                        <mrow class="MJX-TeXAtom-ORD">
+                          <mstyle displaystyle="false" scriptlevel="0">
+                            <mtext>if&nbsp;</mtext>
+                          </mstyle>
+                        </mrow>
+                        <mn>2</mn>
+                        <mo>≤<!-- ≤ --></mo>
+                        <mi>k</mi>
+                        <mo>≤<!-- ≤ --></mo>
+                        <mi>K</mi>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                  <mo fence="true" stretchy="true" symmetric="true"></mo>
+                </mrow>
+              </mrow>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle Hash_{k}={\begin{cases}hash(L),&amp;{\mbox{if }}k=1,\\hash(Hash_{k-1}+{auth_{L}}_{k-1}),&amp;{\mbox{if }}2\leq k\leq K\end{cases}}}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1989ccee38ebbfcede7e1f56490ff7ba46136695" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -2.505ex; width:55.789ex; height:6.176ex;" alt="{\displaystyle Hash_{k}={\begin{cases}hash(L),&amp;{\mbox{if }}k=1,\\hash(Hash_{k-1}+{auth_{L}}_{k-1}),&amp;{\mbox{if }}2\leq k\leq K\end{cases}}}"></span>.
+      </p><p>Набор блоков <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle \{{auth_{L}}_{1},\dots ,{auth_{L}}_{K-1}\}}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mo fence="false" stretchy="false">{</mo>
+              <msub>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mi>a</mi>
+                  <mi>u</mi>
+                  <mi>t</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mi>L</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <mo>,</mo>
+              <mo>…<!-- … --></mo>
+              <mo>,</mo>
+              <msub>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mi>a</mi>
+                  <mi>u</mi>
+                  <mi>t</mi>
+                  <msub>
+                    <mi>h</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mi>L</mi>
+                    </mrow>
+                  </msub>
+                </mrow>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mi>K</mi>
+                  <mo>−<!-- − --></mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <mo fence="false" stretchy="false">}</mo>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle \{{auth_{L}}_{1},\dots ,{auth_{L}}_{K-1}\}}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/265bb623f230e22d38211f1c51138b42dd6a06db" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:24.53ex; height:2.843ex;" alt="{\displaystyle \{{auth_{L}}_{1},\dots ,{auth_{L}}_{K-1}\}}"></span> называется <i>аутентификационный путь</i> или <i>путь Меркла</i><sup id="cite_ref-:4_1-5" class="reference"></sup>.
+      </p><p>Видно, что проверку выше можно выполнить за <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle O(K)=O(\log _{2}N)}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>O</mi>
+              <mo stretchy="false">(</mo>
+              <mi>K</mi>
+              <mo stretchy="false">)</mo>
+              <mo>=</mo>
+              <mi>O</mi>
+              <mo stretchy="false">(</mo>
+              <msub>
+                <mi>log</mi>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mn>2</mn>
+                </mrow>
+              </msub>
+              <mo>⁡<!-- ⁡ --></mo>
+              <mi>N</mi>
+              <mo stretchy="false">)</mo>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle O(K)=O(\log _{2}N)}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/da3daee4af9b2b199aefc8e0c3b72333c9ea2edb" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:18.806ex; height:2.843ex;" alt="{\displaystyle O(K)=O(\log _{2}N)}"></span> действий, где <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle K}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>K</mi>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle K}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2b76fce82a62ed5461908f0dc8f037de4e3686b0" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.338ex; width:2.066ex; height:2.176ex;" alt="K"></span> - это высота дерева или длина аутентификационного пути, а <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle N}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>N</mi>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle N}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f5e3890c981ae85503089652feb48b191b57aae3" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.338ex; width:2.064ex; height:2.176ex;" alt="N"></span> - это количество блоков данных. Такая же проверка в случае хеш-цепочки имела бы сложность <span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle O(N)}">
+        <semantics>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mstyle displaystyle="true" scriptlevel="0">
+              <mi>O</mi>
+              <mo stretchy="false">(</mo>
+              <mi>N</mi>
+              <mo stretchy="false">)</mo>
+            </mstyle>
+          </mrow>
+          <annotation encoding="application/x-tex">{\displaystyle O(N)}</annotation>
+        </semantics>
+      </math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/78484c5c26cfc97bb3b915418caa09454421e80b" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.838ex; width:5.646ex; height:2.843ex;" alt="O(N)"></span><sup id="cite_ref-:4_1-6" class="reference"></sup><sup id="cite_ref-:5_4-0" class="reference"></sup>.
+      </p><p>Таблица ниже демонстрирует, что даже при значительном количестве транзакций в блоке о сложности вычислений можно не беспокоиться<sup id="cite_ref-:4_1-7" class="reference"></sup>.
+      </p>
+      <table class="table">
+      <tbody><tr>
+      <th class="head">Количество транзакций
+      </th>
+      <th class="head">Приблизительный размер блока
+      </th>
+      <th class="head">Размер пути (в хешах)
+      </th>
+      <th class="head">Размер пути (в байтах)
+      </th></tr>
+      <tr>
+      <td>16 транзакций
+      </td>
+      <td>4 килобайта
+      </td>
+      <td>4 хеша
+      </td>
+      <td>128 байт
+      </td></tr>
+      <tr>
+      <td>512 транзакций
+      </td>
+      <td>128 килобайт
+      </td>
+      <td>9 хэшей
+      </td>
+      <td>288 байт
+      </td></tr>
+      <tr>
+      <td>2048 транзакций
+      </td>
+      <td>512 килобайт
+      </td>
+      <td>11 хэшей
+      </td>
+      <td>352 байт
+      </td></tr>
+      <tr>
+      <td>65535 транзакций
+      </td>
+      <td>16 мегабайт
+      </td>
+      <td>16 хэшей
+      </td>
+      <td>512 байт
+      </td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<script src="js/get-document-height.js"></script>
+</body>
+</html>
+
+

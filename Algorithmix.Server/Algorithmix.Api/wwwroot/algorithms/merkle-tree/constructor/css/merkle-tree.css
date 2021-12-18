@@ -1,0 +1,192 @@
+/* required LIB STYLES */
+/* .Treant se automatski dodaje na svaki chart conatiner */
+.Treant { position: relative; overflow: hidden; padding: 0 !important; }
+.Treant > .node,
+.Treant > .pseudo { position: absolute; display: block; visibility: hidden; }
+.Treant.Treant-loaded .node,
+.Treant.Treant-loaded .pseudo { visibility: visible; }
+.Treant > .pseudo { width: 0; height: 0; border: none; padding: 0; }
+.Treant .collapse-switch { width: 3px; height: 3px; display: block; border: 1px solid black; position: absolute; top: 1px; right: 1px; cursor: pointer; }
+.Treant .collapsed .collapse-switch { background-color: #868DEE; }
+.Treant > .node img {	border: none; float: left; }
+
+
+
+.node {
+  border: solid black 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 10px;
+}
+
+.node > p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.node.parent-node {
+  background-color: #b2cfff;
+}
+.node.leaf-node {
+  background-color: lightgreen;
+}
+.node.root-node {
+  background-color: lightsalmon;
+}
+
+.tree-container{
+  width: 100%;
+}
+.controls {
+  width: 30%;
+  float: left;
+  position: relative;
+}
+.controls > ul {
+    padding-top: 20px
+}
+
+.title {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.blockSort {
+    display: flex;
+    justify-content: center;
+    height: 75px;
+    margin-top: 75px;
+}
+
+.element {
+    position: absolute;
+    background-color: #b2cfff;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    font-size: 30px;
+    text-align: center;
+    vertical-align: middle;
+    transition: 1s all ease;
+    border-radius: 50%;
+    user-select: none;
+}
+
+.btnSort {
+    display: block;
+    margin: 10px auto;
+    transition: 1s all ease;
+}
+
+
+.h2description {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.description {
+    width: 80%;
+    font-size: 20px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    background-color: #002766;
+    margin-top: auto;
+}
+
+p {
+    font-size: 30px;
+}
+
+.bst-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.bst-toolbar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-bottom: 0.071rem solid rgba(18, 24, 33, 0.12);
+}
+
+.bst-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-right: 0.071rem solid rgba(18, 24, 33, 0.12);
+    padding: 6px 12px;
+    height: 100%;
+}
+
+
+.sidebar {
+	padding-top: 15px;
+    padding-left: 0;
+}
+
+.list-group, .btn {
+	border-radius: 4px;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+	background-color: #b2cfff!important;
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: aliceblue;
+}
+
+#addRandomForm .popover {
+    width: 300px;
+}
+
+text {
+    text-anchor: middle;
+}
+
+.size-label {
+  border-top-right-radius: 0!important;
+  border-bottom-right-radius: 0!important;
+}
+
+.inputText {
+  width: 600px;
+  z-index: 10;
+  height: 2em;
+  transition: all 0.3s ease;
+  border-width: 1px;
+  resize: none;
+}
+
+.inputText:focus {
+  height: 20em;
+  z-index: 10;
+  border-width: 1px;
+  resize: none;
+}
