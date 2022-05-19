@@ -15,10 +15,9 @@ namespace Algorithmix.Database
             var server = settings.Server;
             var port = settings.Port;
             var database = settings.DatabaseName;
-            var user = settings.Username;
             var password = settings.Password;
 
-            var connectionString = $"Server={server},{port};Initial Catalog={database};User ID={user};Password={password}";
+            var connectionString = $"Server={server},{port};Initial Catalog={database};User ID=SA;Password={password}";
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             InitializeData(services);

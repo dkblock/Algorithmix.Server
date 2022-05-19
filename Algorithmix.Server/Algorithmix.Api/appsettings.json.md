@@ -1,30 +1,33 @@
 ﻿```json
 {
+  "ClientUrl": "http://localhost:8080",
+
+  "Database": {
+    "Server": "algorithmix-db",
+    "Port": 1433,
+    "DatabaseName": "algorithmixdb",
+    "Password": "__PASSWORD__"
+  },
+
+  "Email": {
+    "Address": "kb.algorithmix@yandex.ru",
+    "Password": "__MAIL_PASSWORD__",
+    "Host": "smtp.yandex.ru",
+    "Port": 587
+  },
+
+  "Identity": {
+    "Secret": "__SECRET_KEY__",
+    "AccessTokenLifetimeInMinutes": 20,
+    "RefreshTokenLifetimeInDays":  30
+  },
+
   "Logging": {
     "LogLevel": {
       "Default": "Information",
       "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information"
     }
-  },
-  "Database": {
-    "Server": "SERVER",
-    "Port": 1433,
-    "DatabaseName": "DATABASE_NAME",
-    "Username": "SA",
-    "Password": "PASSWORD"
-  },
-  "Identity": {
-    "Secret": "secret-key",
-    "AccessTokenLifetimeInMinutes": 20,
-    "RefreshTokenLifetimeInDays":  30
-  },
-  "ClientUrl": "CLIENT_URL",
-  "Email": {
-    "Address": "MAIL_ADDRESS",
-    "Password": "MAIL_PASSWORD",
-    "Host": "MAIL_HOST",
-    "Port": 587
   }
 }
 ```

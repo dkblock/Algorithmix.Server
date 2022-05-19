@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  algorithmix-db:
+    container_name: algorithmix-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: on-failure
+    ports:
+      - "1433:1433"
+    networks:
+      - algorithmix-network
+    volumes:
+      - algorithmix-db-volume:/var/opt/mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "NnxQ89Bt9TeQy2dtnD3Qg2PM"
+      MSSQL_PID: Express
+
+  algorithmix-server:
+    container_name: algorithmix-server
+    image: algorithmixkb/algorithmix-server:latest
+    restart: on-failure
+    networks:
+      - algorithmix-network
+    ports:
+      - "5000:80"
+    depends_on:
+      - algorithmix-db
+
+  algorithmix-client:
+    container_name: algorithmix-client
+    image: algorithmixkb/algorithmix-client:latest
+    restart: on-failure
+    networks:
+      - algorithmix-network
+    ports:
+      - "3000:3000"
+    depends_on:
+      - algorithmix-server
+
+networks:
+  algorithmix-network:
+
+volumes:
+  algorithmix-db-volume:
