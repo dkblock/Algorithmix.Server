@@ -7,8 +7,12 @@
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
-  "ConnectionStrings": {
-    "DefaultConnection": "CONN_STRING"
+  "Database": {
+    "Server": "SERVER",
+    "Port": 1433,
+    "DatabaseName": "DATABASE_NAME",
+    "Username": "SA",
+    "Password": "PASSWORD"
   },
   "Identity": {
     "Secret": "secret-key",
@@ -17,8 +21,10 @@
   },
   "ClientUrl": "CLIENT_URL",
   "Email": {
-    "Mail": "MAIL_MAIL",
-    "Password": "MAIL_PASSWORD"
+    "Address": "MAIL_ADDRESS",
+    "Password": "MAIL_PASSWORD",
+    "Host": "MAIL_HOST",
+    "Port": 587
   }
 }
 ```

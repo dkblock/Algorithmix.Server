@@ -1,4 +1,4 @@
-﻿namespace Algorithmix.Identity.Middleware
+﻿namespace Algorithmix.Common.Settings
 {
     public class IdentitySettings
     {

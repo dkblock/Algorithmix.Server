@@ -1,4 +1,5 @@
-﻿using Algorithmix.Identity.Core;
+﻿using Algorithmix.Common.Settings;
+using Algorithmix.Identity.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

@@ -1,7 +1,7 @@
-﻿using Algorithmix.Database;
+﻿using Algorithmix.Common.Settings;
+using Algorithmix.Database;
 using Algorithmix.Entities;
 using Algorithmix.Identity.Core;
-using Algorithmix.Identity.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

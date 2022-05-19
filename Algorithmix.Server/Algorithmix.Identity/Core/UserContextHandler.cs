@@ -1,4 +1,4 @@
-﻿using Algorithmix.Identity.Middleware;
+﻿using Algorithmix.Common.Settings;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Http;

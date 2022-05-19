@@ -1,68 +1,64 @@
-﻿using Algorithmix.Common.Constants;
-using Algorithmix.Entities;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Data;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Algorithmix.Database
 {
     public static class DataInitializer
     {
-        public static async Task Initialize(ApplicationContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUserEntity> userManager)
+        private const string ScriptName = "Algorithmix.Database.Scripts.init_db.sql";
+
+        public static void Initialize(ApplicationContext context)
         {
-            await InitializeRoles(roleManager);
-            await InitializeGroups(context);
+            if (IsInitialized(context))
+                return;
 
-             // Only on initial launch
-             // await InitializeAdministratorAccount(userManager);
-        }
+            var assembly = Assembly.GetExecutingAssembly();
+            var reader = new StreamReader(assembly.GetManifestResourceStream(ScriptName));
+            var content = reader.ReadToEnd();
+            var commands = content.Split(new string[] { "\r\nGO\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-        private static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)
-        {
-            var applicationRoles = new List<string> 
-            { 
-                Roles.Administrator,
-                Roles.Moderator,
-                Roles.User
-            };
+            var conn = context.Database.GetDbConnection();
+            var connState = conn.State;
 
-            foreach (var role in applicationRoles)
+            try
             {
-                if (await roleManager.FindByNameAsync(role) == null)
-                    await roleManager.CreateAsync(new IdentityRole(role));
-            }
-        }
+                if (connState != ConnectionState.Open)
+                    conn.Open();
 
-        private static async Task InitializeAdministratorAccount(UserManager<ApplicationUserEntity> userManager)
-        {
-            const string administratorEmail = "administrator";
-            const string administratorPassword = "administrator";
-
-            if (await userManager.FindByNameAsync(administratorEmail) == null)
-            {
-                var administrator = new ApplicationUserEntity { Email = administratorEmail, UserName = administratorEmail, GroupId = 2 };
-                var result = await userManager.CreateAsync(administrator, administratorPassword);
-
-                if (result.Succeeded)
-                    await userManager.AddToRoleAsync(administrator, Roles.Administrator);
-            }
-        }
-
-        private static async Task InitializeGroups(ApplicationContext context)
-        {
-            if (!context.Groups.Any())
-            {
-                var groups = new List<GroupEntity>
+                using var sqlCmd = conn.CreateCommand();
+                foreach (var cmd in commands)
                 {
-                    new GroupEntity { Name = "Не назначено", IsAvailableForRegister = false },
-                    new GroupEntity { Name = "Администраторы", IsAvailableForRegister = false },
-                    new GroupEntity { Name = "Модераторы", IsAvailableForRegister = false }
-                };
-
-                await context.Groups.AddRangeAsync(groups);
-                await context.SaveChangesAsync();
+                    sqlCmd.CommandText = cmd;
+                    sqlCmd.ExecuteNonQuery();
+                }
             }
+            finally
+            {
+                if (connState != ConnectionState.Open)
+                    conn.Close();
+            }
+        }
+
+        private static bool IsInitialized(ApplicationContext context)
+        {
+            return context.Algorithms.Any() ||
+                context.AlgorithmTimeComplexities.Any() ||
+                context.Groups.Any() ||
+                context.PublishedTestAnswers.Any() ||
+                context.PublishedTestQuestions.Any() ||
+                context.PublishedTests.Any() ||
+                context.TestAlgorithms.Any() ||
+                context.TestAnswers.Any() ||
+                context.TestQuestions.Any() ||
+                context.Tests.Any() ||
+                context.UserAnswers.Any() ||
+                context.UserTestResults.Any() ||
+                context.Users.Any() ||
+                context.Roles.Any();
         }
     }
 }

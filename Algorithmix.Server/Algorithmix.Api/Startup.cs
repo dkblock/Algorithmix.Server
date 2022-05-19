@@ -33,7 +33,7 @@ namespace Algorithmix.Server
             services.AddMappers();
             services.AddRepositories();
             services.AddValidators();
-            services.ConfigureDatabase(Configuration).Wait();
+            services.ConfigureDatabase(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

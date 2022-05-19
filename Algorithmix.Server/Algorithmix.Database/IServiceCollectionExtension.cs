@@ -1,30 +1,35 @@
-﻿using Algorithmix.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Algorithmix.Common.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace Algorithmix.Database
 {
     public static class IServiceCollectionExtension
     {
-        public static async Task ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var databaseSettingsSection = configuration.GetSection("Database");
+            var settings = databaseSettingsSection.Get<DatabaseSettings>();
+
+            var server = settings.Server;
+            var port = settings.Port;
+            var database = settings.DatabaseName;
+            var user = settings.Username;
+            var password = settings.Password;
+
+            var connectionString = $"Server={server},{port};Initial Catalog={database};User ID={user};Password={password}";
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
-            await InitializeData(services);
+            InitializeData(services);
         }
 
-        private static async Task InitializeData(IServiceCollection services)
+        private static void InitializeData(IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
             var context = serviceProvider.GetRequiredService<ApplicationContext>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUserEntity>>();
 
-            await DataInitializer.Initialize(context, roleManager, userManager);
+            DataInitializer.Initialize(context);
         }
     }
 }
