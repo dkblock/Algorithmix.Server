@@ -1,0 +1,80 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+}
+
+#graph {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.bst-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.bst-toolbar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-bottom: 0.071rem solid rgba(18, 24, 33, 0.12);
+}
+
+.bst-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-right: 0.071rem solid rgba(18, 24, 33, 0.12);
+    padding: 6px 12px;
+    height: 100%;
+}
+
+.btn {
+    background-color: #b2cfff !important;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: aliceblue;
+}
+
+.hintContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    color: gray;
+}
+
+.tableForGraph {
+    position: absolute;
+    width: fit-content;
+    top: 80px;
+    right: 50px;
+}
+
+.hidden {
+    display: none;
+}
+
+.group-checkbox {
+    width: 200px;
+}
+
+.inputNumber {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.flexbox {
+    display: flex;
+}

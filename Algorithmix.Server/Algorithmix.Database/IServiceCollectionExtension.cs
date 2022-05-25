@@ -9,16 +9,17 @@ namespace Algorithmix.Database
     {
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var databaseSettingsSection = configuration.GetSection("Database");
-            var settings = databaseSettingsSection.Get<DatabaseSettings>();
+            //var databaseSettingsSection = configuration.GetSection("Database");
+            //var settings = databaseSettingsSection.Get<DatabaseSettings>();
 
-            var server = settings.Server;
-            var port = settings.Port;
-            var database = settings.DatabaseName;
-            var password = settings.Password;
+            //var server = settings.Server;
+            //var port = settings.Port;
+            //var database = settings.DatabaseName;
+            //var password = settings.Password;
 
-            var connectionString = $"Server={server},{port};Initial Catalog={database};User ID=SA;Password={password}";
+            //var connectionString = $"Server={server},{port};Initial Catalog={database};User ID=SA;Password={password}";
 
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             InitializeData(services);
         }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="css/graphs.css" rel="stylesheet">
+    <title>Алгоритмы на графах</title>
+</head>
+
+<body>
+    <div class="bst-toolbar bg-light">
+        <button class="btn btn-default" type="submit" id="addNode" >Добавить узел</button>
+        <button class="btn btn-default" type="submit" id="addEdge">Добавить ребро</button>
+        <button class="btn btn-default" type="submit" id="removeGraphElement">Удалить</button>
+        <div class="flexbox">
+            <input type="number" class="form-control inputNumber" id="addRandom" data-toggle="popover"
+                   data-trigger="hover"
+                   data-content="Заполнить граф">
+            <button type="submit" class="btn btn-default" id="createRandomGraph" disabled>Заполнить</button>
+        </div>
+        <div class="group-checkbox">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="checkbox custom-control-input" id="switchOriented">
+                <label class="custom-control-label" for="switchOriented" id="labelOriented">Неориентированный</label>
+            </div>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="checkbox custom-control-input" id="switchWeighted">
+                <label class="custom-control-label" for="switchWeighted" id="labelWeighted">Невзвешенный</label>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Алгоритмы
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" id="bfs">Поиск в ширину</a>
+                <a class="dropdown-item" href="#" id="dfs">Поиск в глубину</a>
+                <a class="dropdown-item" href="#" id="dijkstra">Алгоритм Дейкстры</a>
+                <a class="dropdown-item" href="#" id="bellmanFord">Алгоритм Беллмана-Форда</a>
+                <a class="dropdown-item" href="#" id="floydWarshall">Алгоритм Флойда-Уоршелла</a>
+                <a class="dropdown-item" href="#" id="prima">Алгоритм Прима</a>
+            </div>
+        </div>
+        <button class="btn btn-default" type="submit" id="resetBtn">Сбросить</button>
+    </div>
+    <div class="hintContainer">
+        <div class="hint" id="hintForWeight"></div>
+        <div class="hint" id="hint"></div>
+    </div>
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Введите вес ребра</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="edge-weight" class="col-form-label">Вес:</label>
+                            <input type="number" class="form-control" id="edge-weight" value="1">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="addWeight">ОК</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="graph"></div>
+    <table class="table tableForGraph table-bordered hidden">
+        <thead class="theadForAlgo"></thead>
+        <tbody class="tbodyForAlgo"></tbody>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape-popper/2.0.0/cytoscape-popper.js"
+            integrity="sha512-VOmteS5u7KekLX+qz40Iv/tktjj66Xne3rZGBJnUW9B2z2tkKakteI5pILabE4wQbbx7W7av512yk+MvsPZuMw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+    <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-cose-bilkent@4.1.0/cytoscape-cose-bilkent.min.js"></script>
+    <script src="js/Graph.js"></script>
+    <script src="js/graphs.js"></script>
+</body>

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Биномиальное дерево. Биномиальная куча.</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="description-section">
+    <h class="description-section-title">Биномиальное дерево. Определение</h>
+    <hr />
+    <div class="description-paragraph-row mb-32">
+      <div class="description-paragraph">
+        <p>
+          <b>Биномиальное дерево</b> ― древовидная структура данных, задающаяся рекуррентно.<br>
+          Для каждого k=0,1,2,... биномиальное дерево B<sub>k</sub> определяется следующим образом:
+        </p>
+        <ul>
+          <li>B<sub>0</sub> - дерево, состоящее из узла высоты 0;</li>
+          <li>B<sub>k</sub> (k=1,2,...) формируется из двух деревьев B<sub>k-1</sub>, при этом корень одного из них
+            становится потомком для другого.</li>
+        </ul>
+
+        <p><b>Биномиальный лес</b> ― набор биномиальных деревьев.</p>
+      </div>
+      <div class="w-75">
+        <div class="description-image-container">
+          <table>
+            <caption class="description-image-title">Структура биномиальных деревьев</caption>
+            <thead>
+              <tr>
+                <th>B<sub>0</sub></th>
+                <th>B<sub>1</sub></th>
+                <th>B<sub>2</sub></th>
+                <th>B<sub>3</sub></th>
+                <th>B<sub>4</sub></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><img src="images\B0.png"></td>
+                <td><img src="images\B1.png"></td>
+                <td><img src="images\B2.png"></td>
+                <td><img src="images\B3.png"></td>
+                <td><img src="images\B4.png"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <h class="description-section-title">Свойства биномиальных деревьев</h>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="description-paragraph mb-8">
+        <ol>
+          <li>Дерево B<sub>k</sub> состоит из корня с присоединенными к нему корнями поддеревьев
+            B<sub>k-1</sub>,...,B<sub>1</sub>,B<sub>0</sub>;</li>
+          <li>Дерево B<sub>k</sub> имеет высоту k;</li>
+          <li>Дерево B<sub>k</sub> имеет ровно 2<sup>k</sup> узлов;</li>
+          <li>В дереве B<sub>k</sub> на глубине i имеется ровно C<sub>k</sub><sup>i</sup> узлов. Отсюда и
+            "биномиальность" в названии;</li>
+          <li>В дереве B<sub>k</sub> корень имеет степень k, остальные меньшую;</li>
+          <li>Для каждого n &#8712; ℕ существует биномиальный лес, в котором количество узлов равно n;</li>
+          <li>Максимальная степень вершины в биномиальном лесе с n узлами равна log<sub>2</sub>n;</li>
+          <li>Биномиальный лес содержит не более [log<sub>2</sub>n] биномиальных поддеревьев.</li>
+        </ol>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="images\binomial-tree.png">
+          <span class="description-image-title">Пример биномиального дерева B<sub>3</sub></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+
+    <h class="description-section-title">Биномиальная куча. Определение</h>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="description-paragraph mb-8">
+        <p>
+          <b>Биномиальная куча</b> ― набор биномиальных деревьев, узлам которых приписаны элементы взвешенного
+          множества в соответствии с кучеобразным порядком, при котором вес элемента,
+          приписанного узлу, не превосходит весов элементов, приписанных его потомкам; структура данных, реализующая
+          абстрактный тип данных "очередь с приоритетом, которая представляет собой набор
+          биномиальных деревьев со следующими свойствами:
+        </p>
+
+        <ol type="I">
+          <li>Ключ каждого узла не меньше/не больше ключа его родителя для
+            неубывающих(<i>min-heap</i>)/невозрастающих(<i>max-heap</i>) куч;</li>
+          <li>Все биномиальные деревья имеют разный размер;</li>
+          <li>Деревья упорядочены по размеру.</li>
+        </ol>
+      </div>
+
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="images\min-binomial-heap.png">
+          <span class="description-image-title"><i>min-heap</i></span>
+        </div>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="images\max-binomial-heap.png">
+          <span class="description-image-title"><i>max-heap</i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="description-section">
+    <h class="description-section-title">Хранение</h>
+    <hr />
+    <div class="description-paragraph-row">
+      <div class="description-paragraph">
+        <p>
+          Для хранения данной структуры в памяти воспользуемся структурой <abbr>LCRS</abbr>-дерева (Left Child,
+          Right Sibling), поскольку число потомков у вершины может достигать огромных значений, то целесообразнее
+          хранить ссылку
+          только на левого ребенка. Каждый узел в биномиальной куче представляет собой набор следующих параметров:
+        </p>
+        <ul type="disc">
+          <li><i>key</i> - ключ (вес) элемента;</li>
+          <li><i>parent</i> - родительский узел;</li>
+          <li><i>child</i> - левый потомок;</li>
+          <li><i>sibling</i> - правый брат;</li>
+          <li><i>degree</i> - степень вершины.</li>
+        </ul>
+        <p>
+          Доступ к куче осуществляется с помощью ссылки на самое левое поддерево. Корни деревьев, из которых состоит
+          куча,
+          организованы с помощью поля <i>left sibling</i> в своеобразный односвязный список.<br>
+          Удобно также хранить в отдельном списке <i>roots</i> (корневой список) корни всех деревьев в куче.
+        </p>
+      </div>
+      <div class="w-25">
+        <div class="description-image-container">
+          <img class="description-image" src="images\heap-storage.png">
+          <span class="description-image-title">Цветными стрелками показаны ссылки на соответствующие параметры
+            каждого узла</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="description-section">
+    <h class="description-section-title">Основные операции с биномиальной кучей</h>
+    <hr />
+    <div class="description-paragraph-row mb-16">
+      <div class="description-paragraph">
+        <p>Ниже рассмотрены операции, соответствующие неубывающей кучи. Приведенные алгоритмы можно применять и для
+          невозрастающей кучи, учитывая особенность её строения (сравнения будут с целью поиска
+          максимального элемента).</p>
+        <ol type="1">
+          <li><a href="#operation1">Слияние двух куч</a></li>
+          <li><a href="#operation2">Вставка нового элемента</a></li>
+          <li><a href="#operation3">Поиск элемента с минимальным ключом</a></li>
+          <li><a href="#operation4">Удаление минимального элемента</a></li>
+          <li><a href="#operation5">Удаление произвольного элемента</a></li>
+        </ol>
+      </div>
+      <div class="w-75">
+        <div class="description-image-container">
+          <img class="description-image" src="images\binomial-heap.gif">
+          <span class="description-image-title">Пример создания биномиальной кучи</span>
+        </div>
+      </div>
+    </div>
+    <div class="description-paragraph mb-16">
+      <h id="operation1" class="description-paragraph-title">Слияние двух куч</h>
+      <div class="description-paragraph-row">
+        <div class="description-paragraph">
+          <p>
+            Пусть нам требуется объединить две кучи H<sub>1</sub> и H<sub>2</sub>.
+          </p>
+          <ol type="I">
+            <li>
+              Изначально результатирующая очередь H пуста.
+            </li>
+            <li>
+              Последовательно выбираются деревья из исходных куч в порядке увеличения их высот.
+            </li>
+            <li>
+              Проверяем, существует ли дерево B<sub>i</sub> высоты i в H?
+              <ol type="i">
+                <li>
+                  Существует. Тогда объединяем их в одно биномиальное дерево B<sub>i+1</sub>, важно перед их
+                  объединением
+                  сравнить корни, чтобы левым поддеревом стало то, ключ которого больше, чтобы выполнялось свойство
+                  кучи.
+                  Снова проверяем наличие дерева такой высоты в H.
+                </li>
+                <li>
+                  Не существует. Добавляем B<sub>i</sub> в результатирующую кучу H.
+                </li>
+              </ol>
+            </li>
+          </ol>
+
+          <p><b> Сложность</b> слияния двух куч сводится к попарному слиянию деревьев и зависит от количества корней в
+            куче, O(log<sub>2</sub>n).
+          </p>
+        </div>
+        <div class="w-75">
+          <div class="description-image-container">
+            <img class="description-image" src="images\heap-merge.gif">
+            <span class="description-image-title">Пример слияния двух биномиальных куч</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="description-paragraph mb-16">
+      <h id="operation2" class="description-paragraph-title">Вставка нового элемента</h>
+      <div class="description-paragraph-row">
+        <div class="description-paragraph ">
+          <p>
+            Операцию вставки удобнее рассматривать, как операцию слияния текущей кучи с новой кучей порядка 0 (то есть
+            дерево, состоящее из 1 узла). Трудоемкость создания дерева O(1), слияния куч, как описано выше,
+            O(log<sub>2</sub>n), значит,
+            <b>сложность</b> добавления нового элемента:O(1)+O(log<sub>2</sub>n)=O(log<sub>2</sub>n).
+          </p>
+        </div>
+        <div class="w-50">
+          <div class="description-image-container">
+            <img class="description-image" src="images\add-item.gif">
+            <span class="description-image-title">Вставка нового элемента в биномиальную кучу</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="description-paragraph mb-16">
+      <h id="operation3" class="description-paragraph-title">Поиск элемента с минимальным ключом</h>
+      <div class="description-paragraph-row">
+        <div class="description-paragraph ">
+          <p>
+            Очевидно, минимальные элементы всех биномиальных деревьев в куче расположены в корнях, поэтому достаточно
+            найти минимум среди всех корней, то есть найти минимум в корневом списке. Следовательно <b>сложность</b>
+            составляет O(log<sub>2</sub>n).
+          </p>
+        </div>
+        <div class="w-50">
+          <div class="description-image-container">
+            <img class="description-image" src="images\search-min.gif">
+            <span class="description-image-title">Поиск минимального элемента</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="description-paragraph mb-16">
+      <h id="operation4" class="description-paragraph-title">Удаление минимального элемента</h>
+      <div class="description-paragraph-row">
+        <div class="description-paragraph ">
+          <p>
+            Сначала в исходной куче ищем дерево B<sub>k</sub> с минимальным элементом. Найденное дерево удаляется из
+            кучи, а его прикорневые поддеревья B<sub>k-1</sub>,...,B<sub>1</sub>,B<sub>0</sub> включаются в новую кучу
+            H',
+            которую нужно объединить с исходной H.
+            Таким образом, потребуется найти минимальный корень (O(log<sub>2</sub>n)) и объединить 2 кучи
+            (O(log<sub>2</sub>n)). Отсюда получается, что <b>сложность</b> удаления минимального элемента &mdash;
+            O(log<sub>2</sub>n).
+          </p>
+        </div>
+        <div class="w-50">
+          <div class="description-image-container">
+            <img class="description-image" src="images\delete-min.gif">
+            <span class="description-image-title">Удаление минимального элемента в биномиальной куче</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="description-paragraph mb-16">
+      <h id="operation5" class="description-paragraph-title">Удаление произвольного элемента</h>
+      <div class="description-paragraph-row">
+        <div class="description-paragraph ">
+          <p>
+            Сначала нужно постепенно уменьшать значение ключа данного узла. Возможно, будет нарушено свойство
+            минимальности корневого элемента, тогда достаточно их поменять местами. Продолжаем уменьшать ключ до тех
+            пор, пока нужная
+            нам вершина не "всплывет" в корень биномиального дерева.<br>
+            Теперь достаточно удалить ее по алгоритму удаления минимального элемента.
+            В худшем случае, этот узел будет всплывать до корня по ветке максимальной длины, трудоёмкость этой операции
+            составит O(log<sub>2</sub>n), также сложность удаления корня составляет O(log<sub>2</sub>n).
+            Итоговая <b>сложность</b> удаления произвольного узла &mdash; O(log<sub>2</sub>n).
+          </p>
+        </div>
+        <div class="w-50">
+          <div class="description-image-container">
+            <img class="description-image" src="images\delete.gif">
+            <span class="description-image-title">Удаление произвольного элемента в биномиальной куче</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/get-document-height.js"></script>
+</body>
+
+</html>
