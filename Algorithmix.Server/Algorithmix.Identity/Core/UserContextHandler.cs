@@ -1,8 +1,7 @@
-﻿using Algorithmix.Common.Settings;
+﻿using Algorithmix.Configuration;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -24,10 +23,10 @@ namespace Algorithmix.Identity.Core
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly int _refreshTokenLifetime;
 
-        public UserContextHandler(IHttpContextAccessor httpContextAccessor, IOptions<IdentitySettings> identitySettings)
+        public UserContextHandler(IHttpContextAccessor httpContextAccessor, IConfig configuration)
         {
             _httpContextAccessor = httpContextAccessor;
-            _refreshTokenLifetime = identitySettings.Value.RefreshTokenLifetimeInDays;
+            _refreshTokenLifetime = configuration.IdentitySettings.RefreshTokenLifetimeInDays;
         }
 
         public ApplicationUser CurrentUser { get; private set; }

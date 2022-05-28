@@ -1,6 +1,5 @@
-﻿using Algorithmix.Common.Settings;
+﻿using Algorithmix.Configuration;
 using MailKit.Net.Smtp;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
 using System.Threading.Tasks;
@@ -9,19 +8,24 @@ namespace Algorithmix.Api.Core
 {
     public class EmailManager
     {
-        private readonly EmailSettings _settings;
+        private readonly string _emailHost;
+        private readonly int _emailPort;
+        private readonly string _emailAddress;
+        private readonly string _emailPassword;
 
-        public EmailManager(IConfiguration configuration)
+        public EmailManager(IConfig configuration)
         {
-            var emailSettingsSection = configuration.GetSection("Email");
-            _settings = emailSettingsSection.Get<EmailSettings>();
+            _emailHost = configuration.MailSettings.Host;
+            _emailPort = configuration.MailSettings.Port;
+            _emailAddress = configuration.MailSettings.Address;
+            _emailPassword = configuration.MailSettings.Password;
         }
 
         public async Task SendEmail(string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Algorithmix", _settings.Address));
+            emailMessage.From.Add(new MailboxAddress("Algorithmix", _emailAddress));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(TextFormat.Html)
@@ -30,8 +34,8 @@ namespace Algorithmix.Api.Core
             };
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(_settings.Host, _settings.Port, false);
-            await client.AuthenticateAsync(_settings.Address, _settings.Password);
+            await client.ConnectAsync(_emailHost, _emailPort, false);
+            await client.AuthenticateAsync(_emailAddress, _emailPassword);
             await client.SendAsync(emailMessage);
             await client.DisconnectAsync(true);
         }

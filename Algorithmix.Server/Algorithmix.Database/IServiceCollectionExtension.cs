@@ -1,25 +1,17 @@
-﻿using Algorithmix.Common.Settings;
+﻿using Algorithmix.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Algorithmix.Database
 {
     public static class IServiceCollectionExtension
     {
-        public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDatabase(this IServiceCollection services)
         {
-            //var databaseSettingsSection = configuration.GetSection("Database");
-            //var settings = databaseSettingsSection.Get<DatabaseSettings>();
+            var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetService<IConfig>();
+            var connectionString = configuration.ConnectionString;
 
-            //var server = settings.Server;
-            //var port = settings.Port;
-            //var database = settings.DatabaseName;
-            //var password = settings.Password;
-
-            //var connectionString = $"Server={server},{port};Initial Catalog={database};User ID=SA;Password={password}";
-
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             InitializeData(services);
         }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithmix.Api", "Algorithmix.Server\Algorithmix.Api\Algorithmix.Api.csproj", "{1758CA84-13E0-4612-BDAF-09DF797EF4CD}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithmix.Repository", "Algorithmix.Server\Algorithmix.Repository\Algorithmix.Repository.csproj", "{C71A27C9-20B1-4240-84CC-CA8E8AD59258}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithmix.Services", "Algorithmix.Server\Algorithmix.Services\Algorithmix.Services.csproj", "{524C639E-AB4F-4DE8-96D3-8BA14F307ABE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithmix.Configuration", "Algorithmix.Server\Algorithmix.Configuration\Algorithmix.Configuration.csproj", "{21B2D9ED-411E-4D0A-BAAE-E1D99974CF99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{524C639E-AB4F-4DE8-96D3-8BA14F307ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{524C639E-AB4F-4DE8-96D3-8BA14F307ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{524C639E-AB4F-4DE8-96D3-8BA14F307ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B2D9ED-411E-4D0A-BAAE-E1D99974CF99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B2D9ED-411E-4D0A-BAAE-E1D99974CF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B2D9ED-411E-4D0A-BAAE-E1D99974CF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B2D9ED-411E-4D0A-BAAE-E1D99974CF99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

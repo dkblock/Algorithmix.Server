@@ -1,10 +1,9 @@
-﻿using Algorithmix.Common.Settings;
+﻿using Algorithmix.Configuration;
 using Algorithmix.Database;
 using Algorithmix.Entities;
 using Algorithmix.Identity.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -13,13 +12,11 @@ namespace Algorithmix.Identity.Extensions
 {
     public static class IServiceCollectionExtension
     {
-        public static void AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIdentityServices(this IServiceCollection services)
         {
-            var identitySettingsSection = configuration.GetSection("Identity");
-            services.Configure<IdentitySettings>(identitySettingsSection);
-
-            var identitySettings = identitySettingsSection.Get<IdentitySettings>();
-            var secret = Encoding.ASCII.GetBytes(identitySettings.Secret);
+            var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetService<IConfig>();
+            var secret = Encoding.ASCII.GetBytes(configuration.IdentitySettings.Secret);
 
             services.AddIdentity<ApplicationUserEntity, IdentityRole>(options =>
             {

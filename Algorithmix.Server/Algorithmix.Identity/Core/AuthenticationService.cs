@@ -1,7 +1,6 @@
-﻿using Algorithmix.Common.Settings;
+﻿using Algorithmix.Configuration;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,13 +17,13 @@ namespace Algorithmix.Identity.Core
         private readonly int _accessTokenLifetime;
         private readonly int _refreshTokenLifetime;
 
-        public AuthenticationService(IOptions<IdentitySettings> identitySettings)
+        public AuthenticationService(IConfig configuration)
         {
             _tokenHandler = new JwtSecurityTokenHandler();
-            _secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(identitySettings.Value.Secret));
+            _secret = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.IdentitySettings.Secret));
             _signingAlgorithm = SecurityAlgorithms.HmacSha256Signature;
-            _accessTokenLifetime = identitySettings.Value.AccessTokenLifetimeInMinutes;
-            _refreshTokenLifetime = identitySettings.Value.RefreshTokenLifetimeInDays;
+            _accessTokenLifetime = configuration.IdentitySettings.AccessTokenLifetimeInMinutes;
+            _refreshTokenLifetime = configuration.IdentitySettings.RefreshTokenLifetimeInDays;
         }
 
         public UserAccount Authenticate(ApplicationUser user)

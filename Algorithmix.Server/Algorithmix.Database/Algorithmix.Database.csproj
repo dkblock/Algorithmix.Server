@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Algorithmix.Common\Algorithmix.Common.csproj" />
+    <ProjectReference Include="..\Algorithmix.Configuration\Algorithmix.Configuration.csproj" />
     <ProjectReference Include="..\Algorithmix.Entities\Algorithmix.Entities.csproj" />
   </ItemGroup>
 

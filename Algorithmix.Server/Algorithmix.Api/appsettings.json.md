@@ -1,15 +1,12 @@
 ﻿```json
 {
-  "ClientUrl": "http://localhost:8080",
-
-  "Database": {
-    "Server": "algorithmix-db",
-    "Port": 1433,
-    "DatabaseName": "algorithmixdb",
-    "Password": "__PASSWORD__"
+  "ConnectionStrings": {
+    "DefaultConnection": "__DB_CONNECTION__"
   },
 
-  "Email": {
+  "ClientUrl": "http://localhost:8080",
+
+  "Mail": {
     "Address": "kb.algorithmix@yandex.ru",
     "Password": "__MAIL_PASSWORD__",
     "Host": "smtp.yandex.ru",

@@ -16,12 +16,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Algorithmix.Configuration\Algorithmix.Configuration.csproj" />
     <ProjectReference Include="..\Algorithmix.Database\Algorithmix.Database.csproj" />
     <ProjectReference Include="..\Algorithmix.Entities\Algorithmix.Entities.csproj" />
     <ProjectReference Include="..\Algorithmix.Identity\Algorithmix.Identity.csproj" />
     <ProjectReference Include="..\Algorithmix.Mappers\Algorithmix.Mappers.csproj" />
     <ProjectReference Include="..\Algorithmix.Repository\Algorithmix.Repository.csproj" />
     <ProjectReference Include="..\Algorithmix.Services\Algorithmix.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -1,5 +1,6 @@
 using Algorithmix.Api.Core;
 using Algorithmix.Api.Validation;
+using Algorithmix.Configuration;
 using Algorithmix.Database;
 using Algorithmix.Identity.Extensions;
 using Algorithmix.Mappers;
@@ -27,19 +28,18 @@ namespace Algorithmix.Server
             services.AddControllers().AddNewtonsoftJson();
             services.AddCors();
 
+            services.AddConfiguration();
             services.AddCommonServices();
-            services.AddIdentityServices(Configuration);
+            services.AddIdentityServices();
             services.AddManagers();
             services.AddMappers();
             services.AddRepositories();
             services.AddValidators();
-            services.ConfigureDatabase(Configuration);
+            services.ConfigureDatabase();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfig configuration)
         {
-            var clientUrl = Configuration.GetValue<string>("ClientUrl");
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -47,7 +47,7 @@ namespace Algorithmix.Server
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins(clientUrl);
+                builder.WithOrigins(configuration.ClientUrl);
                 builder.AllowAnyHeader();
                 builder.AllowAnyMethod();
                 builder.AllowCredentials();
