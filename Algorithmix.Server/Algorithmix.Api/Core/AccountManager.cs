@@ -1,8 +1,8 @@
-﻿using Algorithmix.Identity.Core;
+﻿using Algorithmix.Configuration;
+using Algorithmix.Identity.Core;
 using Algorithmix.Mappers;
 using Algorithmix.Models.Account;
 using Algorithmix.Models.Users;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -13,7 +13,7 @@ namespace Algorithmix.Api.Core
         private readonly ApplicationUserManager _userManager;
         private readonly ApplicationUserMapper _userMapper;
         private readonly AuthenticationService _authService;
-        private readonly EmailManager _emailManager;
+        private readonly MailManager _mailManager;
         private readonly IUserContextHandler _userContextHandler;
 
         private readonly string _clientUrl;
@@ -22,17 +22,17 @@ namespace Algorithmix.Api.Core
             ApplicationUserManager userManager,
             ApplicationUserMapper userMapper,
             AuthenticationService authService,
-            EmailManager emailManager,
+            MailManager mailManager,
             IUserContextHandler userContextHandler,
-            IConfiguration configuration)
+            IConfig configuration)
         {
             _userManager = userManager;
             _userMapper = userMapper;
             _authService = authService;
-            _emailManager = emailManager;
+            _mailManager = mailManager;
             _userContextHandler = userContextHandler;
 
-            _clientUrl = configuration["ClientUrl"];
+            _clientUrl = configuration.ClientUrl;
         }
 
         public async Task<UserAccount> Authenticate()
@@ -50,7 +50,7 @@ namespace Algorithmix.Api.Core
             var code = await _userManager.GenerateEmailConfirmationToken(user.Id);
             var callbackUrl = GetEmailConfirmationUrl(user.Id, HttpUtility.UrlEncode(code));
 
-            await _emailManager.SendEmail(user.Email, "Регистрация в Algorithmix",
+            await _mailManager.SendEmail(user.Email, "Регистрация в Algorithmix",
                 $"Здравствуйте, {user.FirstName} {user.LastName}!<br/>" +
                 "Благодарим Вас за регистрацию на сайте Algorithmix.<br/>" +
                 $"Чтобы подтвердить свой адрес электронной почты, <a href='{callbackUrl}'>перейдите по этой ссылке</a>.<br/>" +
@@ -86,7 +86,7 @@ namespace Algorithmix.Api.Core
             var code = await _userManager.GenerateEmailConfirmationToken(user.Id);
             var callbackUrl = GetEmailConfirmationUrl(user.Id, HttpUtility.UrlEncode(code));
 
-            await _emailManager.SendEmail(user.Email, "Подтверждение e-mail адреса",
+            await _mailManager.SendEmail(user.Email, "Подтверждение e-mail адреса",
                 $"Здравствуйте, {user.FirstName} {user.LastName}!<br/>" +
                 $"Чтобы подтвердить свой адрес электронной почты, <a href='{callbackUrl}'>перейдите по этой ссылке</a>.<br/>" +
                 "Если вы получили данное письмо по ошибке, пожалуйста, сообщите об этом отправителю и удалите это сообщение.");
@@ -109,7 +109,7 @@ namespace Algorithmix.Api.Core
             var code = await _userManager.GeneratePasswordResetToken(user.Id);
             var callbackUrl = GetPasswordResetUrl(user.Id, HttpUtility.UrlEncode(code));
 
-            await _emailManager.SendEmail(email, "Сброс пароля",
+            await _mailManager.SendEmail(email, "Сброс пароля",
                 $"Здравствуйте, {user.FirstName} {user.LastName}!<br/>" +
                 $"Чтобы сбросить пароль, <a href='{callbackUrl}'>перейдите по этой ссылке</a>.<br/>" +
                 "Если вы получили данное письмо по ошибке, пожалуйста, сообщите об этом отправителю и удалите это сообщение.");

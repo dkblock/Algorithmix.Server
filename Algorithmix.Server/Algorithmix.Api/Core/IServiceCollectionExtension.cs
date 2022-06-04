@@ -13,7 +13,7 @@ namespace Algorithmix.Api.Core
             services.AddScoped<IAlgorithmDataManager, AlgorithmDataManager>();
             services.AddScoped<AlgorithmManager, AlgorithmManager>();
             services.AddScoped<ApplicationUserManager, ApplicationUserManager>();
-            services.AddScoped<EmailManager, EmailManager>();
+            services.AddScoped<MailManager, MailManager>();
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<GroupManager, GroupManager>();
             services.AddScoped<PublishedTestAnswerManager, PublishedTestAnswerManager>();

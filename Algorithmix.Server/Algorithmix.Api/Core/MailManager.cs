@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Algorithmix.Api.Core
 {
-    public class EmailManager
+    public class MailManager
     {
         private readonly string _emailHost;
         private readonly int _emailPort;
         private readonly string _emailAddress;
         private readonly string _emailPassword;
 
-        public EmailManager(IConfig configuration)
+        public MailManager(IConfig configuration)
         {
             _emailHost = configuration.MailSettings.Host;
             _emailPort = configuration.MailSettings.Port;
